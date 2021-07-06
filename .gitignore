@@ -1,0 +1,8 @@
+cmake-build-debug
+test!
+a.out
+CmakeLists.txt
+main2.c
+test_termcaps.c
+.DS_Store
+.idea
