@@ -39,6 +39,9 @@ typedef struct s_struct{
 	int	abs_line;
 	int cursor_place;
 	struct winsize ws;
+	t_list *commands;
+	int flag1;
+	int counter;
 }t_struct;
 
 extern t_struct main_data;
@@ -67,4 +70,15 @@ int escape_left(char *str);
 int	escape_right(char *str);
 int	escape_backspace(char *str);
 int escape_ctrl(char *str);
+
+//parser staff
+char *parser(char *str, char **env);
+
+//list utils staff
+void	fill_id(t_list **head);
+void	init_commands(void);
+void	fill_commands(char *cmd, int cntr);
+void	fill_flag(char *flag);
+
+
 #endif

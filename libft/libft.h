@@ -7,6 +7,8 @@
 typedef struct s_list
 {
 	void			*content;
+	char			**commands;
+	char 			*flag;
 	int 			id;
 	struct s_list	*next;
 }	t_list;

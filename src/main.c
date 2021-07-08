@@ -32,7 +32,7 @@ void 	test_clean_screen(void)
 
 
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv, char **env) {
 
 	init_title();
 	main_data.hist_flag = 0;
@@ -82,16 +82,39 @@ int main(int argc, char **argv) {
 				}
 			}
 			if (!strcmp(str, "\n") || !strcmp(str, "\4"))
+			{
 				break ;
+			}
 		}
 
 		if (strcmp(main_data.buf_hist, ""))
 		{
+				main_data.counter = 0;
+				main_data.flag1 = 0;
+				ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
+				init_commands();
+				parser(main_data.buf_hist, env);
+				printf("----------------------------------------\n");
+				t_list *tmp = main_data.commands;
+				while (tmp)
+				{
+					int r = 0;
+					while (tmp->commands[r])
+					{
+						printf("[%d]:|%s|\n", tmp->id, tmp->commands[r]);
+						r++;
+					}
+					printf("---->%s<----\n", tmp->flag);
+					tmp = tmp->next;
+				}
+			//функция запуска комманд <-----где-то здесь должна быть
+			main_data.commands = NULL;
 			ft_lstadd_front(&main_data.history, ft_lstnew(main_data.buf_hist));
 			numerate_history(main_data.history);
 			main_data.history_id = -1;
 			main_data.cursor_place = 0;
 		}
+
 	}
 	write(1, "\nExiting...\n", ft_strlen("\nExiting...\n"));
 }
