@@ -37,6 +37,7 @@ int main(int argc, char **argv, char **env) {
 	init_title();
 	main_data.hist_flag = 0;
 	main_data.cursor_place = 0;
+	main_data.env0 = env;
 	char str[2000];
 	int l;
 	int n;
