@@ -86,7 +86,8 @@ int main(int argc, char **argv, char **env) {
 				break ;
 			}
 		}
-
+		if(!ft_strncmp("exit", main_data.buf_hist, 6))
+			break;
 		if (strcmp(main_data.buf_hist, ""))
 		{
 				main_data.counter = 0;
