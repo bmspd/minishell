@@ -42,6 +42,21 @@ char	*delete_spaces_behind(char *str)
 	return (ft_substr(str, 0, len + 1));
 }
 
+int extra_parser(void)
+{
+	t_list	*tmp = main_data.commands;
+	while (tmp)
+	{
+		if (!strcmp(tmp->commands[0],""))
+		{
+			printf("PARSER ERROR\n");
+			return (0);
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+
+}
 int main(int argc, char **argv, char **env) {
 
 	init_title();
@@ -100,25 +115,28 @@ int main(int argc, char **argv, char **env) {
 
 		if (strcmp(main_data.buf_hist, ""))
 		{
-				main_data.counter = 0;
-				main_data.flag1 = 0;
-				ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
-				init_commands();
-				parser(delete_spaces_behind(main_data.buf_hist), env);
-				printf("----------------------------------------\n");
-				t_list *tmp = main_data.commands;
-				while (tmp)
+			main_data.counter = 0;
+			main_data.flag1 = 0;
+			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
+			init_commands();
+			parser(delete_spaces_behind(main_data.buf_hist), env);
+			printf("----------------------------------------\n");
+			t_list *tmp = main_data.commands;
+			while (tmp)
+			{
+				int r = 0;
+				while (tmp->commands[r])
 				{
-					int r = 0;
-					while (tmp->commands[r])
-					{
-						printf("[%d]:|%s|\n", tmp->id, tmp->commands[r]);
-						r++;
-					}
-					printf("---->[%s]<----\n", tmp->flag);
-					tmp = tmp->next;
+					printf("[%d]:|%s|\n", tmp->id, tmp->commands[r]);
+					r++;
 				}
-			//функция запуска комманд <-----где-то здесь должна быть
+				printf("---->[%s]<----\n", tmp->flag);
+				tmp = tmp->next;
+			}
+			if (extra_parser())
+			{
+				//функция запуска комманд <-----где-то здесь должна быть
+			}
 			main_data.commands = NULL;
 			ft_lstadd_front(&main_data.history, ft_lstnew(main_data.buf_hist));
 			numerate_history(main_data.history);
