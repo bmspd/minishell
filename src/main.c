@@ -30,7 +30,17 @@ void 	test_clean_screen(void)
 
 }
 
+char	*delete_spaces_behind(char *str)
+{
+	int	len;
 
+	len = (int)ft_strlen(str) - 1;
+	while (str[len] == ' ')
+	{
+		len--;
+	}
+	return (ft_substr(str, 0, len + 1));
+}
 
 int main(int argc, char **argv, char **env) {
 
@@ -94,7 +104,7 @@ int main(int argc, char **argv, char **env) {
 				main_data.flag1 = 0;
 				ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 				init_commands();
-				parser(main_data.buf_hist, env);
+				parser(delete_spaces_behind(main_data.buf_hist), env);
 				printf("----------------------------------------\n");
 				t_list *tmp = main_data.commands;
 				while (tmp)
@@ -105,7 +115,7 @@ int main(int argc, char **argv, char **env) {
 						printf("[%d]:|%s|\n", tmp->id, tmp->commands[r]);
 						r++;
 					}
-					printf("---->%s<----\n", tmp->flag);
+					printf("---->[%s]<----\n", tmp->flag);
 					tmp = tmp->next;
 				}
 			//функция запуска комманд <-----где-то здесь должна быть
