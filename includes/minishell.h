@@ -42,6 +42,7 @@ typedef struct s_struct{
 	t_list *commands;
 	int flag1;
 	int counter;
+	char **env0;
 }t_struct;
 
 extern t_struct main_data;
