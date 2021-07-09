@@ -28,7 +28,7 @@ void	init_commands(void)
 	}
 	tmp->commands = malloc(sizeof (char *) * 1);
 	tmp->commands[0] = NULL;
-	tmp->flag = ft_strdup("NULL?!");
+	tmp->flag = NULL;
 }
 
 void	fill_commands(char *cmd, int cntr)
