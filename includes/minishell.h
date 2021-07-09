@@ -31,6 +31,7 @@ typedef struct s_struct{
 	t_list *history;
 	int	history_id;
 	int hist_flag;
+	int null_flag;
 	char *buf_hist;
 	char *buf_hist_cpy;
 	char *title;
@@ -46,7 +47,6 @@ typedef struct s_struct{
 }t_struct;
 
 extern t_struct main_data;
-
 
 //printing staff
 void	print_title(void);

@@ -22,7 +22,7 @@ char *solo_quote(char *str, int *i)
 	tmp3 = ft_strdup(str + *i + 1);
 	tmp = ft_strjoin(tmp, tmp2);
 	tmp = ft_strjoin(tmp, tmp3);
-	printf("tmp = %s\n", tmp);
+	//printf("tmp = %s\n", tmp);
 	(*i)++;
 	//free(str);
 	return (tmp);
@@ -36,11 +36,11 @@ char *slash(char *str, int *i)
 	(*i)++;
 	//free(str);
 	tmp = ft_substr(str, 0, *i - 1);
-	printf("tmp = !%s!\n", tmp);
+	//printf("tmp = !%s!\n", tmp);
 	tmp2 = ft_strdup(str + *i);
-	printf("tmp2 = !%s!\n", tmp2);
+	//printf("tmp2 = !%s!\n", tmp2);
 	tmp = ft_strjoin(tmp, tmp2);
-	printf("tmp = !%s!\n", tmp);
+	//printf("tmp = !%s!\n", tmp);
 	(*i)++;
 	return (tmp);
 }
@@ -70,7 +70,7 @@ char	*double_quote(char *str, int *i, char **env)
 	tmp3 = ft_strdup(str + *i + 1);
 	tmp = ft_strjoin(tmp, tmp2);
 	tmp = ft_strjoin(tmp, tmp3);
-	printf("loltmp = %s\n", tmp);
+	//printf("loltmp = %s\n", tmp);
 	(*i)++;
 	return (tmp);
 }
@@ -99,7 +99,7 @@ char *dollar(char *str, int *i, char **env)
 		return (str);
 
 	tmp = ft_substr(str, j + 1, *i - j - 1);
-	printf("tmp = |%s|\n", tmp);
+	//printf("tmp = |%s|\n", tmp);
 	int k = -1;
 	while (env[++k])
 	{
@@ -123,13 +123,13 @@ char *dollar(char *str, int *i, char **env)
 		tmp2 = ft_strjoin(tmp3, tmp2);
 		tmp3 = ft_substr(str, *i, ft_strlen(str) - *i);
 		tmp = ft_strjoin(tmp2, tmp3);
-		printf("|%s|\n", tmp);
+		//printf("|%s|\n", tmp);
 		return (tmp);
 	}
 	else
 	{
 		tmp = ft_substr(str, *str + ft_strlen(tmp), ft_strlen(tmp));
-		printf("!!!tmp = |%s|\n", tmp);
+		//printf("!!!tmp = |%s|\n", tmp);
 		return (tmp);
 	}
 
@@ -143,10 +143,13 @@ void space(char *str, int *i, int *j)
 	char *tmp;
 
 	tmp = ft_substr(str, *j, *i - *j);
-//	if (strcmp(tmp, ""))
+
 	main_data.counter++;
-	fill_commands(tmp, main_data.counter);
-	printf("tmp! = %s\n", tmp);
+	if (strcmp(tmp, "") || (!strcmp(tmp,"") && main_data.null_flag))
+		fill_commands(tmp, main_data.counter);
+	else
+		fill_commands(NULL, main_data.counter);
+	//printf("CURENTtmp! = %s\n", tmp);
 
 
 	while (str[*i] == ' ')
@@ -159,7 +162,7 @@ void space(char *str, int *i, int *j)
 	{
 		tmp = ft_substr(str, *i, 2);
 
-		printf("flag = %s\n", tmp);
+		//printf("flag = %s\n", tmp);
 		fill_flag(tmp);
 		main_data.flag1++;
 		ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
@@ -179,7 +182,7 @@ void space(char *str, int *i, int *j)
 	{
 		tmp = ft_substr(str, *i, 1);
 
-		printf("flag = %s\n", tmp);
+		//printf("flag = %s\n", tmp);
 		fill_flag(tmp);
 		main_data.flag1++;
 		ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
@@ -213,9 +216,14 @@ char *parser(char *str, char **env)
 	{
 
 		if (str[i] == ' ' || str[i] == ';' || str[i] == '|' || str[i] == '<' || str[i] == '>')
+		{
+			//printf("SPACE\n");
 			space(str, &i, &j);
+			main_data.null_flag = 0;
+		}
 		else if (str[i] == '\'')
 		{
+			main_data.null_flag = 1;
 			str = solo_quote(str, &i);
 			i = i - 2;
 		}
@@ -226,6 +234,8 @@ char *parser(char *str, char **env)
 		}
 		else if (str[i] == '\"')
 		{
+			printf("DOUBLE\n");
+			main_data.null_flag = 1;
 			str = double_quote(str, &i, env);
 			i = i - 2;
 		}
