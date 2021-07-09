@@ -44,13 +44,29 @@ char	*delete_spaces_behind(char *str)
 
 int extra_parser(void)
 {
+	int tmp_flag = 0;
 	t_list	*tmp = main_data.commands;
+	//printf("[%d]\n", ft_lstsize(main_data.commands));
+	if (ft_lstsize(main_data.commands) >= 2)
+	{
+		if (ft_strncmp(tmp->flag, "|", 2) && ft_strncmp(tmp->flag, ";", 2))
+			tmp = tmp->next;
+	}
 	while (tmp)
 	{
-		if (!strcmp(tmp->commands[0],""))
+		if (tmp->id == ft_lstsize(main_data.commands) - 1 && tmp_flag)
+			return (1);
+		if (tmp->commands[0] == NULL)
 		{
-			printf("PARSER ERROR\n");
+			printf("PARSER ERROR!\n");
 			return (0);
+		}
+		if (tmp->flag)
+		{
+			if (!ft_strncmp(tmp->flag, ";", 2))
+				tmp_flag = 1;
+			else
+				tmp_flag = 0;
 		}
 		tmp = tmp->next;
 	}
@@ -63,6 +79,7 @@ int main(int argc, char **argv, char **env) {
 	main_data.hist_flag = 0;
 	main_data.cursor_place = 0;
 	main_data.env0 = env;
+	main_data.null_flag = 0;
 	char str[2000];
 	int l;
 	int n;
@@ -120,24 +137,28 @@ int main(int argc, char **argv, char **env) {
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
 			parser(delete_spaces_behind(main_data.buf_hist), env);
-			printf("----------------------------------------\n");
-			t_list *tmp = main_data.commands;
-			while (tmp)
-			{
-				int r = 0;
-				while (tmp->commands[r])
-				{
-					printf("[%d]:|%s|\n", tmp->id, tmp->commands[r]);
-					r++;
-				}
-				printf("---->[%s]<----\n", tmp->flag);
-				tmp = tmp->next;
-			}
+//			printf("----------------------------------------\n");
+//			t_list *tmp = main_data.commands;
+//			while (tmp)
+//			{
+//				int r = 0;
+//				while (tmp->commands[r])
+//				{
+//					printf("[%d]:|%s|\n", tmp->id, tmp->commands[r]);
+//					r++;
+//				}
+//				printf("---->[%s]<----\n", tmp->flag);
+//				tmp = tmp->next;
+//			}
 			if (extra_parser())
 			{
 				//функция запуска комманд <-----где-то здесь должна быть
 			}
+//			main_data.commands->commands = NULL;
+//			main_data.commands->flag = NULL;
+//			main_data.commands->id = 0;
 			main_data.commands = NULL;
+			main_data.null_flag = 0;
 			ft_lstadd_front(&main_data.history, ft_lstnew(main_data.buf_hist));
 			numerate_history(main_data.history);
 			main_data.history_id = -1;
