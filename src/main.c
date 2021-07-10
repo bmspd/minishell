@@ -137,19 +137,19 @@ int main(int argc, char **argv, char **env) {
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
 			parser(delete_spaces_behind(main_data.buf_hist), env);
-//			printf("----------------------------------------\n");
-//			t_list *tmp = main_data.commands;
-//			while (tmp)
-//			{
-//				int r = 0;
-//				while (tmp->commands[r])
-//				{
-//					printf("[%d]:|%s|\n", tmp->id, tmp->commands[r]);
-//					r++;
-//				}
-//				printf("---->[%s]<----\n", tmp->flag);
-//				tmp = tmp->next;
-//			}
+			printf("----------------------------------------\n");
+			t_list *tmp = main_data.commands;
+			while (tmp)
+			{
+				int r = 0;
+				while (tmp->commands[r])
+				{
+					printf("[%d]:|%s|\n", tmp->id, tmp->commands[r]);
+					r++;
+				}
+				printf("---->[%s]<----\n", tmp->flag);
+				tmp = tmp->next;
+			}
 			if (extra_parser())
 			{
 				//функция запуска комманд <-----где-то здесь должна быть
