@@ -137,7 +137,7 @@ char *dollar(char *str, int *i, char **env)
 		tmp = ft_substr(str, j + a + 1, ft_strlen(str) - a - j);
 		tmp = ft_strjoin(tmp3, tmp);
 		printf("!!!tmp = |%s|\n", tmp);
-		(*i) -= 2;
+		(*i) -= (a + 1);
 		return (tmp);
 	}
 
