@@ -79,7 +79,7 @@ int	escape_right(char *str)
 int	escape_backspace(char *str)
 {
 	if (!strcmp(str, ESC_BACKSPACE)) {
-		if (!ft_strlen(main_data.buf_hist))
+		if (!ft_strlen(main_data.buf_hist) || main_data.cursor_place == 0)
 		{
 			write(1, "\a", 1);
 		}
@@ -88,8 +88,8 @@ int	escape_backspace(char *str)
 			main_data.cursor_place -= 1;
 			tputs(cursor_left, 1, ft_putint);
 			tputs(tgetstr("dc", 0), 1, ft_putint);
-			//ft_strlcpy(main_data.buf_hist, main_data.buf_hist, ft_strlen(main_data.buf_hist));
 			char *tmp = ft_substr(main_data.buf_hist, 0, main_data.cursor_place);
+			//printf("HI!\n");
 			char *tmp2 = ft_substr(main_data.buf_hist, main_data.cursor_place + 1,
 								   ft_strlen(main_data.buf_hist) - main_data.cursor_place);
 			main_data.buf_hist = ft_strjoin(tmp, tmp2);
