@@ -119,9 +119,25 @@ int main(int argc, char **argv, char **env) {
 				write(1, str, l);
 				if (strcmp(str,"\n"))
 				{
-					main_data.buf_hist = ft_strjoin(main_data.buf_hist, str);
-					main_data.history_id = -1;
+					char *tmp = ft_substr(main_data.buf_hist, 0, main_data.cursor_place);
+					char *tmp2 = ft_substr(main_data.buf_hist, main_data.cursor_place,
+										   ft_strlen(main_data.buf_hist) - main_data.cursor_place);
+					main_data.buf_hist = ft_strjoin(tmp, str);
+					main_data.buf_hist = ft_strjoin(main_data.buf_hist, tmp2);
 					main_data.cursor_place += ft_strlen(str);
+					write(1, tmp2, ft_strlen(tmp2));
+					if (main_data.cursor_place != ft_strlen(main_data.buf_hist))
+					{
+						int z = 0;
+						while (z < ft_strlen(tmp2))
+						{
+							tputs(cursor_left, 1, ft_putint);
+							z++;
+						}
+					}
+					//main_data.buf_hist = ft_strjoin(main_data.buf_hist, str);
+					main_data.history_id = -1;
+
 				}
 			}
 			if (!strcmp(str, "\n") || !strcmp(str, "\4"))
@@ -138,19 +154,19 @@ int main(int argc, char **argv, char **env) {
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
 			parser(delete_spaces_behind(main_data.buf_hist), env);
-//			printf("----------------------------------------\n");
-//			t_list *tmp = main_data.commands;
-//			while (tmp)
-//			{
-//				int r = 0;
-//				while (tmp->commands[r])
-//				{
-//					printf("[%d]:|%s|\n", tmp->id, tmp->commands[r]);
-//					r++;
-//				}
-//				printf("---->[%s]<----\n", tmp->flag);
-//				tmp = tmp->next;
-//			}
+			printf("----------------------------------------\n");
+			t_list *tmp = main_data.commands;
+			while (tmp)
+			{
+				int r = 0;
+				while (tmp->commands[r])
+				{
+					printf("[%d]:|%s|\n", tmp->id, tmp->commands[r]);
+					r++;
+				}
+				printf("---->[%s]<----\n", tmp->flag);
+				tmp = tmp->next;
+			}
 			if (extra_parser())
 			{
 				//функция запуска комманд <-----где-то здесь должна быть

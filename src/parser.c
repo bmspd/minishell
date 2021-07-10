@@ -123,13 +123,21 @@ char *dollar(char *str, int *i, char **env)
 		tmp2 = ft_strjoin(tmp3, tmp2);
 		tmp3 = ft_substr(str, *i, ft_strlen(str) - *i);
 		tmp = ft_strjoin(tmp2, tmp3);
-		//printf("|%s|\n", tmp);
+		printf("|%s|\n", tmp);
 		return (tmp);
 	}
 	else
 	{
-		tmp = ft_substr(str, *str + ft_strlen(tmp), ft_strlen(tmp));
-		//printf("!!!tmp = |%s|\n", tmp);
+		printf("%s\n", tmp);
+		printf("%s\n", str);
+		printf("[%d] - [%d]", ft_strlen(str), ft_strlen(tmp));
+		tmp3 = ft_substr(str, 0, j);
+		printf("tmp3 = |%s|\n", tmp3);
+		int a = ft_strlen(tmp);
+		tmp = ft_substr(str, j + a + 1, ft_strlen(str) - a - j);
+		tmp = ft_strjoin(tmp3, tmp);
+		printf("!!!tmp = |%s|\n", tmp);
+		(*i) -= (a + 1);
 		return (tmp);
 	}
 
@@ -243,6 +251,7 @@ char *parser(char *str, char **env)
 		{
 			printf("wtf\n");
 			str = dollar(str, &i, env);
+			//i = i - 1;
 		}
 		else
 			i++;
