@@ -73,6 +73,24 @@ int extra_parser(void)
 	return (1);
 
 }
+
+t_list	*ft_lstnew_history(void *content, int amount)
+{
+	t_list	*new;
+
+	new = (struct s_list *)malloc(sizeof(t_list));
+	if (new)
+	{
+		new -> content = content;
+		new -> next = NULL;
+		new->commands = NULL;
+		new->id = 0;
+		new->flag = 0;
+		new->key_amount = amount;
+
+	}
+	return (new);
+}
 int main(int argc, char **argv, char **env) {
 
 	init_title();
@@ -80,6 +98,7 @@ int main(int argc, char **argv, char **env) {
 	main_data.cursor_place = 0;
 	main_data.env0 = env;
 	main_data.null_flag = 0;
+	main_data.key_amount = 0;
 	char str[2000];
 	int l;
 	int n;
@@ -117,13 +136,16 @@ int main(int argc, char **argv, char **env) {
 			else
 			{
 				write(1, str, l);
+				main_data.key_amount++;
 				if (strcmp(str,"\n"))
 				{
-					char *tmp = ft_substr(main_data.buf_hist, 0, main_data.cursor_place);
+					char *tmp0 = ft_substr(main_data.buf_hist, 0, main_data.cursor_place);
+					char *tmp1 = ft_strjoin(tmp0, str);
 					char *tmp2 = ft_substr(main_data.buf_hist, main_data.cursor_place,
 										   ft_strlen(main_data.buf_hist) - main_data.cursor_place);
-					main_data.buf_hist = ft_strjoin(tmp, str);
-					main_data.buf_hist = ft_strjoin(main_data.buf_hist, tmp2);
+					//main_data.buf_hist = ft_strjoin(tmp, str);
+					free(main_data.buf_hist);
+					main_data.buf_hist = ft_strjoin(tmp1, tmp2);
 					main_data.cursor_place += ft_strlen(str);
 					write(1, tmp2, ft_strlen(tmp2));
 					if (main_data.cursor_place != ft_strlen(main_data.buf_hist))
@@ -137,7 +159,9 @@ int main(int argc, char **argv, char **env) {
 					}
 					//main_data.buf_hist = ft_strjoin(main_data.buf_hist, str);
 					main_data.history_id = -1;
-
+					free(tmp0);
+					free(tmp2);
+					free(tmp1);
 				}
 			}
 			if (!strcmp(str, "\n") || !strcmp(str, "\4"))
@@ -152,7 +176,9 @@ int main(int argc, char **argv, char **env) {
 			main_data.flag1 = 0;
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
+
 			parser(delete_spaces_behind(main_data.buf_hist), env);
+
 			printf("----------------------------------------\n");
 			t_list *tmp = main_data.commands;
 			while (tmp)
@@ -160,12 +186,13 @@ int main(int argc, char **argv, char **env) {
 				int r = 0;
 				while (tmp->commands[r])
 				{
-					printf("[%d]:|%s|\n", tmp->id, tmp->commands[r]);
+					printf("[%d]:|%s| :[length %lu]\n", tmp->id, tmp->commands[r], ft_strlen(tmp->commands[r]));
 					r++;
 				}
 				printf("---->[%s]<----\n", tmp->flag);
 				tmp = tmp->next;
 			}
+			//sleep(100);!!!!!!
 			if (extra_parser())
 			{
 				//функция запуска комманд <-----где-то здесь должна быть
@@ -175,7 +202,8 @@ int main(int argc, char **argv, char **env) {
 //			main_data.commands->id = 0;
 			main_data.commands = NULL;
 			main_data.null_flag = 0;
-			ft_lstadd_front(&main_data.history, ft_lstnew(main_data.buf_hist));
+			ft_lstadd_front(&main_data.history, ft_lstnew_history(main_data.buf_hist, main_data.key_amount));
+			main_data.key_amount = 0;
 			numerate_history(main_data.history);
 			main_data.history_id = -1;
 			main_data.cursor_place = 0;

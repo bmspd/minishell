@@ -154,11 +154,12 @@ void space(char *str, int *i, int *j)
 
 	main_data.counter++;
 	if (strcmp(tmp, "") || (!strcmp(tmp,"") && main_data.null_flag))
+	{
 		fill_commands(tmp, main_data.counter);
+	}
 	else
 		fill_commands(NULL, main_data.counter);
 	//printf("CURENTtmp! = %s\n", tmp);
-
 
 	while (str[*i] == ' ')
 	{
@@ -170,7 +171,7 @@ void space(char *str, int *i, int *j)
 	{
 		tmp = ft_substr(str, *i, 2);
 
-		//printf("flag = %s\n", tmp);
+		printf("flag = %s\n", tmp);
 		fill_flag(tmp);
 		main_data.flag1++;
 		ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
@@ -190,7 +191,7 @@ void space(char *str, int *i, int *j)
 	{
 		tmp = ft_substr(str, *i, 1);
 
-		//printf("flag = %s\n", tmp);
+		printf("flag = %s\n", tmp);
 		fill_flag(tmp);
 		main_data.flag1++;
 		ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
@@ -206,6 +207,7 @@ void space(char *str, int *i, int *j)
 		}
 		*j = *i;
 	}
+	free(tmp);
 }
 // "", '', \, $, ;, |, >, >>, < ' '
 char *parser(char *str, char **env)
@@ -256,6 +258,7 @@ char *parser(char *str, char **env)
 		else
 			i++;
 	}
+
 	space(str, &i, &j);
 	return (str);
 }

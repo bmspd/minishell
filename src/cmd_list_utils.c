@@ -53,6 +53,7 @@ void	fill_commands(char *cmd, int cntr)
 		new[i] = NULL;
 	i++;
 	new[i] = NULL;
+	free(tmp->commands);
 	tmp->commands = new;
 }
 
