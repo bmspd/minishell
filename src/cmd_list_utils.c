@@ -45,6 +45,7 @@ void	fill_commands(char *cmd, int cntr)
 	while(tmp->commands[i])
 	{
 		new[i] = ft_strdup(tmp->commands[i]);
+		free(tmp->commands[i]);
 		i++;
 	}
 	if (cmd)
