@@ -6,3 +6,4 @@ main2.c
 test_termcaps.c
 .DS_Store
 .idea
+.vscode

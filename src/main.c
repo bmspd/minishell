@@ -91,6 +91,36 @@ t_list	*ft_lstnew_history(void *content, int amount)
 	}
 	return (new);
 }
+
+void	print_cmds(void)
+{
+	printf("----------------------------------------\n");
+	t_list *tmp = main_data.commands;
+	while (tmp)
+	{
+		int r = 0;
+		while (tmp->commands[r])
+		{
+			printf("[%d]:|%s| :[length %lu]\n", tmp->id, tmp->commands[r], ft_strlen(tmp->commands[r]));
+			r++;
+		}
+		printf("---->[%s]<----\n", tmp->flag);
+		tmp = tmp->next;
+	}
+}
+
+void	read_cmd(t_list *cmd, ENV *list_envp)
+{
+	if (!ft_strncmp(cmd->commands[0], "env", 4))
+		env(list_envp);
+	if (!ft_strncmp(cmd->commands[0], "cd", 3))
+		go_to_direction(cmd->commands[1], list_envp);
+	if ((!ft_strncmp(cmd->commands[0], "unset", 6)))
+		rem_envp_VAR(&list_envp, cmd->commands[1]);
+	if ((!ft_strncmp(cmd->commands[0], "pwd", 6)))
+		print_pwd();
+}
+
 int main(int argc, char **argv, char **env) {
 
 	init_title();
@@ -103,7 +133,9 @@ int main(int argc, char **argv, char **env) {
 	int l;
 	int n;
 	main_data.history_id = -1;
+	ENV	*list_envp;
 
+	list_envp = create_list_envp(env);
 	struct termios term;
 	name = "xterm-256color";
 //	printf("%s\n", name);
@@ -168,7 +200,8 @@ int main(int argc, char **argv, char **env) {
 				break ;
 			}
 		}
-
+		if(!ft_strncmp("exit", main_data.buf_hist, 6))
+			break;
 		if (strcmp(main_data.buf_hist, ""))
 		{
 			main_data.counter = 0;
@@ -178,22 +211,11 @@ int main(int argc, char **argv, char **env) {
 
 			parser(delete_spaces_behind(main_data.buf_hist), env);
 
-			printf("----------------------------------------\n");
-			t_list *tmp = main_data.commands;
-			while (tmp)
-			{
-				int r = 0;
-				while (tmp->commands[r])
-				{
-					printf("[%d]:|%s| :[length %lu]\n", tmp->id, tmp->commands[r], ft_strlen(tmp->commands[r]));
-					r++;
-				}
-				printf("---->[%s]<----\n", tmp->flag);
-				tmp = tmp->next;
-			}
+			// print_cmds();
+			//sleep(100);!!!!!!
 			if (extra_parser())
 			{
-				//функция запуска комманд <-----где-то здесь должна быть
+				read_cmd(main_data.commands, list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 			}
 
 //			main_data.commands->commands = NULL;
