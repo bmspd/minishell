@@ -49,7 +49,10 @@ void	fill_commands(char *cmd, int cntr)
 		i++;
 	}
 	if (cmd)
+	{
 		new[i] = ft_strdup(cmd);
+		//free(cmd);
+	}
 	else
 		new[i] = NULL;
 	i++;

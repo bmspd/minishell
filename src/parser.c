@@ -159,6 +159,7 @@ void space(char *str, int *i, int *j)
 	}
 	else
 		fill_commands(NULL, main_data.counter);
+	//sleep(10);
 	//printf("CURENTtmp! = %s\n", tmp);
 
 	while (str[*i] == ' ')
@@ -210,7 +211,7 @@ void space(char *str, int *i, int *j)
 	free(tmp);
 }
 // "", '', \, $, ;, |, >, >>, < ' '
-char *parser(char *str, char **env)
+void parser(char *str, char **env)
 {
 	int j;
 	int i;
@@ -260,7 +261,8 @@ char *parser(char *str, char **env)
 	}
 
 	space(str, &i, &j);
-	return (str);
+	free(str);
+	//return (str);
 }
 // найти незакрытые ковычки, в конце \ не закрытый, ;; ,  ;| , ||, ;command
 int preparser(char *str)

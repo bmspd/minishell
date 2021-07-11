@@ -39,7 +39,9 @@ char	*delete_spaces_behind(char *str)
 	{
 		len--;
 	}
-	return (ft_substr(str, 0, len + 1));
+	// free(str);  Определенно не тут :)
+	char *tmp = ft_substr(str, 0, len + 1);
+	return (tmp);
 }
 
 int extra_parser(void)
@@ -129,6 +131,7 @@ int main(int argc, char **argv, char **env) {
 	main_data.env0 = env;
 	main_data.null_flag = 0;
 	main_data.key_amount = 0;
+	main_data.buf_hist = NULL;
 	char str[2000];
 	int l;
 	int n;
@@ -138,9 +141,6 @@ int main(int argc, char **argv, char **env) {
 	list_envp = create_list_envp(env);
 	struct termios term;
 	name = "xterm-256color";
-//	printf("%s\n", name);
-//	if (argc == 2 && strcmp(argv[1], "full_screen") == 0)
-//		test_clean_screen();
 	tcgetattr(0, &term); // for making changes with echo - set different params for term
 	term.c_lflag &= ~(ECHO); // making bits for echo to zero, to make text invisible
 	term.c_lflag &= ~(ICANON); // not canon mode, when typing does not stop by ENTER(by any pushed button)
@@ -211,16 +211,12 @@ int main(int argc, char **argv, char **env) {
 
 			parser(delete_spaces_behind(main_data.buf_hist), env);
 
-			// print_cmds();
-			//sleep(100);!!!!!!
+			//sleep(5);
+			print_cmds();
 			if (extra_parser())
 			{
 				read_cmd(main_data.commands, list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 			}
-
-//			main_data.commands->commands = NULL;
-//			main_data.commands->flag = NULL;
-//			main_data.commands->id = 0;
 			int k = 0;
 			while (main_data.commands->commands[k])
 			{
@@ -236,11 +232,11 @@ int main(int argc, char **argv, char **env) {
 
 			main_data.null_flag = 0;
 			ft_lstadd_front(&main_data.history, ft_lstnew_history(main_data.buf_hist, main_data.key_amount - 1));
+			//free(main_data.buf_hist);
 			main_data.key_amount = 0;
 			numerate_history(main_data.history);
 			main_data.history_id = -1;
 			main_data.cursor_place = 0;
-
 
 		}
 		else
