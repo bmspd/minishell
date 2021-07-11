@@ -43,6 +43,8 @@ typedef struct s_struct{
 	t_list *commands;
 	int flag1;
 	int counter;
+	int key_amount;
+	int temp_key_amount;
 	char **env0;
 }t_struct;
 

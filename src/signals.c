@@ -10,6 +10,7 @@ void handler (int status)
 		print_title();
 		main_data.buf_hist = ft_strdup("");
 		main_data.history_id = -1;
+		main_data.key_amount = 0;
 	}
 	if (status == SIGWINCH)
 	{
