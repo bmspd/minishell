@@ -221,7 +221,8 @@ int main(int argc, char **argv, char **env) {
 
 
 		}
-		//free(main_data.buf_hist);
+		else
+			free(main_data.buf_hist);
 
 	}
 	write(1, "\nExiting...\n", ft_strlen("\nExiting...\n"));
