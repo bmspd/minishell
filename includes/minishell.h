@@ -18,6 +18,8 @@
 #include <stdio.h>
 #include <curses.h>
 #include <term.h>
+#include <string.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -26,6 +28,13 @@
 #include <readline/history.h>
 #include <signal.h>
 
+typedef struct s_ENV
+{
+	char		*name;
+	char		*value;
+	struct s_ENV	*next;
+	
+}				ENV;
 
 typedef struct s_struct{
 	t_list *history;
@@ -83,5 +92,14 @@ void	init_commands(void);
 void	fill_commands(char *cmd, int cntr);
 void	fill_flag(char *flag);
 
+//create envp_list and cd and unset
+ENV		*create_list_envp(char **envp);
+void	env(ENV *list);
+ENV		*new_envp(char	*env, ENV	*old);
+ENV		*find_VAR_ENV(ENV *list_envp, char *VAR);
+void	rem_envp_VAR(ENV **list_envp, char *VAR);
+void	go_to_direction(char *path_dir, ENV *list_envp);
+char	*get_pwd(void);
+void	print_pwd(void);
 
 #endif
