@@ -21,12 +21,12 @@ void take_history(void)
 	{
 		if (tmp->id == main_data.history_id)
 		{
+			//free(main_data.buf_hist);
 			main_data.buf_hist = ft_strdup(tmp->content);
-			main_data.buf_hist_cpy = ft_strdup(tmp->content);
 			ft_putstr(tmp->content);
 			main_data.cursor_place = (int)ft_strlen(main_data.buf_hist);
 			main_data.key_amount = tmp->key_amount;
-//			printf("[%d] : [%d]\n", main_data.key_amount, ft_strlen(main_data.buf_hist));
+			//printf("[%d] : [%d]\n", main_data.key_amount, ft_strlen(main_data.buf_hist));
 			return;
 		}
 		tmp = tmp->next;
