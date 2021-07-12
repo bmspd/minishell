@@ -392,9 +392,10 @@ int main(int argc, char **argv, char **env) {
 			init_commands();
 			parser(delete_spaces_behind(main_data.buf_hist), env);
 
-			print_cmds();
+			//print_cmds();
 			if (extra_parser())
 			{
+				printf("LOL\n");
 				read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 			}
 
