@@ -208,28 +208,36 @@ int main(int argc, char **argv, char **env) {
 			main_data.flag1 = 0;
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
-
 			parser(delete_spaces_behind(main_data.buf_hist), env);
+
 			print_cmds();
 			if (extra_parser())
 			{
 				read_cmd(main_data.commands, list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 			}
 
-			int k = 0;
-			while (main_data.commands->commands[k])
+			//cleaning
+			while (main_data.commands)
 			{
+				t_list *zozo = NULL;
+				int k = 0;
+				while (main_data.commands->commands[k])
+				{
+					free(main_data.commands->commands[k]);
+					k++;
+				}
 				free(main_data.commands->commands[k]);
-				k++;
-			}
-			free(main_data.commands->commands[k]);
-			free(main_data.commands->commands);
-			free(main_data.commands->flag);
-			free(main_data.commands);
+				free(main_data.commands->commands);
+				free(main_data.commands->flag);
 
+				if (main_data.commands->next)
+					zozo = main_data.commands->next;
+				free(main_data.commands);
+				main_data.commands = zozo;
+			}
 
 			main_data.commands = NULL;
-
+			//end cleaning
 			main_data.null_flag = 0;
 			ft_lstadd_front(&main_data.history, ft_lstnew_history(main_data.buf_hist, main_data.key_amount - 1));
 			main_data.key_amount = 0;

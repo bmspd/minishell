@@ -30,6 +30,7 @@ void take_history(void)
 		}
 		tmp = tmp->next;
 	}
+	//free(main_data.buf_hist);
 	main_data.buf_hist = ft_strdup("");
 	main_data.cursor_place = 0;
 	main_data.key_amount = 0;

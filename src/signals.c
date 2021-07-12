@@ -8,6 +8,7 @@ void handler (int status)
 		ft_putstr(main_data.buf_hist);
 		write(STDIN_FILENO, "\n", 1);
 		print_title();
+		free(main_data.buf_hist);
 		main_data.buf_hist = ft_strdup("");
 		main_data.history_id = -1;
 		main_data.key_amount = 0;

@@ -20,11 +20,15 @@ char *solo_quote(char *str, int *i)
 	tmp = ft_substr(str, 0, j);
 	tmp2 = ft_substr(str, j + 1, *i - j - 1);
 	tmp3 = ft_strdup(str + *i + 1);
-	tmp = ft_strjoin(tmp, tmp2);
-	tmp = ft_strjoin(tmp, tmp3);
+	free(str);
+	str = ft_strjoin(tmp, tmp2);
+	free(tmp);
+	free(tmp2);
+	tmp = ft_strjoin(str, tmp3);
 	//printf("tmp = %s\n", tmp);
 	(*i)++;
-	//free(str);
+	free(str);
+	free(tmp3);
 	return (tmp);
 }
 
@@ -68,8 +72,13 @@ char	*double_quote(char *str, int *i, char **env)
 	tmp = ft_substr(str, 0, j);
 	tmp2 = ft_substr(str, j + 1, *i - j - 1);
 	tmp3 = ft_strdup(str + *i + 1);
-	tmp = ft_strjoin(tmp, tmp2);
-	tmp = ft_strjoin(tmp, tmp3);
+	free(str);
+	str = ft_strjoin(tmp, tmp2);
+	free(tmp);
+	tmp = ft_strjoin(str, tmp3);
+	free(str);
+	free(tmp2);
+	free(tmp3);
 	//printf("loltmp = %s\n", tmp);
 	(*i)++;
 	return (tmp);
@@ -248,7 +257,7 @@ void parser(char *str, char **env)
 		}
 		else if (str[i] == '\"')
 		{
-			printf("DOUBLE\n");
+			//printf("DOUBLE\n");
 			main_data.null_flag = 1;
 			str = double_quote(str, &i, env);
 			i = i - 2;

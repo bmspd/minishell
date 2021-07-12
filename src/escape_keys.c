@@ -5,7 +5,7 @@ int escape_up(char *str)
 	if (!strcmp(str, ESC_UP))
 	{
 		moveback_cursor();
-		main_data.buf_hist = ft_strdup("");
+		free(main_data.buf_hist);
 		if (main_data.history_id < ft_lstsize(main_data.history))
 		{
 			main_data.history_id += 1;
@@ -28,7 +28,8 @@ int escape_down(char *str)
 	if (!strcmp(str, ESC_DOWN))
 	{
 		moveback_cursor();
-		main_data.buf_hist = ft_strdup("");
+
+		free(main_data.buf_hist);
 		if (main_data.history_id > -1)
 		{
 			main_data.history_id -= 1;
@@ -106,7 +107,11 @@ int	escape_backspace(char *str)
 			char *tmp = ft_substr(main_data.buf_hist, 0, main_data.cursor_place);
 			char *tmp2 = ft_substr(main_data.buf_hist, main_data.cursor_place + 1,
 								   ft_strlen(main_data.buf_hist) - main_data.cursor_place);
+			free(main_data.buf_hist);
 			main_data.buf_hist = ft_strjoin(tmp, tmp2);
+			free(tmp);
+			free(tmp2);
+
 		}
 		return (1);
 	}
