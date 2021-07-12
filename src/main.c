@@ -146,9 +146,11 @@ int	look_in_direction(char *path, char *find_file)
 	DIR *direction;
 	struct dirent *file;
 
+	file = NULL;
 	direction = opendir(path);
 
-	file = readdir(direction);
+	if (direction)
+		file = readdir(direction);
 	while (file)
 	{
 		if (!ft_strncmp(find_file, file->d_name, ft_strlen(find_file) + 1))
@@ -158,11 +160,12 @@ int	look_in_direction(char *path, char *find_file)
 		}
 		file = readdir(direction);
 	}
-	closedir(direction);
+	if (direction)
+		closedir(direction);
 	return (0);
 }
 
-char *find_path_cmd(char *value, char *name_prog)
+char *find_path_cmd(char *value, char *name_prog, char *pwd)
 {
 	char **paths;
 	char *tmp;
@@ -173,6 +176,20 @@ char *find_path_cmd(char *value, char *name_prog)
 	paths = ft_split(value, ':');
 	if (!paths)
 		return (NULL);
+	print_arg(paths);
+	while (paths[i])
+	{
+		if(!ft_strncmp(paths[i], "~", 1))
+		{
+			tmp = paths[i];
+
+			paths[i] = ft_strjoin(pwd, ft_strchr(tmp, '/'));
+			printf("---> %s\n", paths[i]);
+			free(tmp);
+		}
+		i++;
+	}
+	i = 0;
 	while (paths[i])
 	{
 		if (look_in_direction(paths[i], name_prog))
@@ -189,13 +206,13 @@ char *find_path_cmd(char *value, char *name_prog)
 	return (NULL);
 }
 
-void	exec_fork(char	**prog, ENV *PATH, char **envp)
+void	exec_fork(char	**prog, ENV *PATH, char **envp, ENV *PWD)
 {
 	pid_t pid;
 	char	*path;
 
 	if (PATH)
-		path = find_path_cmd(PATH->value, prog[0]);
+		path = find_path_cmd(PATH->value, prog[0], PWD->value);
 	else
 		path = NULL;
 	if (!path)
@@ -295,7 +312,8 @@ void	read_cmd(t_list *cmd, ENV **list_envp)
 			if (builtin(cmd, list_envp))
 			;
 			else
-				exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp));
+				exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp),
+						  find_VAR_ENV(*list_envp,"HOME"));
 		}
 		cmd = cmd->next;
 	}	
@@ -389,12 +407,12 @@ int main(int argc, char **argv, char **env) {
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
 			parser(delete_spaces_behind(main_data.buf_hist), env);
+			print_cmds();
 			if (extra_parser())
 			{
-				printf("LOL\n");
 				read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 			}
-
+			printf("LOL");
 			//cleaning
 			while (main_data.commands)
 			{
