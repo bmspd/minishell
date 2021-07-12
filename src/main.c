@@ -176,7 +176,6 @@ char *find_path_cmd(char *value, char *name_prog, char *pwd)
 	paths = ft_split(value, ':');
 	if (!paths)
 		return (NULL);
-	print_arg(paths);
 	while (paths[i])
 	{
 		if(!ft_strncmp(paths[i], "~", 1))
@@ -184,7 +183,6 @@ char *find_path_cmd(char *value, char *name_prog, char *pwd)
 			tmp = paths[i];
 
 			paths[i] = ft_strjoin(pwd, ft_strchr(tmp, '/'));
-			printf("---> %s\n", paths[i]);
 			free(tmp);
 		}
 		i++;
@@ -217,7 +215,6 @@ void	exec_fork(char	**prog, ENV *PATH, char **envp, ENV *PWD)
 		path = NULL;
 	if (!path)
 		path = prog[0];
-	// printf("%s\n", path);
 	pid = fork();
 	wait(0);
 	if(!pid)
@@ -321,6 +318,14 @@ void	read_cmd(t_list *cmd, ENV **list_envp)
 
 /* end exec cmd - -- -- -- -- -- -- --- -- -- --- -- -- -- -- -- -- -- -- -- -- --- --- --- --- --- --- --- -- -- -- -- - */
 
+
+void handler1 (int status)
+{
+	if (status == SIGINT)
+		printf("\n");
+	if (status == SIGQUIT)
+		printf("Quit: 3\n");
+}
 int main(int argc, char **argv, char **env) {
 
 	init_title();
@@ -338,10 +343,12 @@ int main(int argc, char **argv, char **env) {
 
 	list_envp = create_list_envp(env);
 	struct termios term;
+	struct termios saved;
 	name = "xterm-256color";
 	tcgetattr(0, &term); // for making changes with echo - set different params for term
 	term.c_lflag &= ~(ECHO); // making bits for echo to zero, to make text invisible
 	term.c_lflag &= ~(ICANON); // not canon mode, when typing does not stop by ENTER(by any pushed button)
+	//printf("[%d]:[%d]\n", term.c_cc[VMIN], term.c_cc[VTIME]);
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0; //whait of read to close
 	tcsetattr(0, TCSANOW, &term); // get start, default params to term
@@ -407,12 +414,22 @@ int main(int argc, char **argv, char **env) {
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
 			parser(delete_spaces_behind(main_data.buf_hist), env);
-			print_cmds();
-			if (extra_parser())
+			//print_cmds();
+			if (extra_parser() && strcmp(str, "\4"))
 			{
+				term.c_lflag |= (ECHO); // making bits for echo to zero, to make text invisible
+				term.c_lflag |= (ICANON);
+				tcsetattr(0, TCSANOW, &term);
+				signal(SIGINT, handler1);
+				signal(SIGQUIT, handler1);
 				read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
+
+				term.c_lflag &= ~(ECHO); // making bits for echo to 1, to make text invisible
+				term.c_lflag &= ~(ICANON);
+				tcsetattr(0, TCSANOW, &term);
+				signal(SIGINT, handler);
+				signal(SIGQUIT, handler);
 			}
-			printf("LOL");
 			//cleaning
 			while (main_data.commands)
 			{
