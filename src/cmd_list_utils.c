@@ -48,8 +48,10 @@ void	fill_commands(char *cmd, int cntr)
 		free(tmp->commands[i]);
 		i++;
 	}
+	free(tmp->commands[i]);
 	if (cmd)
 	{
+
 		new[i] = ft_strdup(cmd);
 		//free(cmd);
 	}

@@ -155,6 +155,7 @@ void space(char *str, int *i, int *j)
 	main_data.counter++;
 	if (strcmp(tmp, "") || (!strcmp(tmp,"") && main_data.null_flag))
 	{
+		//printf("LOL\n");
 		fill_commands(tmp, main_data.counter);
 	}
 	else
@@ -170,6 +171,7 @@ void space(char *str, int *i, int *j)
 	*j = *i;
 	if ((str[*i] == '<' && str[*i + 1] == '<') || (str[*i] == '>' && str[*i] == '>'))
 	{
+		free(tmp);
 		tmp = ft_substr(str, *i, 2);
 
 		printf("flag = %s\n", tmp);
@@ -190,6 +192,7 @@ void space(char *str, int *i, int *j)
 	}
 	else if (str[*i] == ';' || str[*i] == '|' || str[*i] == '<' || str[*i] == '>')
 	{
+		free(tmp);
 		tmp = ft_substr(str, *i, 1);
 
 		printf("flag = %s\n", tmp);

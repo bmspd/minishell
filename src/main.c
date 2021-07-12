@@ -210,13 +210,12 @@ int main(int argc, char **argv, char **env) {
 			init_commands();
 
 			parser(delete_spaces_behind(main_data.buf_hist), env);
-
-			//sleep(5);
 			print_cmds();
 			if (extra_parser())
 			{
 				read_cmd(main_data.commands, list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 			}
+
 			int k = 0;
 			while (main_data.commands->commands[k])
 			{
@@ -225,18 +224,19 @@ int main(int argc, char **argv, char **env) {
 			}
 			free(main_data.commands->commands[k]);
 			free(main_data.commands->commands);
-			free(main_data.commands);
 			free(main_data.commands->flag);
-			main_data.commands = NULL;
+			free(main_data.commands);
 
+
+			main_data.commands = NULL;
 
 			main_data.null_flag = 0;
 			ft_lstadd_front(&main_data.history, ft_lstnew_history(main_data.buf_hist, main_data.key_amount - 1));
-			//free(main_data.buf_hist);
 			main_data.key_amount = 0;
 			numerate_history(main_data.history);
 			main_data.history_id = -1;
 			main_data.cursor_place = 0;
+
 
 		}
 		else
