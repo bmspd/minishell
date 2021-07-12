@@ -18,7 +18,9 @@
 #include <stdio.h>
 #include <curses.h>
 #include <term.h>
+#include <sys/stat.h>
 #include <string.h>
+#include <dirent.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
@@ -101,5 +103,6 @@ void	rem_envp_VAR(ENV **list_envp, char *VAR);
 void	go_to_direction(char *path_dir, ENV *list_envp);
 char	*get_pwd(void);
 void	print_pwd(void);
-
+size_t	count_arr(char **arr);
+void	lastadd_ENV_VAR(ENV *list_envp, ENV *last);
 #endif

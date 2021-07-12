@@ -29,7 +29,7 @@ ENV *find_VAR_ENV(ENV *list_envp, char *VAR)
 	size = ft_strlen(VAR);
 	while (list_envp)
 	{
-		if(!ft_strncmp(VAR, list_envp->name, size))
+		if(!ft_strncmp(VAR, list_envp->name, size + 1))
 			return (list_envp);
 		list_envp = list_envp->next;
 	}
@@ -41,8 +41,8 @@ void	print_error(char *cmd, char *arg)
 		char	*error;
 
 		error = strerror(errno);
-		ft_tolower(error[0]);
 		write(2, cmd, ft_strlen(cmd));
+		write(2, ": ", 2);
 		write(2, error, ft_strlen(error));
 		write(2, ": ", 2);
 		write(2, arg, ft_strlen(arg));
@@ -106,4 +106,14 @@ void	print_pwd(void)
 	tmp = get_pwd();
 	printf("%s\n", tmp);
 	free(tmp);
+}
+
+size_t count_arr(char **arr)
+{
+	size_t i;
+
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
 }

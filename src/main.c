@@ -109,17 +109,199 @@ void	print_cmds(void)
 	}
 }
 
-void	read_cmd(t_list *cmd, ENV *list_envp)
+
+void	free_arr(char **arr, int count)
 {
-	if (!ft_strncmp(cmd->commands[0], "env", 4))
-		env(list_envp);
-	if (!ft_strncmp(cmd->commands[0], "cd", 3))
-		go_to_direction(cmd->commands[1], list_envp);
-	if ((!ft_strncmp(cmd->commands[0], "unset", 6)))
-		rem_envp_VAR(&list_envp, cmd->commands[1]);
-	if ((!ft_strncmp(cmd->commands[0], "pwd", 6)))
-		print_pwd();
+	int i;
+
+	i = 0;
+	while (i < count)
+	{
+		if (arr[i])
+			free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
+
+/* this for exec cmd - ------- - --- - - - - ------------------ ------------ --- -- ---------- -- - --- -- ------- -- - - -- --*/
+
+void	print_arg(char **arg)
+{
+	int i;
+
+	i = 0;
+	printf("------------------\n");
+	while (arg[i])
+	{
+		printf("%s\n",arg[i]);
+		i++;
+	}
+}
+
+int	look_in_direction(char *path, char *find_file)
+{
+	DIR *direction;
+	struct dirent *file;
+
+	direction = opendir(path);
+
+	file = readdir(direction);
+	while (file)
+	{
+		if (!ft_strncmp(find_file, file->d_name, ft_strlen(find_file) + 1))
+		{
+			closedir(direction);
+			return (1);
+		}
+		file = readdir(direction);
+	}
+	closedir(direction);
+	return (0);
+}
+
+char *find_path_cmd(char *value, char *name_prog)
+{
+	char **paths;
+	char *tmp;
+	char *out;
+	int i;
+
+	i = 0;
+	paths = ft_split(value, ':');
+	if (!paths)
+		return (NULL);
+	while (paths[i])
+	{
+		if (look_in_direction(paths[i], name_prog))
+		{
+			tmp = ft_strjoin("/", name_prog);
+			out = ft_strjoin(paths[i], tmp);
+			free(tmp);
+			free_arr(paths, count_arr(paths));
+			return (out);
+		}
+		i++;
+	}
+	free_arr(paths, count_arr(paths));
+	return (NULL);
+}
+
+void	exec_fork(char	**prog, ENV *PATH, char **envp)
+{
+	pid_t pid;
+	char	*path;
+
+	if (PATH)
+		path = find_path_cmd(PATH->value, prog[0]);
+	else
+		path = NULL;
+	if (!path)
+		path = prog[0];
+	printf("%s\n", path);
+	pid = fork();
+	wait(0);
+	if(!pid)
+	{
+
+		// char *tmp;
+		// tmp = prog[0];
+		// prog[0] = path;
+		execve(path, prog, envp);
+		perror(prog[0]);
+		exit (EXIT_FAILURE);
+	}
+	free(envp);
+}
+
+int		count_list(ENV *list)
+{
+	int i;
+
+	i = 0;
+	while (list)
+	{
+		list = list->next;
+		i++;
+	}
+	return (i);
+}
+
+char *convert_in_str(char *s1, char *s2)
+{
+	char *tmp;
+	char *out;
+
+	tmp = ft_strjoin(s1, "=");
+	out = ft_strjoin(tmp, s2);
+	free(tmp);
+	return (out);
+}
+
+char **convert_list_in_arr(ENV *list_envp)
+{
+	int count;
+	char **envp;
+	int i;
+
+	count = count_list(list_envp);
+	envp = malloc(sizeof(char *) * (count + 1));
+	i = 0;
+	while (i < count)
+	{
+		envp[i] = convert_in_str(list_envp->name, list_envp->value);
+		i++;
+		list_envp = list_envp->next;
+	}
+	envp[i] = NULL;
+	return (envp);
+}
+
+int		builtin(t_list *cmd, ENV **list_envp)
+{
+	int i;
+
+	i = 0;
+	if (!ft_strncmp(cmd->commands[0], "env", 4))
+	{
+		env(*list_envp);
+		i = 1;
+	}
+	if (!ft_strncmp(cmd->commands[0], "cd", 3))
+	{
+		go_to_direction(cmd->commands[1], *list_envp);
+		i = 1;
+	}
+	if ((!ft_strncmp(cmd->commands[0], "unset", 6)))
+	{
+		rem_envp_VAR(list_envp, cmd->commands[1]);
+		i = 1;
+	}
+	if ((!ft_strncmp(cmd->commands[0], "pwd", 6)))
+	{
+		print_pwd();
+		i = 1;
+	}
+	return (i);
+}
+
+void	read_cmd(t_list *cmd, ENV **list_envp)
+{
+	while (cmd)
+	{
+		print_cmds();
+		// if(cmd->commands)
+		// {
+		// 	if (builtin(cmd, list_envp))
+		// 	;
+		// 	else
+		// 		exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp));
+		// }
+		cmd = cmd->next;
+	}	
+}
+
+/* end exec cmd - -- -- -- -- -- -- --- -- -- --- -- -- -- -- -- -- -- -- -- -- --- --- --- --- --- --- --- -- -- -- -- - */
 
 int main(int argc, char **argv, char **env) {
 
@@ -215,7 +397,7 @@ int main(int argc, char **argv, char **env) {
 			//sleep(100);!!!!!!
 			if (extra_parser())
 			{
-				read_cmd(main_data.commands, list_envp);	//функция запуска комманд <-----где-то здесь должна быть
+				read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 			}
 
 //			main_data.commands->commands = NULL;

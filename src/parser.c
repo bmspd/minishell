@@ -171,7 +171,7 @@ void space(char *str, int *i, int *j)
 	{
 		tmp = ft_substr(str, *i, 2);
 
-		printf("flag = %s\n", tmp);
+		// printf("flag = %s\n", tmp);
 		fill_flag(tmp);
 		main_data.flag1++;
 		ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
@@ -191,7 +191,7 @@ void space(char *str, int *i, int *j)
 	{
 		tmp = ft_substr(str, *i, 1);
 
-		printf("flag = %s\n", tmp);
+		// printf("flag = %s\n", tmp);
 		fill_flag(tmp);
 		main_data.flag1++;
 		ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));

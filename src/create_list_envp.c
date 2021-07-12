@@ -82,6 +82,29 @@ ENV	*init_list_envp(void)
 	return (pwd);
 }
 
+void	iter_shlvl(ENV **list_envp)
+{
+	ENV	*shlvl;
+	int		number;
+
+	number = 1;
+	shlvl = find_VAR_ENV(*list_envp, "SHLVL");
+	if (shlvl)
+	{
+		number = ft_atoi(shlvl->value) + 1;
+		free(shlvl->value);
+		shlvl->value = NULL;
+		shlvl->value = ft_strdup(ft_itoa(number));
+	}
+	else
+	{
+		shlvl = new_envp("SHLVL=", NULL);
+		free(shlvl->value);
+		shlvl->value = ft_strdup("1");
+		lastadd_ENV_VAR(*list_envp, shlvl);
+	}
+}
+
 ENV	*create_list_envp(char **envp)
 {
 	ENV	*list_envp;
@@ -95,13 +118,15 @@ ENV	*create_list_envp(char **envp)
 	}
 	list_envp = NULL;
 	i = 0;
-	list_envp = new_envp(envp[++i], NULL);
+	list_envp = new_envp(envp[i], NULL);
 	tmp = list_envp;
+	i++;
 	while (envp[i])
 	{
 		tmp->next = new_envp(envp[i], tmp);
 		tmp = tmp->next;
 		i++;
 	}	
+	iter_shlvl(&list_envp);
 	return (list_envp);
 }
