@@ -86,7 +86,7 @@ int	escape_backspace(char *str);
 int escape_ctrl(char *str);
 
 //parser staff
-char *parser(char *str, char **env);
+void parser(char *str, char **env);
 
 //list utils staff
 void	fill_id(t_list **head);

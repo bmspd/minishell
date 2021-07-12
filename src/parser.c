@@ -155,10 +155,12 @@ void space(char *str, int *i, int *j)
 	main_data.counter++;
 	if (strcmp(tmp, "") || (!strcmp(tmp,"") && main_data.null_flag))
 	{
+		//printf("LOL\n");
 		fill_commands(tmp, main_data.counter);
 	}
 	else
 		fill_commands(NULL, main_data.counter);
+	//sleep(10);
 	//printf("CURENTtmp! = %s\n", tmp);
 
 	while (str[*i] == ' ')
@@ -169,6 +171,7 @@ void space(char *str, int *i, int *j)
 	*j = *i;
 	if ((str[*i] == '<' && str[*i + 1] == '<') || (str[*i] == '>' && str[*i] == '>'))
 	{
+		free(tmp);
 		tmp = ft_substr(str, *i, 2);
 
 		// printf("flag = %s\n", tmp);
@@ -189,6 +192,7 @@ void space(char *str, int *i, int *j)
 	}
 	else if (str[*i] == ';' || str[*i] == '|' || str[*i] == '<' || str[*i] == '>')
 	{
+		free(tmp);
 		tmp = ft_substr(str, *i, 1);
 
 		// printf("flag = %s\n", tmp);
@@ -210,7 +214,7 @@ void space(char *str, int *i, int *j)
 	free(tmp);
 }
 // "", '', \, $, ;, |, >, >>, < ' '
-char *parser(char *str, char **env)
+void parser(char *str, char **env)
 {
 	int j;
 	int i;
@@ -260,7 +264,8 @@ char *parser(char *str, char **env)
 	}
 
 	space(str, &i, &j);
-	return (str);
+	free(str);
+	//return (str);
 }
 // найти незакрытые ковычки, в конце \ не закрытый, ;; ,  ;| , ||, ;command
 int preparser(char *str)
