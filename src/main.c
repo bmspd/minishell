@@ -200,20 +200,16 @@ void	exec_fork(char	**prog, ENV *PATH, char **envp)
 		path = NULL;
 	if (!path)
 		path = prog[0];
-	printf("%s\n", path);
+	// printf("%s\n", path);
 	pid = fork();
 	wait(0);
 	if(!pid)
 	{
-
-		// char *tmp;
-		// tmp = prog[0];
-		// prog[0] = path;
 		execve(path, prog, envp);
 		perror(prog[0]);
 		exit (EXIT_FAILURE);
 	}
-	free(envp);
+	free_arr(envp, count_arr(envp));
 }
 
 int		count_list(ENV *list)
@@ -289,16 +285,18 @@ int		builtin(t_list *cmd, ENV **list_envp)
 
 void	read_cmd(t_list *cmd, ENV **list_envp)
 {
+
+	// print_cmds();
+
 	while (cmd)
 	{
-		print_cmds();
-		// if(cmd->commands)
-		// {
-		// 	if (builtin(cmd, list_envp))
-		// 	;
-		// 	else
-		// 		exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp));
-		// }
+		if(cmd->commands[0])
+		{
+			if (builtin(cmd, list_envp))
+			;
+			else
+				exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp));
+		}
 		cmd = cmd->next;
 	}	
 }
@@ -391,8 +389,6 @@ int main(int argc, char **argv, char **env) {
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
 			parser(delete_spaces_behind(main_data.buf_hist), env);
-
-			//print_cmds();
 			if (extra_parser())
 			{
 				printf("LOL\n");
