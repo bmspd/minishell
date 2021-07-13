@@ -97,17 +97,21 @@ t_list	*ft_lstnew_history(void *content, int amount)
 void	print_cmds(void)
 {
 	printf("----------------------------------------\n");
+	int i;
+
+	i = 0;
 	t_list *tmp = main_data.commands;
 	while (tmp)
 	{
 		int r = 0;
 		while (tmp->commands[r])
 		{
-			printf("[%d]:|%s| :[length %lu]\n", tmp->id, tmp->commands[r], ft_strlen(tmp->commands[r]));
+			printf("[number_list %d][%d]:|%s| :[length %lu]\n", i, tmp->id, tmp->commands[r], ft_strlen(tmp->commands[r]));
 			r++;
 		}
-		printf("---->[%s]<----\n", tmp->flag);
+		printf("---->[number_list %d][%s]<----\n", i, tmp->flag);
 		tmp = tmp->next;
+					i++;
 	}
 }
 
@@ -165,7 +169,7 @@ int	look_in_direction(char *path, char *find_file)
 	return (0);
 }
 
-char *find_path_cmd(char *value, char *name_prog, char *pwd)
+char *find_path_cmd(char *value, char *name_prog, char *home)
 {
 	char **paths;
 	char *tmp;
@@ -176,15 +180,13 @@ char *find_path_cmd(char *value, char *name_prog, char *pwd)
 	paths = ft_split(value, ':');
 	if (!paths)
 		return (NULL);
-	print_arg(paths);
 	while (paths[i])
 	{
 		if(!ft_strncmp(paths[i], "~", 1))
 		{
 			tmp = paths[i];
 
-			paths[i] = ft_strjoin(pwd, ft_strchr(tmp, '/'));
-			printf("---> %s\n", paths[i]);
+			paths[i] = ft_strjoin(home, ft_strchr(tmp, '/'));
 			free(tmp);
 		}
 		i++;
@@ -206,13 +208,13 @@ char *find_path_cmd(char *value, char *name_prog, char *pwd)
 	return (NULL);
 }
 
-void	exec_fork(char	**prog, ENV *PATH, char **envp, ENV *PWD)
+void	exec_fork(char	**prog, ENV *PATH, char **envp, ENV *HOME)
 {
 	pid_t pid;
 	char	*path;
 
 	if (PATH)
-		path = find_path_cmd(PATH->value, prog[0], PWD->value);
+		path = find_path_cmd(PATH->value, prog[0], HOME->value);
 	else
 		path = NULL;
 	if (!path)
@@ -272,11 +274,21 @@ char **convert_list_in_arr(ENV *list_envp)
 	return (envp);
 }
 
+int	creat_file(char *name_file)
+{
+	int fd;
+
+	fd = open(name_file, O_RDWR | O_CREAT | O_TRUNC, 0777);
+	return (fd);
+}
+
 int		builtin(t_list *cmd, ENV **list_envp)
 {
 	int i;
 
 	i = 0;
+	if (!cmd->commands[0])
+		return (i);
 	if (!ft_strncmp(cmd->commands[0], "env", 4))
 	{
 		env(*list_envp);
@@ -300,21 +312,28 @@ int		builtin(t_list *cmd, ENV **list_envp)
 	return (i);
 }
 
+
 void	read_cmd(t_list *cmd, ENV **list_envp)
 {
 
+	int i;
 	// print_cmds();
-
+	i = 0;
 	while (cmd)
 	{
-		if(cmd->commands[0])
-		{
+		// if(cmd->commands[0])
+		// {
 			if (builtin(cmd, list_envp))
 			;
 			else
-				exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp),
-						  find_VAR_ENV(*list_envp,"HOME"));
-		}
+			{
+				read_flag(cmd);
+			}
+			i++;
+			// else
+			// 	exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp),
+			// 			  find_VAR_ENV(*list_envp,"HOME"));
+		// }
 		cmd = cmd->next;
 	}	
 }
@@ -407,12 +426,12 @@ int main(int argc, char **argv, char **env) {
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
 			parser(delete_spaces_behind(main_data.buf_hist), env);
-			print_cmds();
+			// print_cmds();
 			if (extra_parser())
 			{
 				read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 			}
-			printf("LOL");
+			// printf("LOL");
 			//cleaning
 			while (main_data.commands)
 			{
@@ -448,5 +467,5 @@ int main(int argc, char **argv, char **env) {
 			free(main_data.buf_hist);
 
 	}
-	write(1, "\nExiting...\n", ft_strlen("\nExiting...\n"));
+	write(1, "Exiting...\n", ft_strlen("Exiting...\n"));
 }

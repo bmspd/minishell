@@ -62,9 +62,15 @@ void	go_to_direction(char *path_dir, ENV *list_envp)
 {
 	ENV		*pwd;
 	ENV		*oldpwd;
+	ENV		*home;
 	static char	*newpwd;
 	static char	*old;
 
+	if (!path_dir)
+	{
+		home = find_VAR_ENV(list_envp, "HOME");
+		path_dir = home->value;
+	}
 	if(chdir(path_dir) == -1)
 	{
 		print_error("cd", path_dir);
