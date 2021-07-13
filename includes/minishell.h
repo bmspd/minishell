@@ -113,4 +113,5 @@ void	lastadd_ENV_VAR(ENV *list_envp, ENV *last);
 
 //Вот тебе функция обезьянна не бритая
 char	**create_list_file(void);
+void	free_arr(char **arr, int count);
 #endif
