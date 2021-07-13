@@ -29,6 +29,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
+#include <fcntl.h>
 
 typedef struct s_ENV
 {

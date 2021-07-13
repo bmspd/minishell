@@ -94,7 +94,7 @@ void	iter_shlvl(ENV **list_envp)
 		number = ft_atoi(shlvl->value) + 1;
 		free(shlvl->value);
 		shlvl->value = NULL;
-		shlvl->value = ft_strdup(ft_itoa(number));
+		shlvl->value = ft_itoa(number);
 	}
 	else
 	{
