@@ -48,12 +48,13 @@ int extra_parser(void)
 {
 	int tmp_flag = 0;
 	t_list	*tmp = main_data.commands;
-	//printf("[%d]\n", ft_lstsize(main_data.commands));
-	if (ft_lstsize(main_data.commands) >= 2)
-	{
-		if (ft_strncmp(tmp->flag, "|", 2) && ft_strncmp(tmp->flag, ";", 2))
-			tmp = tmp->next;
-	}
+//	if (ft_lstsize(main_data.commands) >= 2)
+//	{
+//		if (ft_strncmp(tmp->flag, "|", 2) && ft_strncmp(tmp->flag, ";", 2))
+//			tmp = tmp->next;
+//	}
+	if (ft_lstsize(tmp) == 1 && !tmp->commands[0] && !tmp_flag)
+		return (1);
 	while (tmp)
 	{
 		if (tmp->id == ft_lstsize(main_data.commands) - 1 && tmp_flag)
@@ -185,7 +186,6 @@ char *find_path_cmd(char *value, char *name_prog, char *home)
 		if(!ft_strncmp(paths[i], "~", 1))
 		{
 			tmp = paths[i];
-
 			paths[i] = ft_strjoin(home, ft_strchr(tmp, '/'));
 			free(tmp);
 		}
@@ -219,7 +219,6 @@ void	exec_fork(char	**prog, ENV *PATH, char **envp, ENV *HOME)
 		path = NULL;
 	if (!path)
 		path = prog[0];
-	// printf("%s\n", path);
 	pid = fork();
 	wait(0);
 	if(!pid)
@@ -325,20 +324,82 @@ void	read_cmd(t_list *cmd, ENV **list_envp)
 		// {
 			if (builtin(cmd, list_envp))
 			;
-			else
-			{
-				read_flag(cmd);
-			}
-			i++;
 			// else
-			// 	exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp),
-			// 			  find_VAR_ENV(*list_envp,"HOME"));
+			// {
+			// 	// read_flag(cmd);
+			// }
+			// i++;
+			else
+				exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp),
+						  find_VAR_ENV(*list_envp,"HOME"));
 		// }
 		cmd = cmd->next;
 	}	
 }
 
 /* end exec cmd - -- -- -- -- -- -- --- -- -- --- -- -- -- -- -- -- -- -- -- -- --- --- --- --- --- --- --- -- -- -- -- - */
+
+
+void handler1 (int status)
+{
+	if (status == SIGINT)
+		printf("\n");
+	if (status == SIGQUIT)
+		printf("Quit: 3\n");
+}
+
+void set_terminal(int type)
+{
+	main_data.term_name = "xterm-256color";
+	tcgetattr(0, &main_data.term);
+	if (type == 1)
+	{
+		signal(SIGQUIT, handler);
+		signal(SIGINT, handler);
+		main_data.term.c_lflag &= ~(ECHO);
+		main_data.term.c_lflag &= ~(ICANON);
+	}
+	else
+	{
+		signal(SIGQUIT, handler1);
+		signal(SIGINT, handler1);
+		main_data.term.c_lflag |= (ECHO);
+		main_data.term.c_lflag |= (ICANON);
+	}
+	main_data.term.c_cc[VMIN] = 1;
+	main_data.term.c_cc[VTIME] = 0;
+	tcsetattr(0, TCSANOW, &main_data.term);
+	tgetent(0, main_data.term_name);
+	signal(SIGWINCH, handler);
+	ioctl(STDIN_FILENO, TIOCGWINSZ, &main_data.ws);
+}
+
+void	cleaning_foo(void)
+{
+	t_list	*tmp;
+	int		k;
+
+	while (main_data.commands)
+	{
+		tmp = NULL;
+		k = 0;
+		while (main_data.commands->commands[k])
+			free(main_data.commands->commands[k++]);
+		free(main_data.commands->commands[k]);
+		free(main_data.commands->commands);
+		free(main_data.commands->flag);
+
+		if (main_data.commands->next)
+			tmp = main_data.commands->next;
+		free(main_data.commands);
+		main_data.commands = tmp;
+	}
+	main_data.commands = NULL;
+	main_data.null_flag = 0;
+	main_data.key_amount = 0;
+	main_data.history_id = -1;
+	main_data.cursor_place = 0;
+}
 
 int main(int argc, char **argv, char **env) {
 
@@ -356,20 +417,8 @@ int main(int argc, char **argv, char **env) {
 	ENV	*list_envp;
 
 	list_envp = create_list_envp(env);
-	struct termios term;
-	name = "xterm-256color";
-	tcgetattr(0, &term); // for making changes with echo - set different params for term
-	term.c_lflag &= ~(ECHO); // making bits for echo to zero, to make text invisible
-	term.c_lflag &= ~(ICANON); // not canon mode, when typing does not stop by ENTER(by any pushed button)
-	term.c_cc[VMIN] = 1;
-	term.c_cc[VTIME] = 0; //whait of read to close
-	tcsetattr(0, TCSANOW, &term); // get start, default params to term
-	tgetent(0, name); //switching termcap capabilities
-//	printf("%s\n", argv[0]);
-	signal(SIGQUIT, handler);
-	signal(SIGINT, handler);
-	signal(SIGWINCH, handler);
-	ioctl(STDIN_FILENO, TIOCGWINSZ, &main_data.ws);
+	set_terminal(1);
+
 	while (strcmp(str, "\4"))
 	{
 		print_title();
@@ -387,11 +436,11 @@ int main(int argc, char **argv, char **env) {
 				main_data.key_amount++;
 				if (strcmp(str,"\n"))
 				{
+
 					char *tmp0 = ft_substr(main_data.buf_hist, 0, main_data.cursor_place);
 					char *tmp1 = ft_strjoin(tmp0, str);
 					char *tmp2 = ft_substr(main_data.buf_hist, main_data.cursor_place,
 										   ft_strlen(main_data.buf_hist) - main_data.cursor_place);
-					//main_data.buf_hist = ft_strjoin(tmp, str);
 					free(main_data.buf_hist);
 					main_data.buf_hist = ft_strjoin(tmp1, tmp2);
 					main_data.cursor_place += ft_strlen(str);
@@ -405,7 +454,6 @@ int main(int argc, char **argv, char **env) {
 							z++;
 						}
 					}
-					//main_data.buf_hist = ft_strjoin(main_data.buf_hist, str);
 					main_data.history_id = -1;
 					free(tmp0);
 					free(tmp2);
@@ -426,46 +474,23 @@ int main(int argc, char **argv, char **env) {
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
 			parser(delete_spaces_behind(main_data.buf_hist), env);
-			// print_cmds();
-			if (extra_parser())
+			print_cmds();
+			if (extra_parser() && strcmp(str, "\4"))
 			{
+				set_terminal(0);
 				read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
+				set_terminal(1);
 			}
-			// printf("LOL");
-			//cleaning
-			while (main_data.commands)
-			{
-				t_list *zozo = NULL;
-				int k = 0;
-				while (main_data.commands->commands[k])
-				{
-					free(main_data.commands->commands[k]);
-					k++;
-				}
-				free(main_data.commands->commands[k]);
-				free(main_data.commands->commands);
-				free(main_data.commands->flag);
-
-				if (main_data.commands->next)
-					zozo = main_data.commands->next;
-				free(main_data.commands);
-				main_data.commands = zozo;
-			}
-
-			main_data.commands = NULL;
-			//end cleaning
-			main_data.null_flag = 0;
+			cleaning_foo();
 			ft_lstadd_front(&main_data.history, ft_lstnew_history(main_data.buf_hist, main_data.key_amount - 1));
-			main_data.key_amount = 0;
 			numerate_history(main_data.history);
-			main_data.history_id = -1;
-			main_data.cursor_place = 0;
-
 
 		}
 		else
 			free(main_data.buf_hist);
 
 	}
-	write(1, "Exiting...\n", ft_strlen("Exiting...\n"));
+	set_terminal(0);
+	write(1, "💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n",
+		  ft_strlen("💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n"));
 }

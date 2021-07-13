@@ -38,15 +38,14 @@ char *slash(char *str, int *i)
 	char *tmp2;
 
 	(*i)++;
-	//free(str);
 	tmp = ft_substr(str, 0, *i - 1);
-	//printf("tmp = !%s!\n", tmp);
 	tmp2 = ft_strdup(str + *i);
-	//printf("tmp2 = !%s!\n", tmp2);
-	tmp = ft_strjoin(tmp, tmp2);
-	//printf("tmp = !%s!\n", tmp);
+	free(str);
+	str = ft_strjoin(tmp, tmp2);
+	free(tmp);
+	free(tmp2);
 	(*i)++;
-	return (tmp);
+	return (str);
 }
 
 char	*double_quote(char *str, int *i, char **env)
@@ -108,7 +107,6 @@ char *dollar(char *str, int *i, char **env)
 		return (str);
 
 	tmp = ft_substr(str, j + 1, *i - j - 1);
-	//printf("tmp = |%s|\n", tmp);
 	int k = -1;
 	while (env[++k])
 	{
@@ -132,58 +130,39 @@ char *dollar(char *str, int *i, char **env)
 		tmp2 = ft_strjoin(tmp3, tmp2);
 		tmp3 = ft_substr(str, *i, ft_strlen(str) - *i);
 		tmp = ft_strjoin(tmp2, tmp3);
-		printf("|%s|\n", tmp);
 		return (tmp);
 	}
 	else
 	{
-		printf("%s\n", tmp);
-		printf("%s\n", str);
-		printf("[%d] - [%d]", ft_strlen(str), ft_strlen(tmp));
 		tmp3 = ft_substr(str, 0, j);
-		printf("tmp3 = |%s|\n", tmp3);
 		int a = ft_strlen(tmp);
 		tmp = ft_substr(str, j + a + 1, ft_strlen(str) - a - j);
 		tmp = ft_strjoin(tmp3, tmp);
-		printf("!!!tmp = |%s|\n", tmp);
 		(*i) -= (a + 1);
 		return (tmp);
 	}
 
 }
-//int j;
-
 
 void space(char *str, int *i, int *j)
 {
-	int z = 0;
 	char *tmp;
 
 	tmp = ft_substr(str, *j, *i - *j);
 
 	main_data.counter++;
 	if (strcmp(tmp, "") || (!strcmp(tmp,"") && main_data.null_flag))
-	{
-		//printf("LOL\n");
 		fill_commands(tmp, main_data.counter);
-	}
 	else
 		fill_commands(NULL, main_data.counter);
-	//sleep(10);
-	//printf("CURENTtmp! = %s\n", tmp);
 
 	while (str[*i] == ' ')
-	{
 		(*i)++;
-		z++;
-	}
 	*j = *i;
 	if ((str[*i] == '<' && str[*i + 1] == '<') || (str[*i] == '>' && str[*i] == '>'))
 	{
 		free(tmp);
 		tmp = ft_substr(str, *i, 2);
-
-		// printf("flag = %s\n", tmp);
 		fill_flag(tmp);
 		main_data.flag1++;
 		ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
@@ -193,10 +172,7 @@ void space(char *str, int *i, int *j)
 		(*i)+= 2;
 		(*j)+= 2;
 		while (str[*i] == ' ')
-		{
 			(*i)++;
-			z++;
-		}
 		*j = *i;
 	}
 	else if (str[*i] == ';' || str[*i] == '|' || str[*i] == '<' || str[*i] == '>')
@@ -214,10 +190,7 @@ void space(char *str, int *i, int *j)
 		(*i)++;
 		(*j)+= 1;
 		while (str[*i] == ' ')
-		{
 			(*i)++;
-			z++;
-		}
 		*j = *i;
 	}
 	free(tmp);
@@ -252,6 +225,7 @@ void parser(char *str, char **env)
 		}
 		else if (str[i] == '\\')
 		{
+			printf("SLASH\n");
 			str = slash(str, &i);
 			i = i - 1;
 		}
@@ -264,7 +238,7 @@ void parser(char *str, char **env)
 		}
 		else if (str[i] == '$')
 		{
-			printf("wtf\n");
+			//printf("wtf\n");
 			str = dollar(str, &i, env);
 			//i = i - 1;
 		}
@@ -276,47 +250,4 @@ void parser(char *str, char **env)
 	free(str);
 	//return (str);
 }
-// найти незакрытые ковычки, в конце \ не закрытый, ;; ,  ;| , ||, ;command
-int preparser(char *str)
-{
-	int i = 0;
-	while (str[i])
-	{
-		i++;
-	}
-	return (0);
-}
-
-//int	main(int argc, char **argv, char **env)
-//{
-//	main_data.counter = 0;
-//	main_data.flag1 = 0;
-//	ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
-////	commands->commands = malloc(sizeof (char *) * 1);
-////	commands->commands[0] = NULL;
-//	init_commands();
-////	int i = 0;
-////	while (env[i])
-////	{
-////		printf("%s\n", env[i]);
-////		i++;
-////	}
-//	//char *str = ft_strdup("co$USER mma   'n\\nn'dd   000\\'00co\"mm\\\"\"an'dddd'a");
-//	char *str2 = ft_strdup("1 \"2      01\" 3 4 5 6 7 8 9 10");
-//	argv[1] = parser(argv[1], env);
-//	printf("str2 = %s\n",argv[1]);
-//	printf("----------------------------------------\n");
-//	t_list *tmp = main_data.commands;
-//	while (tmp)
-//	{
-//		int l = 0;
-//		while (tmp->commands[l])
-//		{
-//			printf("[%d]:|%s|\n", tmp->id, tmp->commands[l]);
-//			l++;
-//		}
-//		printf("---->%s<----\n", tmp->flag);
-//		tmp = tmp->next;
-//	}
-//}
 

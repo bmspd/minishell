@@ -58,6 +58,8 @@ typedef struct s_struct{
 	int flag1;
 	int counter;
 	int key_amount;
+	char *term_name;
+	struct termios term;
 	int temp_key_amount;
 	char **env0;
 }t_struct;
@@ -108,4 +110,7 @@ char	*get_pwd(void);
 void	print_pwd(void);
 size_t	count_arr(char **arr);
 void	lastadd_ENV_VAR(ENV *list_envp, ENV *last);
+
+//Вот тебе функция обезьянна не бритая
+char	**create_list_file(void);
 #endif
