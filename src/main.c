@@ -98,17 +98,21 @@ t_list	*ft_lstnew_history(void *content, int amount)
 void	print_cmds(void)
 {
 	printf("----------------------------------------\n");
+	int i;
+
+	i = 0;
 	t_list *tmp = main_data.commands;
 	while (tmp)
 	{
 		int r = 0;
 		while (tmp->commands[r])
 		{
-			printf("[%d]:|%s| :[length %lu]\n", tmp->id, tmp->commands[r], ft_strlen(tmp->commands[r]));
+			printf("[number_list %d][%d]:|%s| :[length %lu]\n", i, tmp->id, tmp->commands[r], ft_strlen(tmp->commands[r]));
 			r++;
 		}
-		printf("---->[%s]<----\n", tmp->flag);
+		printf("---->[number_list %d][%s]<----\n", i, tmp->flag);
 		tmp = tmp->next;
+					i++;
 	}
 }
 
@@ -166,7 +170,7 @@ int	look_in_direction(char *path, char *find_file)
 	return (0);
 }
 
-char *find_path_cmd(char *value, char *name_prog, char *pwd)
+char *find_path_cmd(char *value, char *name_prog, char *home)
 {
 	char **paths;
 	char *tmp;
@@ -182,8 +186,7 @@ char *find_path_cmd(char *value, char *name_prog, char *pwd)
 		if(!ft_strncmp(paths[i], "~", 1))
 		{
 			tmp = paths[i];
-
-			paths[i] = ft_strjoin(pwd, ft_strchr(tmp, '/'));
+			paths[i] = ft_strjoin(home, ft_strchr(tmp, '/'));
 			free(tmp);
 		}
 		i++;
@@ -205,13 +208,13 @@ char *find_path_cmd(char *value, char *name_prog, char *pwd)
 	return (NULL);
 }
 
-void	exec_fork(char	**prog, ENV *PATH, char **envp, ENV *PWD)
+void	exec_fork(char	**prog, ENV *PATH, char **envp, ENV *HOME)
 {
 	pid_t pid;
 	char	*path;
 
 	if (PATH)
-		path = find_path_cmd(PATH->value, prog[0], PWD->value);
+		path = find_path_cmd(PATH->value, prog[0], HOME->value);
 	else
 		path = NULL;
 	if (!path)
@@ -270,11 +273,21 @@ char **convert_list_in_arr(ENV *list_envp)
 	return (envp);
 }
 
+int	creat_file(char *name_file)
+{
+	int fd;
+
+	fd = open(name_file, O_RDWR | O_CREAT | O_TRUNC, 0777);
+	return (fd);
+}
+
 int		builtin(t_list *cmd, ENV **list_envp)
 {
 	int i;
 
 	i = 0;
+	if (!cmd->commands[0])
+		return (i);
 	if (!ft_strncmp(cmd->commands[0], "env", 4))
 	{
 		env(*list_envp);
@@ -298,21 +311,28 @@ int		builtin(t_list *cmd, ENV **list_envp)
 	return (i);
 }
 
+
 void	read_cmd(t_list *cmd, ENV **list_envp)
 {
 
+	int i;
 	// print_cmds();
-
+	i = 0;
 	while (cmd)
 	{
-		if(cmd->commands[0])
-		{
+		// if(cmd->commands[0])
+		// {
 			if (builtin(cmd, list_envp))
 			;
+			// else
+			// {
+			// 	// read_flag(cmd);
+			// }
+			// i++;
 			else
 				exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp),
 						  find_VAR_ENV(*list_envp,"HOME"));
-		}
+		// }
 		cmd = cmd->next;
 	}	
 }
@@ -542,6 +562,7 @@ int main(int argc, char **argv, char **env) {
 
 	}
 	set_terminal(0);
+
 	fill_external_history(fd);
 	write(1, "💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n",
 		  ft_strlen("💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n"));

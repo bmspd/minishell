@@ -29,7 +29,9 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
-#include <fcntl.h>
+# include <sys/types.h>
+# include <fcntl.h>
+# include <sys/stat.h>
 
 typedef struct s_ENV
 {
@@ -108,4 +110,7 @@ char	*get_pwd(void);
 void	print_pwd(void);
 size_t	count_arr(char **arr);
 void	lastadd_ENV_VAR(ENV *list_envp, ENV *last);
+
+//Вот тебе функция обезьянна не бритая
+char	**create_list_file(void);
 #endif
