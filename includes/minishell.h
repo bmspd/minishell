@@ -62,6 +62,7 @@ typedef struct s_struct{
 	struct termios term;
 	int temp_key_amount;
 	char **env0;
+	int current_tab;
 }t_struct;
 
 extern t_struct main_data;
@@ -89,6 +90,7 @@ int escape_left(char *str);
 int	escape_right(char *str);
 int	escape_backspace(char *str);
 int escape_ctrl(char *str);
+int	escape_tab(char *str);
 
 //parser staff
 void parser(char *str, char **env);
@@ -110,6 +112,7 @@ char	*get_pwd(void);
 void	print_pwd(void);
 size_t	count_arr(char **arr);
 void	lastadd_ENV_VAR(ENV *list_envp, ENV *last);
+void	free_arr(char **arr, int count);
 
 //Вот тебе функция обезьянна не бритая
 char	**create_list_file(void);

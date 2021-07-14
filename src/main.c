@@ -46,6 +46,7 @@ char	*delete_spaces_behind(char *str)
 
 int extra_parser(void)
 {
+	int last_flag_pipe = 0;
 	int tmp_flag = 0;
 	t_list	*tmp = main_data.commands;
 //	if (ft_lstsize(main_data.commands) >= 2)
@@ -53,16 +54,24 @@ int extra_parser(void)
 //		if (ft_strncmp(tmp->flag, "|", 2) && ft_strncmp(tmp->flag, ";", 2))
 //			tmp = tmp->next;
 //	}
-	if (ft_lstsize(tmp) == 1 && !tmp->commands[0] && !tmp_flag)
+	if (ft_lstsize(tmp) == 1 && !tmp->commands[0])
 		return (1);
 	while (tmp)
 	{
+
 		if (tmp->id == ft_lstsize(main_data.commands) - 1 && tmp_flag)
 			return (1);
 		if (tmp->commands[0] == NULL)
 		{
-			printf("PARSER ERROR!\n");
-			return (0);
+			if (last_flag_pipe && (!ft_strncmp(tmp->flag, "<", 2)
+				|| !ft_strncmp(tmp->flag, "<<", 3) || !ft_strncmp(tmp->flag, ">>", 3)
+				|| !ft_strncmp(tmp->flag, ">", 2)))
+				;
+			else
+			{
+				printf("PARSER ERROR!\n");
+				return (0);
+			}
 		}
 		if (tmp->flag)
 		{
@@ -70,6 +79,13 @@ int extra_parser(void)
 				tmp_flag = 1;
 			else
 				tmp_flag = 0;
+		}
+		if (tmp->flag)
+		{
+			if (!ft_strncmp(tmp->flag, "|", 2))
+				last_flag_pipe = 1;
+			else
+				last_flag_pipe = 0;
 		}
 		tmp = tmp->next;
 	}
@@ -483,6 +499,7 @@ int main(int argc, char **argv, char **env) {
 	main_data.key_amount = 0;
 	main_data.buf_hist = NULL;
 	main_data.history = NULL;
+	main_data.current_tab = 2;
 	char str[2000];
 
 	int l;
@@ -492,7 +509,6 @@ int main(int argc, char **argv, char **env) {
 
 	list_envp = create_list_envp(env);
 	external_history();
-	int fd = open_history(O_TRUNC);
 	//printf("<%d>\n", fd);
 	set_terminal(1);
 
@@ -559,8 +575,10 @@ int main(int argc, char **argv, char **env) {
 				set_terminal(1);
 			}
 			cleaning_foo();
+			int fd = open_history(O_TRUNC);
 			ft_lstadd_front(&main_data.history, ft_lstnew_history(main_data.buf_hist, main_data.key_amount - 1));
 			numerate_history(main_data.history);
+			fill_external_history(fd);
 
 		}
 		else
@@ -569,7 +587,7 @@ int main(int argc, char **argv, char **env) {
 	}
 	set_terminal(0);
 
-	fill_external_history(fd);
+
 	write(1, "💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n",
 		  ft_strlen("💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n"));
 }
