@@ -243,6 +243,8 @@ void	exec_fork(char	**prog, ENV *PATH, char **envp, ENV *HOME)
 		perror(prog[0]);
 		exit (EXIT_FAILURE);
 	}
+	if (path && ft_strncmp(prog[0], path, ft_strlen(path)))
+		free(path);
 	free_arr(envp, count_arr(envp));
 }
 
@@ -501,6 +503,10 @@ int main(int argc, char **argv, char **env) {
 	int n;
 	main_data.history_id = -1;
 	ENV	*list_envp;
+	char **list_file;
+
+	list_file = create_list_file();
+	print_arg(list_file);
 	list_envp = create_list_envp(env);
 	external_history();
 	//printf("<%d>\n", fd);
