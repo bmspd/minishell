@@ -125,7 +125,10 @@ void	free_arr(char **arr, int count)
 	while (i < count)
 	{
 		if (arr[i])
+		{
 			free(arr[i]);
+			arr[i] = NULL;
+		}
 		i++;
 	}
 	free(arr);
@@ -486,10 +489,7 @@ int main(int argc, char **argv, char **env) {
 	int n;
 	main_data.history_id = -1;
 	ENV	*list_envp;
-	char **list_file;
 
-	list_file = create_list_file();
-	print_arg(list_file);
 	list_envp = create_list_envp(env);
 	external_history();
 	int fd = open_history(O_TRUNC);
@@ -555,7 +555,7 @@ int main(int argc, char **argv, char **env) {
 			if (extra_parser() && strcmp(str, "\4"))
 			{
 				set_terminal(0);
-				read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
+				// read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 				set_terminal(1);
 			}
 			cleaning_foo();

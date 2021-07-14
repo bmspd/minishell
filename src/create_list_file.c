@@ -1,11 +1,11 @@
 #include "../includes/minishell.h"
 
-int		count_file_direction(const char *path)
+int	count_file_direction(const char *path)
 {
-	int i;
-	DIR	*dir;
+	int				i;
+	DIR				*dir;
 	struct dirent	*file;
-	
+
 	dir = opendir(path);
 	if (!dir)
 		return (0);
@@ -14,16 +14,16 @@ int		count_file_direction(const char *path)
 	i++;
 	while (file)
 	{
-	file = readdir(dir);
-	i++;
+		file = readdir(dir);
+		i++;
 	}
-	closedir(dir);	
+	closedir(dir);
 	return (i);
 }
 
 char	**creat_arr(int count)
 {
-	char **out;
+	char	**out;
 
 	if (!count)
 		return (NULL);
@@ -44,14 +44,14 @@ char	**free_error_getlf(int i, DIR *dir, char *pwd, char **out_list)
 
 char	**write_in_lf(char **out_list, DIR *dir, char *pwd)
 {
-	struct dirent *file;
-	int i;
+	struct dirent	*file;
+	int				i;
 
 	i = 0;
 	file = readdir(dir);
 	out_list[i] = ft_strdup(file->d_name);
 	if (!out_list[i])
-			return (free_error_getlf(3, dir, pwd, out_list));
+		return (free_error_getlf(3, dir, pwd, out_list));
 	i++;
 	while (file)
 	{
@@ -69,9 +69,9 @@ char	**write_in_lf(char **out_list, DIR *dir, char *pwd)
 
 char	**create_list_file(void)
 {
-	DIR	*dir;
-	char *pwd;
-	char **out_list;
+	DIR		*dir;
+	char	*pwd;
+	char	**out_list;
 
 	pwd = get_pwd();
 	if (!pwd)
@@ -82,22 +82,6 @@ char	**create_list_file(void)
 	out_list = creat_arr(count_file_direction(pwd));
 	if (!out_list)
 		return (free_error_getlf(2, dir, pwd, out_list));
-	// file = readdir(dir);
-	// out_list[i] = ft_strdup(file->d_name);
-	// if (!out_list[i])
-	// 		return (free_error_getfl(3, dir, pwd, out_list));
-	// i++;
-	// while (file)
-	// {
-	// 	file = readdir(dir);
-	// 	if (!file)
-	// 		break ;
-	// 	out_list[i] = ft_strdup(file->d_name);
-	// 	if (!out_list[i])
-	// 		return (free_error_getfl(3, dir, pwd, out_list));
-	// 	i++;
-	// }
-	// out_list[i] = NULL;
 	out_list = write_in_lf(out_list, dir, pwd);
 	if (!out_list)
 		return (NULL);
