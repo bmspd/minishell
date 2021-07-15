@@ -63,7 +63,6 @@ int	take_word_part(void)
 	}
 	else if (main_data.buf_flag)
 	{
-		//printf("LOL\n");
 		int z = (int)ft_strlen(main_data.old_buf_hist);
 		while (z)
 		{
@@ -105,19 +104,21 @@ int	escape_tab(char *str)
 //	if (!list_elem)
 //		list_elem = ft_strdup("");
 	char *tmp;
-	i = 0;
-	list_files = create_list_file();
-	int len = (int)count_arr(list_files);
 
-	i = take_word_part();
-	if (!main_data.current_tab)
-	{
-
-		main_data.old_buf_hist = ft_strdup(main_data.buf_hist);
-		main_data.current_tab = 2;
-	}
 	if(!ft_strncmp(str, "\t", 2))
 	{
+        i = 0;
+        list_files = create_list_file();
+        int len = (int)count_arr(list_files);
+
+        i = take_word_part();
+        if (!main_data.current_tab)
+        {
+
+            if (!main_data.buf_flag)
+                main_data.old_buf_hist = ft_strdup(main_data.buf_hist);
+            main_data.current_tab = 2;
+        }
 		if ((main_data.part && !ft_strncmp(main_data.part, "", 2)) || main_data.current_tab > 2)
 //		if (part)
 		{
@@ -161,7 +162,6 @@ int	escape_tab(char *str)
 				{
 					length = 10;
 					index = 0;
-
 				}
 				else
 				{
@@ -173,6 +173,7 @@ int	escape_tab(char *str)
 				//printf("!%s!", main_data.part);
 				while (z < len)
 				{
+				    //printf("|%s|\n", main_data.part);
 					if (!list_elem && !ft_strncmp(main_data.part, list_files[index], ft_strlen(main_data.part)))
 					{
 						//printf("lol\n");
@@ -214,11 +215,7 @@ int	escape_tab(char *str)
 				main_data.buf_flag = 1;
 			}
 		}
-//		while (list_files[i])
-//		{
-//			printf("|%s|\n", list_files[i]);
-//			i++;
-//		}
+        free(list_files);
 		return (1);
 	}
 	return (0);
