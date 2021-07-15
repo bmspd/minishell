@@ -496,7 +496,9 @@ int main(int argc, char **argv, char **env) {
 	main_data.key_amount = 0;
 	main_data.buf_hist = NULL;
 	main_data.history = NULL;
-	main_data.current_tab = 2;
+	main_data.current_tab = 0;
+	main_data.part = NULL;
+	main_data.buf_flag = 0;
 	char str[2000];
 
 	int l;
@@ -506,7 +508,7 @@ int main(int argc, char **argv, char **env) {
 	char **list_file;
 
 	list_file = create_list_file();
-	print_arg(list_file);
+	//print_arg(list_file);
 	list_envp = create_list_envp(env);
 	external_history();
 	//printf("<%d>\n", fd);
@@ -529,6 +531,10 @@ int main(int argc, char **argv, char **env) {
 				main_data.key_amount++;
 				if (strcmp(str,"\n"))
 				{
+					main_data.part = NULL;
+					main_data.current_tab = 0;
+					main_data.buf_flag = 0;
+					//main_data.old_buf_hist = main_data.buf_hist;
 
 					char *tmp0 = ft_substr(main_data.buf_hist, 0, main_data.cursor_place);
 					char *tmp1 = ft_strjoin(tmp0, str);
@@ -564,6 +570,8 @@ int main(int argc, char **argv, char **env) {
 		{
 			main_data.counter = 0;
 			main_data.flag1 = 0;
+			main_data.current_tab = 0;
+			main_data.part = NULL;
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
 			parser(delete_spaces_behind(main_data.buf_hist), env);
@@ -571,7 +579,7 @@ int main(int argc, char **argv, char **env) {
 			if (extra_parser() && strcmp(str, "\4"))
 			{
 				set_terminal(0);
-				//read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
+				read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 				set_terminal(1);
 			}
 			cleaning_foo();

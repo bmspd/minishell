@@ -12,6 +12,8 @@ void handler (int status)
 		main_data.buf_hist = ft_strdup("");
 		main_data.history_id = -1;
 		main_data.key_amount = 0;
+		main_data.current_tab = 0;
+		main_data.part = NULL;
 	}
 	if (status == SIGWINCH)
 	{

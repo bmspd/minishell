@@ -47,7 +47,6 @@ typedef struct s_struct{
 	int hist_flag;
 	int null_flag;
 	char *buf_hist;
-	char *buf_hist_cpy;
 	char *title;
 	int	title_length;
 	int abs_col;
@@ -63,6 +62,9 @@ typedef struct s_struct{
 	int temp_key_amount;
 	char **env0;
 	int current_tab;
+	char	*part;
+	char	*old_buf_hist;
+	int	buf_flag;
 }t_struct;
 
 extern t_struct main_data;
