@@ -67,6 +67,10 @@ int extra_parser(void)
 				|| !ft_strncmp(tmp->flag, "<<", 3) || !ft_strncmp(tmp->flag, ">>", 3)
 				|| !ft_strncmp(tmp->flag, ">", 2)))
 				;
+			else if (!ft_strncmp(tmp->flag, "<", 2)
+                || !ft_strncmp(tmp->flag, "<<", 3) || !ft_strncmp(tmp->flag, ">>", 3)
+                || !ft_strncmp(tmp->flag, ">", 2))
+			    ;
 			else
 			{
 				printf("PARSER ERROR!\n");
@@ -531,6 +535,8 @@ int main(int argc, char **argv, char **env) {
 				main_data.key_amount++;
 				if (strcmp(str,"\n"))
 				{
+				    if (main_data.part)
+				        free(main_data.part);
 					main_data.part = NULL;
 					main_data.current_tab = 0;
 					main_data.buf_flag = 0;
@@ -571,6 +577,8 @@ int main(int argc, char **argv, char **env) {
 			main_data.counter = 0;
 			main_data.flag1 = 0;
 			main_data.current_tab = 0;
+//			if (main_data.part)
+//			    free(main_data.part);
 			main_data.part = NULL;
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
@@ -579,7 +587,7 @@ int main(int argc, char **argv, char **env) {
 			if (extra_parser() && strcmp(str, "\4"))
 			{
 				set_terminal(0);
-				read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
+				//read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 				set_terminal(1);
 			}
 			cleaning_foo();

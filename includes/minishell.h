@@ -119,4 +119,8 @@ void	free_arr(char **arr, int count);
 //Вот тебе функция обезьянна не бритая
 char	**create_list_file(void);
 void	free_arr(char **arr, int count);
+
+//Скажу по секрету - Денис - Председатель Гильдии Петухов))))(тип самый главый петух) ГЫГЫГЫ)
+//memory staff
+void    safe_free(char *element);
 #endif
