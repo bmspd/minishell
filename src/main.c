@@ -514,6 +514,7 @@ int main(int argc, char **argv, char **env) {
 	list_file = create_list_file();
 	//print_arg(list_file);
 	list_envp = create_list_envp(env);
+	main_data.list_envp = create_list_envp(env);
 	external_history();
 	//printf("<%d>\n", fd);
 	set_terminal(1);
@@ -583,12 +584,20 @@ int main(int argc, char **argv, char **env) {
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
 			parser(delete_spaces_behind(main_data.buf_hist), env);
-			print_cmds();
+//			print_cmds();
 			if (extra_parser() && strcmp(str, "\4"))
 			{
+			    char **elements = list_to_char();
+			    int i = 0;
+			    while(elements[i])
+                {
+			        printf("|%s|\n", elements[i]);
+			        i++;
+                }
 				set_terminal(0);
 				//read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 				set_terminal(1);
+                free_arr(elements, (int)count_arr(elements));
 			}
 			cleaning_foo();
 			int fd = open_history(O_TRUNC);

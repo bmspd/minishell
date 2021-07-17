@@ -38,7 +38,7 @@ typedef struct s_ENV
 	char		*name;
 	char		*value;
 	struct s_ENV	*next;
-	
+
 }				ENV;
 
 typedef struct s_struct{
@@ -65,6 +65,7 @@ typedef struct s_struct{
 	char	*part;
 	char	*old_buf_hist;
 	int	buf_flag;
+	ENV *list_envp;
 }t_struct;
 
 extern t_struct main_data;
@@ -123,4 +124,8 @@ void	free_arr(char **arr, int count);
 //Скажу по секрету - Денис - Председатель Гильдии Петухов))))(тип самый главый петух) ГЫГЫГЫ)
 //memory staff
 void    safe_free(char *element);
+
+//Convertation list to char
+char **list_to_char(void);
+int count_elements(void);
 #endif
