@@ -10,6 +10,7 @@ int escape_ctrl(char *str)
 		main_data.buf_hist = ft_strdup("");
 		main_data.cursor_place = 0;
 		main_data.history_id = -1;
+		main_data.key_amount = 0;
 		return (1);
 	}
 	return (0);

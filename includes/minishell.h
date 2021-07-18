@@ -44,13 +44,10 @@ typedef struct s_ENV
 typedef struct s_struct{
 	t_list *history;
 	int	history_id;
-	int hist_flag;
 	int null_flag;
 	char *buf_hist;
 	char *title;
 	int	title_length;
-	int abs_col;
-	int	abs_line;
 	int cursor_place;
 	struct winsize ws;
 	t_list *commands;
@@ -59,8 +56,6 @@ typedef struct s_struct{
 	int key_amount;
 	char *term_name;
 	struct termios term;
-	int temp_key_amount;
-	char **env0;
 	int current_tab;
 	char	*part;
 	char	*old_buf_hist;
