@@ -350,9 +350,11 @@ void	read_cmd(t_list *cmd, ENV **list_envp)
 			// 	// read_flag(cmd);
 			// }
 			// i++;
-			else
-				exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp),
-						  find_VAR_ENV(*list_envp,"HOME"));
+			if (!ft_strncmp("<<", cmd->flag, 3))
+				heredoc(cmd->next->commands[0]);
+			// else
+			// 	exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp),
+			// 			  find_VAR_ENV(*list_envp,"HOME"));
 		// }
 		cmd = cmd->next;
 	}	
