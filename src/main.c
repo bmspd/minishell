@@ -572,10 +572,7 @@ int main(int argc, char **argv, char **env) {
 	int n;
 	ENV	*list_envp;
 
-<<<<<<< HEAD
-=======
-	list_file = create_list_file();
->>>>>>> 9f93b5a28c94c8f41630a5d4d154a0983cce9fd5
+
 	list_envp = create_list_envp(env);
 	main_data.list_envp = create_list_envp(env);
 	external_history();
