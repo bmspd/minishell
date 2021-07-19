@@ -38,20 +38,16 @@ typedef struct s_ENV
 	char		*name;
 	char		*value;
 	struct s_ENV	*next;
-	
+
 }				ENV;
 
 typedef struct s_struct{
 	t_list *history;
 	int	history_id;
-	int hist_flag;
 	int null_flag;
 	char *buf_hist;
-	char *buf_hist_cpy;
 	char *title;
 	int	title_length;
-	int abs_col;
-	int	abs_line;
 	int cursor_place;
 	struct winsize ws;
 	t_list *commands;
@@ -60,9 +56,11 @@ typedef struct s_struct{
 	int key_amount;
 	char *term_name;
 	struct termios term;
-	int temp_key_amount;
-	char **env0;
 	int current_tab;
+	char	*part;
+	char	*old_buf_hist;
+	int	buf_flag;
+	ENV *list_envp;
 }t_struct;
 
 extern t_struct main_data;
@@ -120,4 +118,11 @@ void	free_arr(char **arr, int count);
 
 //heredoc
 int		*heredoc(char *stop_word);
+
+//memory staff
+void    safe_free(char *element);
+
+//Convertation list to char
+char **list_to_char(void);
+int count_elements(void);
 #endif

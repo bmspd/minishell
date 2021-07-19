@@ -113,6 +113,9 @@ int	escape_backspace(char *str)
 			free(tmp2);
 
 		}
+		//printf("WTF\n");
+		main_data.part = NULL;
+		main_data.current_tab = 0;
 		return (1);
 	}
 	return (0);

@@ -103,44 +103,81 @@ char *dollar(char *str, int *i, char **env)
 		if (!ifkey(str[*i]))
 			break ;
 	}
-	if (*i == j + 1)
-		return (str);
+//	if (*i == j)
+//		return (str);
 
 	tmp = ft_substr(str, j + 1, *i - j - 1);
-	int k = -1;
-	while (env[++k])
-	{
-		if (strstr(env[k], tmp))
-		{
-			z = 0;
-			while (env[k][z] != '=' && env[k][z])
-				z++;
-			tmp2 = ft_substr(env[k], 0, z);
-			if (strcmp(tmp, tmp2) == 0)
-			{
-				flag = 1;
-				break ;
-			}
-		}
-	}
-	if (flag)
-	{
-		tmp2 = ft_substr(env[k], z + 1, ft_strlen(env[k]) - z);
-		tmp3 = ft_substr(str, 0, j);
-		tmp2 = ft_strjoin(tmp3, tmp2);
-		tmp3 = ft_substr(str, *i, ft_strlen(str) - *i);
-		tmp = ft_strjoin(tmp2, tmp3);
-		return (tmp);
-	}
-	else
-	{
-		tmp3 = ft_substr(str, 0, j);
-		int a = ft_strlen(tmp);
-		tmp = ft_substr(str, j + a + 1, ft_strlen(str) - a - j);
-		tmp = ft_strjoin(tmp3, tmp);
-		(*i) -= (a + 1);
-		return (tmp);
-	}
+	//printf("[%s]\n", tmp);
+    ENV *search = find_VAR_ENV(main_data.list_envp, tmp);
+    if (search)
+    {
+        tmp2 = ft_substr(str, 0, j);
+       // printf("??%s??\n", tmp2);
+        tmp3 = ft_substr(str, j + ft_strlen(tmp) + 1, ft_strlen(str) - ft_strlen(tmp));
+        free(tmp);
+        tmp = ft_strdup(search->value);
+
+       // printf("??%s??\n", tmp3);
+        free(str);
+        str = ft_strjoin(tmp2, tmp);
+        free(tmp2);
+        free(tmp);
+        tmp = str;
+        str = ft_strjoin(str, tmp3);
+        free(tmp);
+        free(tmp3);
+        (*i) = j + ft_strlen(search->value);
+        return (str);
+    }
+    else
+    {
+        tmp2 = ft_substr(str, 0, j);
+       // printf("??%s??[%d]\n", tmp2, j);
+        tmp3 = ft_substr(str, j + ft_strlen(tmp) + 1, ft_strlen(str) - ft_strlen(tmp));
+    //    printf("??%s??[%d]\n", tmp3,j + ft_strlen(tmp));
+        free(str);
+        str = ft_strjoin(tmp2, tmp3);
+        free(tmp);
+        free(tmp2);
+        free(tmp3);
+        (*i) = j;
+        return (str);
+    }
+//	int k = -1;
+//	while (env[++k])
+//	{
+//		if (strstr(env[k], tmp))
+//		{
+//			z = 0;
+//			while (env[k][z] != '=' && env[k][z])
+//				z++;
+//			tmp2 = ft_substr(env[k], 0, z);
+//			if (strcmp(tmp, tmp2) == 0)
+//			{
+//				flag = 1;
+//				break ;
+//			}
+//		}
+//	}
+//	if (flag)
+//	{
+//		tmp2 = ft_substr(env[k], z + 1, ft_strlen(env[k]) - z);
+//		tmp3 = ft_substr(str, 0, j);
+//		tmp2 = ft_strjoin(tmp3, tmp2);
+//		tmp3 = ft_substr(str, *i, ft_strlen(str) - *i);
+//		tmp = ft_strjoin(tmp2, tmp3);
+//		return (tmp);
+//	}
+//	else
+//	{
+//		tmp3 = ft_substr(str, 0, j);
+//		printf("!!%s!!\n", tmp3);
+//		int a = ft_strlen(tmp);
+//		tmp = ft_substr(str, j + a + 1, ft_strlen(str) - a - j);
+//		tmp = ft_strjoin(tmp3, tmp);
+//		(*i) -= (a + 1);
+//		return (tmp);
+//	}
 
 }
 
