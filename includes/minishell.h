@@ -72,6 +72,7 @@ int	ft_putint(int c);
 
 //signals staff
 void handler (int status);
+void handler1 (int status);
 
 //cursor staff
 void	moveback_cursor(void);

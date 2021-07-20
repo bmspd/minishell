@@ -367,14 +367,6 @@ void	read_cmd(t_list *cmd, ENV **list_envp)
 /* end exec cmd - -- -- -- -- -- -- --- -- -- --- -- -- -- -- -- -- -- -- -- -- --- --- --- --- --- --- --- -- -- -- -- - */
 
 
-void handler1 (int status)
-{
-	if (status == SIGINT)
-		printf("\n");
-	if (status == SIGQUIT)
-		printf("Quit: 3\n");
-}
-
 void set_terminal(int type)
 {
 	main_data.term_name = "xterm-256color";

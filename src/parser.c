@@ -143,42 +143,6 @@ char *dollar(char *str, int *i, char **env)
         (*i) = j;
         return (str);
     }
-//	int k = -1;
-//	while (env[++k])
-//	{
-//		if (strstr(env[k], tmp))
-//		{
-//			z = 0;
-//			while (env[k][z] != '=' && env[k][z])
-//				z++;
-//			tmp2 = ft_substr(env[k], 0, z);
-//			if (strcmp(tmp, tmp2) == 0)
-//			{
-//				flag = 1;
-//				break ;
-//			}
-//		}
-//	}
-//	if (flag)
-//	{
-//		tmp2 = ft_substr(env[k], z + 1, ft_strlen(env[k]) - z);
-//		tmp3 = ft_substr(str, 0, j);
-//		tmp2 = ft_strjoin(tmp3, tmp2);
-//		tmp3 = ft_substr(str, *i, ft_strlen(str) - *i);
-//		tmp = ft_strjoin(tmp2, tmp3);
-//		return (tmp);
-//	}
-//	else
-//	{
-//		tmp3 = ft_substr(str, 0, j);
-//		printf("!!%s!!\n", tmp3);
-//		int a = ft_strlen(tmp);
-//		tmp = ft_substr(str, j + a + 1, ft_strlen(str) - a - j);
-//		tmp = ft_strjoin(tmp3, tmp);
-//		(*i) -= (a + 1);
-//		return (tmp);
-//	}
-
 }
 
 void space(char *str, int *i, int *j)
@@ -262,7 +226,7 @@ void parser(char *str, char **env)
 		}
 		else if (str[i] == '\\')
 		{
-			printf("SLASH\n");
+			//printf("SLASH\n");
 			str = slash(str, &i);
 			i = i - 1;
 		}

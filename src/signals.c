@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void handler (int status)
+void	handler(int status)
 {
 	if (status == SIGINT)
 	{
@@ -25,5 +25,10 @@ void handler (int status)
 		write(1, "\a", 1);
 }
 
-
-
+void	handler1(int status)
+{
+	if (status == SIGINT)
+		printf("\n");
+	if (status == SIGQUIT)
+		printf("Quit: 3\n");
+}

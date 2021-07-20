@@ -1,80 +1,76 @@
 #include "../includes/minishell.h"
-int count_elements(void)
-{
-    int counter;
-    int i;
 
-    counter = 0;
-    t_list *tmp = main_data.commands;
-    while (tmp)
-    {
-        i = 0;
-        while (tmp->commands[i])
-        {
-            counter++;
-            i++;
-        }
-        if (tmp->flag)
-            counter++;
-        tmp = tmp->next;
-    }
-    return (counter);
-}
-char **list_to_help_char(void)
+int	count_elements(void)
 {
-	int len;
-	char **help_elements;
-	int i;
+	int		counter;
+	int		i;
+	t_list	*tmp;
 
-	len = count_elements();
-	help_elements = malloc(sizeof(char *) * (len + 1));
-	len = 0;
-	t_list *tmp = main_data.commands;
+	counter = 0;
+	tmp = main_data.commands;
 	while (tmp)
 	{
 		i = 0;
-		while(tmp->commands[i++])
+		while (tmp->commands[i])
 		{
-			help_elements[len] = NULL;
-			len++;
+			counter++;
+			i++;
 		}
 		if (tmp->flag)
-		{
-			help_elements[len] = ft_strdup(tmp->flag);
-			len++;
-		}
+			counter++;
+		tmp = tmp->next;
+	}
+	return (counter);
+}
+
+char	**list_to_help_char(void)
+{
+	int		len;
+	char	**help_elements;
+	int		i;
+	t_list	*tmp;
+
+	len = count_elements();
+	help_elements = malloc(sizeof(char *) * (len + 1));
+	if (!help_elements)
+		exit(1);
+	len = 0;
+	tmp = main_data.commands;
+	while (tmp)
+	{
+		i = 0;
+		while (tmp->commands[i++])
+			help_elements[len++] = NULL;
+		if (tmp->flag)
+			help_elements[len++] = ft_strdup(tmp->flag);
 		tmp = tmp->next;
 	}
 	help_elements[len] = NULL;
-	return(help_elements);
+	return (help_elements);
 }
 
-char **list_to_char(void)
+char	**list_to_char(void)
 {
-    int len;
-    char **elements;
-    int i;
+	int		len;
+	char	**elements;
+	int		i;
+	t_list	*tmp;
 
-    len = count_elements();
-    elements = malloc(sizeof(char *) * (len + 1));
-    len = 0;
-    t_list *tmp = main_data.commands;
-    while (tmp)
-    {
-        i = 0;
-        while(tmp->commands[i])
-        {
-            elements[len] = ft_strdup(tmp->commands[i++]);
-            len++;
-        }
-        if (tmp->flag)
-        {
-            elements[len] = ft_strdup(tmp->flag);
-            len++;
-        }
-        tmp = tmp->next;
-    }
-    elements[len] = NULL;
-    return(elements);
+	len = count_elements();
+	elements = malloc(sizeof(char *) * (len + 1));
+	if (!elements)
+		exit(1);
+	len = 0;
+	tmp = main_data.commands;
+	while (tmp)
+	{
+		i = 0;
+		while (tmp->commands[i])
+			elements[len++] = ft_strdup(tmp->commands[i++]);
+		if (tmp->flag)
+			elements[len++] = ft_strdup(tmp->flag);
+		tmp = tmp->next;
+	}
+	elements[len] = NULL;
+	return (elements);
 }
-
