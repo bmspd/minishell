@@ -2,7 +2,7 @@ SRCS			= 	main.c print_utils.c signals.c cursor_utils.c escape_commands.c histor
 					escape_keys.c escape_keys2.c parser.c cmd_list_utils.c\
 					create_list_envp.c cd.c create_list_file.c mem_utils.c \
 					list_to_char.c escape_backspace.c escape_tab_utils1.c \
-					escape_tab_utils2.c heredoc.c
+					escape_tab_utils2.c heredoc.c parser_utils1.c parser_utils2.c
 DIR_S			= src
 SOURCE			=$(addprefix $(DIR_S)/,$(SRCS))
 OBJS			= $(SOURCE:.c=.o)

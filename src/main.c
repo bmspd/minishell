@@ -585,7 +585,7 @@ int main(int argc, char **argv, char **env) {
 			main_data.part = NULL;
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
-			parser(delete_spaces_behind(main_data.buf_hist), env);;
+			parser(delete_spaces_behind(main_data.buf_hist));
 			if (extra_parser() && ft_strncmp(main_data.buf_hist, "\4", 2))
 			{
 				char **elements = list_to_char();
