@@ -137,4 +137,5 @@ void    safe_free(char *element);
 //Convertation list to char
 char **list_to_char(void);
 int count_elements(void);
+char **list_to_help_char(void);
 #endif

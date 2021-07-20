@@ -68,9 +68,9 @@ int extra_parser(void)
 				|| !ft_strncmp(">", tmp->flag, 2)))
 				;
 			else if (!ft_strncmp("<", tmp->flag,  2)
-                || !ft_strncmp("<<", tmp->flag,  3) || !ft_strncmp(">>", tmp->flag,  3)
-                || !ft_strncmp(">", tmp->flag,  2))
-			    ;
+				|| !ft_strncmp("<<", tmp->flag,  3) || !ft_strncmp(">>", tmp->flag,  3)
+				|| !ft_strncmp(">", tmp->flag,  2))
+				;
 			else
 			{
 				printf("PARSER ERROR!\n");
@@ -496,63 +496,63 @@ void fill_external_history(int fd)
 }
 void    symbol_not_enter(char *str)
 {
-    char    *tmp0;
-    char    *tmp1;
-    char    *tmp2;
+	char    *tmp0;
+	char    *tmp1;
+	char    *tmp2;
 
-    safe_free(main_data.part);
-    main_data.part = NULL;
-    main_data.current_tab = 0;
-    main_data.buf_flag = 0;
-    tmp0 = ft_substr(main_data.buf_hist, 0, main_data.cursor_place);
-    tmp1 = ft_strjoin(tmp0, str);
-    tmp2 = ft_substr(main_data.buf_hist, main_data.cursor_place,
-                           ft_strlen(main_data.buf_hist) - main_data.cursor_place);
-    free(main_data.buf_hist);
-    main_data.buf_hist = ft_strjoin(tmp1, tmp2);
-    //if (ft_strncmp("\4", str, 2))
-    main_data.cursor_place += (int)ft_strlen(str);
-    write(1, tmp2, ft_strlen(tmp2));
-    main_data.history_id = -1;
-    free(tmp0);
-    free(tmp2);
-    free(tmp1);
+	safe_free(main_data.part);
+	main_data.part = NULL;
+	main_data.current_tab = 0;
+	main_data.buf_flag = 0;
+	tmp0 = ft_substr(main_data.buf_hist, 0, main_data.cursor_place);
+	tmp1 = ft_strjoin(tmp0, str);
+	tmp2 = ft_substr(main_data.buf_hist, main_data.cursor_place,
+						   ft_strlen(main_data.buf_hist) - main_data.cursor_place);
+	free(main_data.buf_hist);
+	main_data.buf_hist = ft_strjoin(tmp1, tmp2);
+	//if (ft_strncmp("\4", str, 2))
+	main_data.cursor_place += (int)ft_strlen(str);
+	write(1, tmp2, ft_strlen(tmp2));
+	main_data.history_id = -1;
+	free(tmp0);
+	free(tmp2);
+	free(tmp1);
 }
 
 void    typing_cycle()
 {
-    char str[2000];
-    int l;
+	char str[2000];
+	int l;
 
-    while(10)
-    {
-        l = read(0, str, 2000);
-        str[l] = 0;
-        if (key_control(str))
-            ;
-        else
-        {
-            if (ft_strncmp("\4", str, 2))
-            {
-                write(1, str, l);
-                main_data.key_amount++;
-                if (ft_strncmp("\n", str, 2))
-                    symbol_not_enter(str);
-            }
+	while(10)
+	{
+		l = read(0, str, 2000);
+		str[l] = 0;
+		if (key_control(str))
+			;
+		else
+		{
+			if (ft_strncmp("\4", str, 2))
+			{
+				write(1, str, l);
+				main_data.key_amount++;
+				if (ft_strncmp("\n", str, 2))
+					symbol_not_enter(str);
+			}
 
-        }
-        if (!ft_strncmp("\4", str, 2) && (!ft_strncmp("\4", str, 2) && !ft_strncmp("", main_data.buf_hist, 2)))
-        {
-            safe_free(main_data.buf_hist);
-            main_data.buf_hist = ft_strdup("\4");
-            write(1, "exit\n", 6);
-            break ;
-        }
-        if (!ft_strncmp("\n",str, 2))
-        {
-            break ;
-        }
-    }
+		}
+		if (!ft_strncmp("\4", str, 2) && (!ft_strncmp("\4", str, 2) && !ft_strncmp("", main_data.buf_hist, 2)))
+		{
+			safe_free(main_data.buf_hist);
+			main_data.buf_hist = ft_strdup("\4");
+			write(1, "exit\n", 6);
+			break ;
+		}
+		if (!ft_strncmp("\n",str, 2))
+		{
+			break ;
+		}
+	}
 }
 int main(int argc, char **argv, char **env) {
 
@@ -565,7 +565,7 @@ int main(int argc, char **argv, char **env) {
 	main_data.current_tab = 0;
 	main_data.part = NULL;
 	main_data.buf_flag = 0;
-    main_data.history_id = -1;
+	main_data.history_id = -1;
 	char str[2000];
 
 	int l;
@@ -594,19 +594,22 @@ int main(int argc, char **argv, char **env) {
 			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 			init_commands();
 			parser(delete_spaces_behind(main_data.buf_hist), env);;
-			if (extra_parser() && strcmp(main_data.buf_hist, "\4"))
+			if (extra_parser() && ft_strncmp(main_data.buf_hist, "\4", 2))
 			{
-			    char **elements = list_to_char();
-			    int i = 0;
-			    // while(elements[i])
-                // {
-			    //     printf("|%s|\n", elements[i]);
-			    //     i++;
-                // }
+				char **elements = list_to_char();
+				char **help_elements = list_to_help_char();
+				int i = 0;
+				while(elements[i])
+				 {
+					 printf("|%s|[%s]\n", elements[i], help_elements[i]);
+					 i++;
+				 }
 				set_terminal(0);
 				read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 				set_terminal(1);
-                free_arr(elements, (int)count_arr(elements));
+				int len = (int)count_arr(elements);
+				free_arr(elements, len);
+				free_arr(help_elements, len);
 			}
 			cleaning_foo();
 			int fd = open_history(O_TRUNC);
