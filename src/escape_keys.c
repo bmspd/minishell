@@ -91,35 +91,3 @@ int	escape_right(char *str)
 	return (0);
 }
 
-int	escape_backspace(char *str)
-{
-	if (!strcmp(str, ESC_BACKSPACE)) {
-		if (!ft_strlen(main_data.buf_hist) || main_data.cursor_place == 0  || main_data.key_amount < ft_strlen(main_data.buf_hist))
-		{
-			write(1, "\a", 1);
-			//printf("[%d] : [%d]\n", main_data.key_amount, ft_strlen(main_data.buf_hist));
-		}
-		else
-		{
-			tputs(cursor_left, 1, ft_putint);
-			main_data.cursor_place -= 1;
-			tputs(tgetstr("dc", 0), 1, ft_putint);
-			char *tmp = ft_substr(main_data.buf_hist, 0, main_data.cursor_place);
-			char *tmp2 = ft_substr(main_data.buf_hist, main_data.cursor_place + 1,
-								   ft_strlen(main_data.buf_hist) - main_data.cursor_place);
-			free(main_data.buf_hist);
-			main_data.buf_hist = ft_strjoin(tmp, tmp2);
-            safe_free(main_data.old_buf_hist); //added!
-			main_data.old_buf_hist = ft_strdup(main_data.buf_hist); //added!
-			free(tmp);
-			free(tmp2);
-
-		}
-		//printf("WTF\n");
-        safe_free(main_data.part);
-		main_data.part = NULL;
-		main_data.current_tab = 0;
-		return (1);
-	}
-	return (0);
-}
