@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-int escape_up(char *str)
+int	escape_up(char *str)
 {
 	if (!strcmp(str, ESC_UP))
 	{
@@ -23,12 +23,11 @@ int escape_up(char *str)
 	return (0);
 }
 
-int escape_down(char *str)
+int	escape_down(char *str)
 {
 	if (!strcmp(str, ESC_DOWN))
 	{
 		moveback_cursor();
-
 		free(main_data.buf_hist);
 		if (main_data.history_id > -1)
 		{
@@ -47,20 +46,20 @@ int escape_down(char *str)
 	return (0);
 }
 
-int escape_left(char *str)
+int	escape_left(char *str)
 {
 	if (!strcmp(str, ESC_LEFT))
 	{
-		if (ft_strlen(main_data.buf_hist) + main_data.title_length <= main_data.ws.ws_col - 1)
+		if (ft_strlen(main_data.buf_hist)
+			+ main_data.title_length <= main_data.ws.ws_col - 1)
 		{
-			if (main_data.cursor_place == 0 || main_data.key_amount < ft_strlen(main_data.buf_hist))
+			if (main_data.cursor_place == 0
+				|| main_data.key_amount < ft_strlen(main_data.buf_hist))
 			{
 				write(1, "\a", 1);
-				//printf("[%d]\n", main_data.key_amount);
 			}
 			else
 			{
-				//printf("[%d]\n", main_data.key_amount);
 				tputs(cursor_left, 1, ft_putint);
 				main_data.cursor_place -= 1;
 			}
@@ -74,11 +73,14 @@ int	escape_right(char *str)
 {
 	if (!strcmp(str, ESC_RIGHT))
 	{
-		if (ft_strlen(main_data.buf_hist) + main_data.title_length <= main_data.ws.ws_col - 1)
+		if (ft_strlen(main_data.buf_hist)
+			+ main_data.title_length <= main_data.ws.ws_col - 1)
 		{
-			if (main_data.cursor_place == ft_strlen(main_data.buf_hist)  || main_data.key_amount < ft_strlen(main_data.buf_hist))
+			if (main_data.cursor_place == ft_strlen(main_data.buf_hist)
+				|| main_data.key_amount < ft_strlen(main_data.buf_hist))
 				write(1, "\a", 1);
-			else if (main_data.cursor_place + main_data.title_length == main_data.ws.ws_col - 1)
+			else if (main_data.cursor_place + main_data.title_length
+				== main_data.ws.ws_col - 1)
 				write(1, "\a", 1);
 			else
 			{
@@ -86,36 +88,6 @@ int	escape_right(char *str)
 				main_data.cursor_place += 1;
 			}
 		}
-		return (1);
-	}
-	return (0);
-}
-
-int	escape_backspace(char *str)
-{
-	if (!strcmp(str, ESC_BACKSPACE)) {
-		if (!ft_strlen(main_data.buf_hist) || main_data.cursor_place == 0  || main_data.key_amount < ft_strlen(main_data.buf_hist))
-		{
-			write(1, "\a", 1);
-			//printf("[%d] : [%d]\n", main_data.key_amount, ft_strlen(main_data.buf_hist));
-		}
-		else
-		{
-			tputs(cursor_left, 1, ft_putint);
-			main_data.cursor_place -= 1;
-			tputs(tgetstr("dc", 0), 1, ft_putint);
-			char *tmp = ft_substr(main_data.buf_hist, 0, main_data.cursor_place);
-			char *tmp2 = ft_substr(main_data.buf_hist, main_data.cursor_place + 1,
-								   ft_strlen(main_data.buf_hist) - main_data.cursor_place);
-			free(main_data.buf_hist);
-			main_data.buf_hist = ft_strjoin(tmp, tmp2);
-			free(tmp);
-			free(tmp2);
-
-		}
-		//printf("WTF\n");
-		main_data.part = NULL;
-		main_data.current_tab = 0;
 		return (1);
 	}
 	return (0);
