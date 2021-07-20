@@ -354,11 +354,11 @@ void	read_cmd(t_list *cmd, ENV **list_envp)
 			// 	// read_flag(cmd);
 			// }
 			// i++;
-			if (!ft_strncmp("<<", cmd->flag, 3))
-				heredoc(cmd->next->commands[0]);
-			// else
-			// 	exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp),
-			// 			  find_VAR_ENV(*list_envp,"HOME"));
+			// if (!ft_strncmp("<<", cmd->flag, 3))
+			// 	heredoc(cmd->next->commands[0]);
+			else
+				exec_fork(cmd->commands, find_VAR_ENV(*list_envp, "PATH"), convert_list_in_arr(*list_envp),
+						  find_VAR_ENV(*list_envp,"HOME"));
 		// }
 		cmd = cmd->next;
 	}	
@@ -598,13 +598,13 @@ int main(int argc, char **argv, char **env) {
 			{
 			    char **elements = list_to_char();
 			    int i = 0;
-			    while(elements[i])
-                {
-			        printf("|%s|\n", elements[i]);
-			        i++;
-                }
+			    // while(elements[i])
+                // {
+			    //     printf("|%s|\n", elements[i]);
+			    //     i++;
+                // }
 				set_terminal(0);
-				// read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
+				read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 				set_terminal(1);
                 free_arr(elements, (int)count_arr(elements));
 			}

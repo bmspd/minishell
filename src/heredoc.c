@@ -31,7 +31,10 @@ int		*heredoc(char *stop_word)
 	status = malloc(sizeof(int));
 	fd = malloc(sizeof(int) * 2);
 	if (!fd)
+	{
+		free(status);
 		return (NULL);
+	}
 	pipe(fd);
 	heredoc = fork();
 	wait(status);

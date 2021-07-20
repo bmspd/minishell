@@ -48,12 +48,7 @@ char	**write_in_lf(char **out_list, DIR *dir, char *pwd)
 	int				i;
 
 	i = 0;
-	file = readdir(dir);
-	out_list[i] = ft_strdup(file->d_name);
-	if (!out_list[i])
-		return (free_error_getlf(3, dir, pwd, out_list));
-	i++;
-	while (file)
+	while (TRUE)
 	{
 		file = readdir(dir);
 		if (!file)
@@ -74,6 +69,7 @@ char	**create_list_file(void)
 	char	**out_list;
 
 	pwd = get_pwd();
+	out_list = NULL;
 	if (!pwd)
 		return (NULL);
 	dir = opendir(pwd);
