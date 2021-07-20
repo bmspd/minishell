@@ -1,3 +1,4 @@
+env
 CMakeLists.txt subject.txtd
 echo $USER
 env

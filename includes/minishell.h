@@ -90,6 +90,18 @@ int	escape_backspace(char *str);
 int escape_ctrl(char *str);
 int	escape_tab(char *str);
 
+//AUTOCOMPLETE UTILS
+int	check_list_file(char **list_file, int len);
+int	find_index(char **list_file, int len, char *list_elem);
+int buf_or_old_buf_hist(char *hist);
+int	take_word_part(void);
+void no_buff_case(char **list_files, int len);
+int    fill_index_take_length(int  *index, char **list_files, int len, char *list_elem);
+char    *choose_list_elem(char **list_files, int len, char *list_elem, int z);
+void    autocomplete(char *list_elem, int i);
+void    is_buff_case(char **list_files, int len, char **list_elem, int i);
+void    if_zero_current_tab(void);
+
 //parser staff
 void parser(char *str, char **env);
 
