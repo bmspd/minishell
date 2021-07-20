@@ -32,4 +32,7 @@ fclean:			clean
 
 re:				fclean all
 
+debug:
+	gcc -g ${SOURCE} ./libft/*.c -ltermcap -o ${NAME}
+
 .PHONY:			all clean fclean re

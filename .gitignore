@@ -12,3 +12,6 @@ l
 ll
 lll
 stest
+*.o
+minishell.dSYM
+*.a

@@ -63,13 +63,13 @@ int extra_parser(void)
 			return (1);
 		if (tmp->commands[0] == NULL)
 		{
-			if (last_flag_pipe && (!ft_strncmp(tmp->flag, "<", 2)
-				|| !ft_strncmp(tmp->flag, "<<", 3) || !ft_strncmp(tmp->flag, ">>", 3)
-				|| !ft_strncmp(tmp->flag, ">", 2)))
+			if (last_flag_pipe && (!ft_strncmp("<", tmp->flag, 2)
+				|| !ft_strncmp("<<", tmp->flag, 3) || !ft_strncmp(">>", tmp->flag, 3)
+				|| !ft_strncmp(">", tmp->flag, 2)))
 				;
-			else if (!ft_strncmp(tmp->flag, "<", 2)
-                || !ft_strncmp(tmp->flag, "<<", 3) || !ft_strncmp(tmp->flag, ">>", 3)
-                || !ft_strncmp(tmp->flag, ">", 2))
+			else if (!ft_strncmp("<", tmp->flag,  2)
+                || !ft_strncmp("<<", tmp->flag,  3) || !ft_strncmp(">>", tmp->flag,  3)
+                || !ft_strncmp(">", tmp->flag,  2))
 			    ;
 			else
 			{
