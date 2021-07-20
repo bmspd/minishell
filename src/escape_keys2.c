@@ -65,12 +65,12 @@ int	take_word_part(void)
 {
 	if (!ft_strlen(main_data.buf_hist) || main_data.current_tab)
 	{
+        safe_free(main_data.part);
 		main_data.part = ft_strdup("");
 		return 0;
 	}
 	else if (main_data.buf_hist[ft_strlen(main_data.buf_hist) - 1] == ' ')
 	{
-
 	    safe_free(main_data.part);
 		main_data.part = ft_strdup("");
 		return 0;
@@ -170,7 +170,6 @@ void    autocomplete(char *list_elem, int i)
 void    is_buff_case(char **list_files, int len, char **list_elem, int i)
 {
     int z;
-
     if (check_list_file(list_files, len))
     {
         write(1, "\a", 1);

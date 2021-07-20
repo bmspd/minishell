@@ -109,11 +109,14 @@ int	escape_backspace(char *str)
 								   ft_strlen(main_data.buf_hist) - main_data.cursor_place);
 			free(main_data.buf_hist);
 			main_data.buf_hist = ft_strjoin(tmp, tmp2);
+            safe_free(main_data.old_buf_hist); //added!
+			main_data.old_buf_hist = ft_strdup(main_data.buf_hist); //added!
 			free(tmp);
 			free(tmp2);
 
 		}
 		//printf("WTF\n");
+        safe_free(main_data.part);
 		main_data.part = NULL;
 		main_data.current_tab = 0;
 		return (1);
