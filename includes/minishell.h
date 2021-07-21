@@ -107,6 +107,9 @@ void    if_zero_current_tab(void);
 void space(char *str, int *i, int *j);
 void parser(char *str);
 char *dollar(char *str, int *i);
+char *solo_quote(char *str, int *i);
+char *slash(char *str, int *i);
+char	*double_quote(char *str, int *i);
 
 //list utils staff
 void	fill_id(t_list **head);

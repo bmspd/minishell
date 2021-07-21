@@ -505,6 +505,15 @@ void    symbol_not_enter(char *str)
 	//if (ft_strncmp("\4", str, 2))
 	main_data.cursor_place += (int)ft_strlen(str);
 	write(1, tmp2, ft_strlen(tmp2));
+	if (main_data.cursor_place != ft_strlen(main_data.buf_hist))
+	{
+		int z = 0;
+		while (z < ft_strlen(tmp2))
+		{
+			tputs(cursor_left, 1, ft_putint);
+			z++;
+		}
+	}
 	main_data.history_id = -1;
 	free(tmp0);
 	free(tmp2);
