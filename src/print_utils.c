@@ -58,7 +58,7 @@ void	print_small_greeting(void)
 		  "/_/\\\\   __   __  \\ \\_/_/\\   \n"
 		  "\\_\\/_\\__\\/\\__\\/\\__\\/_\\_\\/ \n"
 		  "   \\_\\/_/\\       /_\\_\\/ \n"
-		  "      \\_\\/       \\_\\/ \n";
+		  "      \\_\\/       \\_\\/ \n\n";
 	write(1, GREEN, ft_strlen(GREEN));
 	write(1, picture, ft_strlen(picture));
 	write(1, CLR_RESET, ft_strlen(CLR_RESET));

@@ -152,4 +152,7 @@ void    safe_free(char *element);
 char **list_to_char(void);
 int count_elements(void);
 char **list_to_help_char(void);
+
+//builtin staff
+void	builtin_echo(char **arguments, int fd);
 #endif
