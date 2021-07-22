@@ -69,10 +69,13 @@ extern t_struct main_data;
 void	print_title(void);
 void	init_title(void);
 int	ft_putint(int c);
+void	print_big_greeting(void);
+void	print_small_greeting(void);
 
 //signals staff
 void handler (int status);
 void handler1 (int status);
+void set_terminal(int type);
 
 //cursor staff
 void	moveback_cursor(void);
@@ -80,6 +83,11 @@ void	moveback_cursor(void);
 //history staff
 void take_history(void);
 void numerate_history(t_list *history);
+t_list	*ft_lstnew_history(void *content, int amount);
+int open_history(int flag);
+void external_history();
+void fill_external_history(int fd);
+
 
 //ESC commands staff
 int key_control(char *str);
@@ -107,6 +115,9 @@ void    if_zero_current_tab(void);
 void space(char *str, int *i, int *j);
 void parser(char *str);
 char *dollar(char *str, int *i);
+char *solo_quote(char *str, int *i);
+char *slash(char *str, int *i);
+char	*double_quote(char *str, int *i);
 
 //list utils staff
 void	fill_id(t_list **head);
