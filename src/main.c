@@ -97,23 +97,7 @@ int extra_parser(void)
 
 }
 
-t_list	*ft_lstnew_history(void *content, int amount)
-{
-	t_list	*new;
 
-	new = (struct s_list *)malloc(sizeof(t_list));
-	if (new)
-	{
-		new -> content = content;
-		new -> next = NULL;
-		new->commands = NULL;
-		new->id = 0;
-		new->flag = 0;
-		new->key_amount = amount;
-
-	}
-	return (new);
-}
 
 void	print_cmds(void)
 {
@@ -366,33 +350,6 @@ void	read_cmd(t_list *cmd, ENV **list_envp)
 
 /* end exec cmd - -- -- -- -- -- -- --- -- -- --- -- -- -- -- -- -- -- -- -- -- --- --- --- --- --- --- --- -- -- -- -- - */
 
-
-void set_terminal(int type)
-{
-	main_data.term_name = "xterm-256color";
-	tcgetattr(0, &main_data.term);
-	if (type == 1)
-	{
-		signal(SIGQUIT, handler);
-		signal(SIGINT, handler);
-		main_data.term.c_lflag &= ~(ECHO);
-		main_data.term.c_lflag &= ~(ICANON);
-	}
-	else
-	{
-		signal(SIGQUIT, handler1);
-		signal(SIGINT, handler1);
-		main_data.term.c_lflag |= (ECHO);
-		main_data.term.c_lflag |= (ICANON);
-	}
-	main_data.term.c_cc[VMIN] = 1;
-	main_data.term.c_cc[VTIME] = 0;
-	tcsetattr(0, TCSANOW, &main_data.term);
-	tgetent(0, main_data.term_name);
-	signal(SIGWINCH, handler);
-	ioctl(STDIN_FILENO, TIOCGWINSZ, &main_data.ws);
-}
-
 void	cleaning_foo(void)
 {
 	t_list	*tmp;
@@ -420,72 +377,7 @@ void	cleaning_foo(void)
 	main_data.cursor_place = 0;
 }
 
-int open_history(int flag)
-{
-	char *filename;
-	int fd;
-	char *full;
-	char *path = getenv("HOME");
-	if (path)
-	{
-		filename = "/.hist";
-		full = ft_strjoin(path, filename);
-		fd = open(full, O_CREAT| O_RDWR | flag , S_IRWXU);
-		free(full);
-	}
-	else
-	{
-		filename = ".hist";
-		fd = open(filename, O_CREAT| O_RDWR | flag , S_IRWXU);
-	}
-	return (fd);
-}
-void external_history()
-{
-	char *line;
-	int fd = open_history(0);
-//	printf("%d\n", fd);
-	int i;
-	i = 1;
-	while (i)
-	{
-		i = get_next_line(fd, 128, &line);
-//		printf("|%s|\n", line);
-		if (!ft_strlen(line))
-		{
-			free(line);
-			continue ;
-		}
-		ft_lstadd_back(&main_data.history, ft_lstnew_history(line, ft_strlen(line)));
-		numerate_history(main_data.history);
-	}
-	t_list *tempo = main_data.history;
-	while (tempo)
-	{
-//		printf("|%s|[%d]\n", (char *)tempo->content, tempo->key_amount);
-		tempo = tempo->next;
-	}
-	close(fd);
-}
 
-void fill_external_history(int fd)
-{
-	t_list *tmp;
-
-	tmp = main_data.history;
-	while (tmp)
-	{
-		if (ft_strncmp((char *)tmp->content, "\4", 2))
-		{
-//			printf("%lu\n", ft_strlen((char *)tmp->content));
-//			printf("|%s|\n", (char *)tmp->content);
-			ft_putstr_fd(tmp->content, fd);
-			ft_putchar_fd('\n', fd);
-		}
-		tmp = tmp->next;
-	}
-	close(fd);
-}
 void    symbol_not_enter(char *str)
 {
 	char    *tmp0;
@@ -557,6 +449,7 @@ void    typing_cycle()
 }
 int main(int argc, char **argv, char **env) {
 
+
 	init_title();
 	main_data.cursor_place = 0;
 	main_data.null_flag = 0;
@@ -578,6 +471,10 @@ int main(int argc, char **argv, char **env) {
 	main_data.list_envp = create_list_envp(env);
 	external_history();
 	set_terminal(1);
+	if (main_data.ws.ws_col >= 106)
+		print_big_greeting();
+	else if (main_data.ws.ws_col < 106)
+		print_small_greeting();
 
 	while (ft_strncmp("\4", str, 2))
 	{

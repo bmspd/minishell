@@ -36,3 +36,20 @@ void	take_history(void)
 	main_data.cursor_place = 0;
 	main_data.key_amount = 0;
 }
+
+t_list	*ft_lstnew_history(void *content, int amount)
+{
+	t_list	*new;
+
+	new = (struct s_list *)malloc(sizeof(t_list));
+	if (new)
+	{
+		new -> content = content;
+		new -> next = NULL;
+		new->commands = NULL;
+		new->id = 0;
+		new->flag = 0;
+		new->key_amount = amount;
+	}
+	return (new);
+}
