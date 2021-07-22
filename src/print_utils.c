@@ -9,6 +9,7 @@ void	init_title(void)
 {
 	main_data.title = ft_strdup("\x1b[31m🔥🔥🔥 minishell \x1b[36m➜ \x1b[0m");
 	main_data.title_length = (int)ft_strlen(main_data.title);
+	main_data.title_cursor_positions = 16;
 }
 
 void	print_title(void)

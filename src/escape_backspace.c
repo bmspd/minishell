@@ -28,7 +28,12 @@ int	escape_backspace(char *str)
 			|| main_data.key_amount < ft_strlen(main_data.buf_hist))
 			write(1, "\a", 1);
 		else
-			deletion();
+		{
+			if (check_ascii())
+				deletion();
+			else
+				write(1, "\a", 1);
+		}
 		safe_free(main_data.part);
 		main_data.part = NULL;
 		main_data.current_tab = 0;

@@ -60,8 +60,13 @@ int	escape_left(char *str)
 			}
 			else
 			{
-				tputs(cursor_left, 1, ft_putint);
-				main_data.cursor_place -= 1;
+				if (check_ascii())
+				{
+					tputs(cursor_left, 1, ft_putint);
+					main_data.cursor_place -= 1;
+				}
+				else
+					write(1, "\a", 1);
 			}
 		}
 		return (1);

@@ -6,29 +6,6 @@ char buf[100];
 char *buffer;
 t_struct main_data;
 
-//Получение ширины и высоты терминала на текущий момент
-void	test_tgetnum(void)
-{
-	int col;
-	int line;
-
-	col = tgetnum("co");
-	line = tgetnum("li");
-	printf("Текущие параметры терминала: Ширина = %d, Высота = %d\n", col, line);
-}
-
-void 	test_clean_screen(void)
-{
-	char *clean_screen;
-
-	buffer = buf;
-	clean_screen = tgetstr("cl", &buffer);
-	tputs(clean_screen, 1, ft_putint);
-
-	buffer = buf;
-	bzero(buffer, 100);
-
-}
 
 char	*delete_spaces_behind(char *str)
 {
@@ -39,7 +16,6 @@ char	*delete_spaces_behind(char *str)
 	{
 		len--;
 	}
-	// free(str);  Определенно не тут :)
 	char *tmp = ft_substr(str, 0, len + 1);
 	return (tmp);
 }
@@ -460,10 +436,7 @@ int main(int argc, char **argv, char **env) {
 	main_data.part = NULL;
 	main_data.buf_flag = 0;
 	main_data.history_id = -1;
-	char str[2000];
 
-	int l;
-	int n;
 	ENV	*list_envp;
 
 
@@ -476,7 +449,7 @@ int main(int argc, char **argv, char **env) {
 	else if (main_data.ws.ws_col < 106)
 		print_small_greeting();
 
-	while (ft_strncmp("\4", str, 2))
+	while (10)
 	{
 		print_title();
 		main_data.buf_hist = ft_strdup("");
@@ -503,7 +476,7 @@ int main(int argc, char **argv, char **env) {
 					 i++;
 				 }
 				set_terminal(0);
-				read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
+				//read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 				set_terminal(1);
 				int len = (int)count_arr(elements);
 				free_arr(elements, len);
