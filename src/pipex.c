@@ -27,7 +27,7 @@ void	exec_cmd(t_cmd *cmd, char **envp)
 		size = ft_strrchr(cmd->name, '/') - cmd->name;
 		if (ft_strrchr(cmd->name, '/') < cmd->name)
 		{
-			write(2, "\nminishell: ", 13);
+			write(2, "minishell: ", 12);
 			write(2, cmd->name, ft_strlen(cmd->name));
 			write(2, ": command not found\n", 21);
 			exit(127);
@@ -45,13 +45,15 @@ void	exec_cmd(t_cmd *cmd, char **envp)
 void	pipex(t_block *block, char **envp, int in)
 {
 	int fd[2];
-	// pid_t	pid;
-	// int		status;
 
 	fd[0] = -1;
 	fd[1] = -1;
 	if(!block)
+	{
+		if (in > 2)
+			close(in);
 		return ;
+	}
 	block->cmd->in = in;
 	if (block->next)
 	{
@@ -61,7 +63,6 @@ void	pipex(t_block *block, char **envp, int in)
 	block->pid = fork();
 	if (block->pid)
 	{
-		// waitpid(pid, &status, 0);
 		close(fd[1]);
 		pipex(block->next, envp, fd[0]);
 	}

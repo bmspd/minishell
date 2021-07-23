@@ -34,6 +34,7 @@ t_block	*new_block(void)
 	block->rdfile = NULL;
 	block->trfile = NULL;
 	block->addfile = NULL;
+	block->order = 0;
 	block->next = NULL;
 	return (block);
 }

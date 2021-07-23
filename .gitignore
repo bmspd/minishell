@@ -16,3 +16,5 @@ stest
 minishell.dSYM
 *.a
 newdir
+minishell
+

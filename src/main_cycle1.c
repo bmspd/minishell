@@ -107,15 +107,15 @@ void	command_launcher(void)
 	// int size = count_block(block);
 	// printf("%d\n", size);
 	t_block *tmp = last_block(block);
-	waitpid(tmp->pid, &status, 0);
-	// while (block)
-	// {
-	// 	i = (-1 == waitpid(block->pid, &status, 0));
-	// 	if (!i)
-	// 		block = block->next;
-	// }
+	// waitpid(tmp->pid, &status, 0);
+	while (block)
+	{
+		i = (-1 == waitpid(block->pid, &status, 0));
+		if (!i)
+			block = block->next;
+	}
 	//read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
-	free_block(block);
+	free_block(tmp);
 	set_terminal(1);
 	len = (int)count_arr(elements);
 	free_arr(elements, len);

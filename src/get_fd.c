@@ -44,6 +44,7 @@ void	get_fd(t_block *block, t_cmd *cmd, int i)
 	heredoc = block->heredoc;
 	trfile = block->trfile;
 	addfile = block->addfile;
+	// printf("%d\n", block->order);
 	while (i < block->order)
 	{
 		if (rdfile && i == rdfile->order)
