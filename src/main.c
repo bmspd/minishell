@@ -6,75 +6,6 @@ char buf[100];
 char *buffer;
 t_struct main_data;
 
-
-char	*delete_spaces_behind(char *str)
-{
-	int	len;
-
-	len = (int)ft_strlen(str) - 1;
-	while (str[len] == ' ')
-	{
-		len--;
-	}
-	char *tmp = ft_substr(str, 0, len + 1);
-	return (tmp);
-}
-
-int extra_parser(void)
-{
-	int last_flag_pipe = 0;
-	int tmp_flag = 0;
-	t_list	*tmp = main_data.commands;
-//	if (ft_lstsize(main_data.commands) >= 2)
-//	{
-//		if (ft_strncmp(tmp->flag, "|", 2) && ft_strncmp(tmp->flag, ";", 2))
-//			tmp = tmp->next;
-//	}
-	if (ft_lstsize(tmp) == 1 && !tmp->commands[0])
-		return (1);
-	while (tmp)
-	{
-
-		if (tmp->id == ft_lstsize(main_data.commands) - 1 && tmp_flag)
-			return (1);
-		if (tmp->commands[0] == NULL)
-		{
-			if (last_flag_pipe && (!ft_strncmp("<", tmp->flag, 2)
-				|| !ft_strncmp("<<", tmp->flag, 3) || !ft_strncmp(">>", tmp->flag, 3)
-				|| !ft_strncmp(">", tmp->flag, 2)))
-				;
-			else if (!ft_strncmp("<", tmp->flag,  2)
-				|| !ft_strncmp("<<", tmp->flag,  3) || !ft_strncmp(">>", tmp->flag,  3)
-				|| !ft_strncmp(">", tmp->flag,  2))
-				;
-			else
-			{
-				printf("PARSER ERROR!\n");
-				return (0);
-			}
-		}
-		if (tmp->flag)
-		{
-			if (!ft_strncmp(tmp->flag, ";", 2))
-				tmp_flag = 1;
-			else
-				tmp_flag = 0;
-		}
-		if (tmp->flag)
-		{
-			if (!ft_strncmp(tmp->flag, "|", 2))
-				last_flag_pipe = 1;
-			else
-				last_flag_pipe = 0;
-		}
-		tmp = tmp->next;
-	}
-	return (1);
-
-}
-
-
-
 void	print_cmds(void)
 {
 	printf("----------------------------------------\n");
@@ -353,76 +284,6 @@ void	cleaning_foo(void)
 	main_data.cursor_place = 0;
 }
 
-
-void    symbol_not_enter(char *str)
-{
-	char    *tmp0;
-	char    *tmp1;
-	char    *tmp2;
-
-	safe_free(main_data.part);
-	main_data.part = NULL;
-	main_data.current_tab = 0;
-	main_data.buf_flag = 0;
-	tmp0 = ft_substr(main_data.buf_hist, 0, main_data.cursor_place);
-	tmp1 = ft_strjoin(tmp0, str);
-	tmp2 = ft_substr(main_data.buf_hist, main_data.cursor_place,
-						   ft_strlen(main_data.buf_hist) - main_data.cursor_place);
-	free(main_data.buf_hist);
-	main_data.buf_hist = ft_strjoin(tmp1, tmp2);
-	//if (ft_strncmp("\4", str, 2))
-	main_data.cursor_place += (int)ft_strlen(str);
-	write(1, tmp2, ft_strlen(tmp2));
-	if (main_data.cursor_place != ft_strlen(main_data.buf_hist))
-	{
-		int z = 0;
-		while (z < ft_strlen(tmp2))
-		{
-			tputs(cursor_left, 1, ft_putint);
-			z++;
-		}
-	}
-	main_data.history_id = -1;
-	free(tmp0);
-	free(tmp2);
-	free(tmp1);
-}
-
-void    typing_cycle()
-{
-	char str[2000];
-	int l;
-
-	while(10)
-	{
-		l = read(0, str, 2000);
-		str[l] = 0;
-		if (key_control(str))
-			;
-		else
-		{
-			if (ft_strncmp("\4", str, 2))
-			{
-				write(1, str, l);
-				main_data.key_amount++;
-				if (ft_strncmp("\n", str, 2))
-					symbol_not_enter(str);
-			}
-
-		}
-		if (!ft_strncmp("\4", str, 2) && (!ft_strncmp("\4", str, 2) && !ft_strncmp("", main_data.buf_hist, 2)))
-		{
-			safe_free(main_data.buf_hist);
-			main_data.buf_hist = ft_strdup("\4");
-			write(1, "exit\n", 6);
-			break ;
-		}
-		if (!ft_strncmp("\n",str, 2))
-		{
-			break ;
-		}
-	}
-}
 int main(int argc, char **argv, char **env) {
 
 
@@ -484,7 +345,7 @@ int main(int argc, char **argv, char **env) {
 			}
 			cleaning_foo();
 			int fd = open_history(O_TRUNC);
-			ft_lstadd_front(&main_data.history, ft_lstnew_history(main_data.buf_hist, main_data.key_amount - 1));
+			ft_lstadd_front(&main_data.history, ft_lstnew_history(main_data.buf_hist, (int)ft_strlen(main_data.buf_hist)));
 			numerate_history(main_data.history);
 			fill_external_history(fd);
 

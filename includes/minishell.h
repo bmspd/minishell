@@ -120,6 +120,8 @@ char *dollar(char *str, int *i);
 char *solo_quote(char *str, int *i);
 char *slash(char *str, int *i);
 char	*double_quote(char *str, int *i);
+int extra_parser(void);
+char	*delete_spaces_behind(char *str);
 
 //list utils staff
 void	fill_id(t_list **head);
@@ -157,4 +159,8 @@ char **list_to_help_char(void);
 
 //builtin staff
 void	builtin_echo(char **arguments, int fd);
+
+//main cycle staff
+void    symbol_not_enter(char *str);
+void    typing_cycle(void);
 #endif
