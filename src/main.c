@@ -503,7 +503,7 @@ int main(int argc, char **argv, char **env) {
 					 i++;
 				 }
 				set_terminal(0);
-				// read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
+				read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 				set_terminal(1);
 				int len = (int)count_arr(elements);
 				free_arr(elements, len);
