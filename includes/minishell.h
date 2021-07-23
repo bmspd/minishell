@@ -32,6 +32,66 @@
 # include <sys/types.h>
 # include <fcntl.h>
 # include <sys/stat.h>
+#define	 COMAND		0
+#define	 ARGV		1
+#define	 HEREDOC	2
+#define	 RDFILE		3
+#define	 WRFILEADD	4
+#define	 WRFILETR	5
+#define	 PIPE		6
+#define STDIN	0
+#define STDOUT	1
+
+typedef struct s_file_read
+{
+	char	*name_file;
+	int		order;
+	struct s_file_read *next;
+}				t_rdfile;
+
+typedef struct s_heredoc
+{
+	char	*stop_word;
+	int		fd;
+	int		order;
+	struct s_heredoc *next;
+}				t_heredoc;
+
+typedef struct s_file_write_add
+{
+	char	*name_file;
+	int		order;
+	struct s_file_write_add *next;
+}				t_addfile;
+
+typedef struct s_file_write_tr
+{
+	char	*name_file;
+	int		order;
+	struct s_file_write_tr *next;
+}				t_trfile;
+
+
+typedef struct	s_cmd
+{
+	int	in;
+	int	out;
+	char *name;	
+	char **arg;
+	char **env;
+}				t_cmd;
+
+typedef struct s_block
+{
+	t_cmd			*cmd;
+	t_rdfile		*rdfile;
+	t_heredoc		*heredoc;
+	t_trfile		*trfile;
+	t_addfile		*addfile;
+	pid_t			pid;
+	int				order;
+	struct s_block	*next;
+}				t_block;
 
 typedef struct s_ENV
 {
@@ -145,7 +205,7 @@ char	**create_list_file(void);
 void	free_arr(char **arr, int count);
 
 //heredoc
-int		*heredoc(char *stop_word);
+int		heredoc(char *stop_word);
 
 //memory staff
 void    safe_free(char *element);
@@ -157,4 +217,66 @@ char **list_to_help_char(void);
 
 //builtin staff
 void	builtin_echo(char **arguments, int fd);
+
+//ft_realloc for arg
+char	**ft_realloc(char **ptr, size_t size);
+char	*tolower_str(char *str);
+//heredoc_session
+int		heredoc(char *stop_word);
+
+// new elements
+t_block		*new_block(void);
+t_cmd		*new_cmd(char *name);
+t_heredoc	*new_heredoc(char *stop_word, int order);
+t_rdfile	*new_rdfile(char *name_file, int order);
+t_trfile	*new_trfile(char *name_file, int order);
+t_addfile	*new_addfile(char *name_file, int order);
+
+//last_elem
+void		heredoc_add_back(t_heredoc **lst, t_heredoc *new);
+t_heredoc	*last_heredoc(t_heredoc *lst);
+
+t_trfile	*last_trfile(t_trfile *lst);
+void		trfile_add_back(t_trfile **lst, t_trfile *new);
+
+t_rdfile	*last_rdfile(t_rdfile *lst);
+void		rdfile_add_back(t_rdfile **lst, t_rdfile *new);
+
+t_addfile	*last_addfile(t_addfile *lst);
+void		addfile_add_back(t_addfile **lst, t_addfile *new);
+
+t_block		*last_block(t_block *lst);
+void		block_add_back(t_block **lst, t_block *new);
+
+//create_pipe_block
+t_block	*create_pipe_block(char **str);
+char	**ft_realloc(char **ptr, size_t size);
+
+int		get_index(char *str);
+void	init_heredoc(t_heredoc **hdoc, char *stop_word, int order);
+void	init_rdfile(t_rdfile **rdfile, char *name_file, int order);
+void	init_addfile(t_addfile **addfile, char *name_file, int order);
+void	init_trfile(t_trfile **trfile, char *name_file, int order);
+
+//free_all_element_pipex_block
+void	free_addfile(t_addfile	*addfile);
+void	free_trfile(t_trfile *trfile);
+void	free_rdfile(t_rdfile *rdfile);
+void	free_heredoc(t_heredoc *heredoc);
+void	free_cmd(t_cmd *cmd);
+void	free_block(t_block *block);
+
+//for_print_and_count
+int		count_block(t_block *block);
+
+
+//open_files
+int		open_trfile(char *name_file);
+int		open_addfile(char *name_file);
+int		open_rdfile(char *name_file);
+void	get_fd(t_block *block, t_cmd *cmd, int i);
+
+//pipex
+void	pipex(t_block *block, char **envp, int in);
+char *find_path_cmd(char *value, char *name_prog, char *home);
 #endif

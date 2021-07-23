@@ -19,25 +19,19 @@ void	heredoc_write(char *stop_word, int *fd)
 		}
 		write(fd[1], buf, ft_strlen(buf));
 		write(fd[1], "\n", 1);
+		free(buf);
 	}
 }
 
-int		*heredoc(char *stop_word)
+int	heredoc(char *stop_word)
 {
 	pid_t	heredoc;
-	int		*fd;
-	int		*status;
+	int		fd[2];
+	int		status;
 
-	status = malloc(sizeof(int));
-	fd = malloc(sizeof(int) * 2);
-	if (!fd)
-	{
-		free(status);
-		return (NULL);
-	}
 	pipe(fd);
 	heredoc = fork();
-	wait(status);
+	wait(&status);
 	if (!heredoc)
 	{
 		close(fd[0]);
@@ -45,10 +39,8 @@ int		*heredoc(char *stop_word)
 		exit (-1);
 	}
 	if (WEXITSTATUS(status))
-	{
-		free(fd);
-		return (NULL);
-	}
-	free(status);
-	return (fd);
+		return (-1);
+	close(fd[1]);
+	return (fd[0]);
 }
+

@@ -387,6 +387,18 @@ void    symbol_not_enter(char *str)
 	free(tmp2);
 	free(tmp1);
 }
+int count_block(t_block *block)
+{
+	int i;
+
+	i = 0;
+	while (block)
+	{
+		block = block->next;
+		i++;
+	}
+	return (i);
+}
 
 void    typing_cycle()
 {
@@ -476,9 +488,31 @@ int main(int argc, char **argv, char **env) {
 					 i++;
 				 }
 				set_terminal(0);
+				t_block *block;
+				block = create_pipe_block(elements);
+				int status;
+				// wait(&status);
+				pipex(block, convert_list_in_arr(main_data.list_envp), STDIN);
+				i = 0;
+				// int size = count_block(block);
+				// printf("%d\n", size);
+				t_block *tmp = block;
+				while (block)
+				{
+					i = (-1 == waitpid(block->pid, &status, 0));
+					if (!i)
+						block = block->next;
+				}
+				
+				// while (i < size)
+				// {
+				// 	wait(&status);
+				// 	i++;
+				// }
 				//read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
 				set_terminal(1);
 				int len = (int)count_arr(elements);
+				free_block(tmp);
 				free_arr(elements, len);
 				free_arr(help_elements, len);
 			}
