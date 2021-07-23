@@ -31,13 +31,13 @@ int	heredoc(char *stop_word)
 
 	pipe(fd);
 	heredoc = fork();
-	wait(&status);
 	if (!heredoc)
 	{
 		close(fd[0]);
 		heredoc_write(stop_word, fd);
 		exit (-1);
 	}
+	waitpid(heredoc, &status, 0);
 	if (WEXITSTATUS(status))
 		return (-1);
 	close(fd[1]);

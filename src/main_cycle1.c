@@ -90,12 +90,12 @@ void	command_launcher(void)
 
 	elements = list_to_char();
 	help_elements = list_to_help_char();
-	i = 0;
-	while (elements[i])
-	{
-		printf("|%s|[%s]\n", elements[i], help_elements[i]);
-		i++;
-	}
+	// i = 0;
+	// while (elements[i])
+	// {
+	// 	printf("|%s|[%s]\n", elements[i], help_elements[i]);
+	// 	i++;
+	// }
 	set_terminal(0);
 				
 	t_block *block;
@@ -106,14 +106,16 @@ void	command_launcher(void)
 	i = 0;
 	// int size = count_block(block);
 	// printf("%d\n", size);
-	t_block *tmp = block;
-	while (block)
-	{
-		i = (-1 == waitpid(block->pid, &status, 0));
-		if (!i)
-			block = block->next;
-	}
+	t_block *tmp = last_block(block);
+	waitpid(tmp->pid, &status, 0);
+	// while (block)
+	// {
+	// 	i = (-1 == waitpid(block->pid, &status, 0));
+	// 	if (!i)
+	// 		block = block->next;
+	// }
 	//read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
+	free_block(block);
 	set_terminal(1);
 	len = (int)count_arr(elements);
 	free_arr(elements, len);
