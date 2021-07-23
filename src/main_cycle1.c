@@ -43,11 +43,11 @@ void	typing_cycle(void)
 	}
 }
 
-void    symbol_not_enter(char *str)
+void	symbol_not_enter(char *str)
 {
-	char    *tmp0;
-	char    *tmp1;
-	char    *tmp2;
+	char	*tmp0;
+	char	*tmp1;
+	char	*tmp2;
 
 	safe_free(main_data.part);
 	main_data.part = NULL;
@@ -56,23 +56,50 @@ void    symbol_not_enter(char *str)
 	tmp0 = ft_substr(main_data.buf_hist, 0, main_data.cursor_place);
 	tmp1 = ft_strjoin(tmp0, str);
 	tmp2 = ft_substr(main_data.buf_hist, main_data.cursor_place,
-					 ft_strlen(main_data.buf_hist) - main_data.cursor_place);
+			ft_strlen(main_data.buf_hist) - main_data.cursor_place);
 	free(main_data.buf_hist);
 	main_data.buf_hist = ft_strjoin(tmp1, tmp2);
-	//if (ft_strncmp("\4", str, 2))
 	main_data.cursor_place += (int)ft_strlen(str);
 	write(1, tmp2, ft_strlen(tmp2));
-	if (main_data.cursor_place != ft_strlen(main_data.buf_hist))
-	{
-		int z = 0;
-		while (z < ft_strlen(tmp2))
-		{
-			tputs(cursor_left, 1, ft_putint);
-			z++;
-		}
-	}
+	cursor_behaviour(tmp2);
 	main_data.history_id = -1;
 	free(tmp0);
 	free(tmp2);
 	free(tmp1);
+}
+
+void	init_variables(void)
+{
+	main_data.cursor_place = 0;
+	main_data.null_flag = 0;
+	main_data.key_amount = 0;
+	main_data.buf_hist = NULL;
+	main_data.history = NULL;
+	main_data.current_tab = 0;
+	main_data.part = NULL;
+	main_data.buf_flag = 0;
+	main_data.history_id = -1;
+}
+
+void	command_launcher(void)
+{
+	char	**elements;
+	char	**help_elements;
+	int		i;
+	int		len;
+
+	elements = list_to_char();
+	help_elements = list_to_help_char();
+	i = 0;
+	while (elements[i])
+	{
+		printf("|%s|[%s]\n", elements[i], help_elements[i]);
+		i++;
+	}
+	set_terminal(0);
+	//read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
+	set_terminal(1);
+	len = (int)count_arr(elements);
+	free_arr(elements, len);
+	free_arr(help_elements, len);
 }

@@ -81,6 +81,7 @@ void set_terminal(int type);
 //cursor staff
 void	moveback_cursor(void);
 int	check_ascii(void);
+void cursor_behaviour(char *tmp2);
 
 //history staff
 void take_history(void);
@@ -151,6 +152,7 @@ int		*heredoc(char *stop_word);
 
 //memory staff
 void    safe_free(char *element);
+void	cleaning_foo(void);
 
 //Convertation list to char
 char **list_to_char(void);
@@ -163,4 +165,7 @@ void	builtin_echo(char **arguments, int fd);
 //main cycle staff
 void    symbol_not_enter(char *str);
 void    typing_cycle(void);
+void	init_variables(void);
+void	command_launcher(void);
+void	main_engine(void);
 #endif

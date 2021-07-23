@@ -257,46 +257,11 @@ void	read_cmd(t_list *cmd, ENV **list_envp)
 
 /* end exec cmd - -- -- -- -- -- -- --- -- -- --- -- -- -- -- -- -- -- -- -- -- --- --- --- --- --- --- --- -- -- -- -- - */
 
-void	cleaning_foo(void)
+
+int main(int argc, char **argv, char **env)
 {
-	t_list	*tmp;
-	int		k;
-
-	while (main_data.commands)
-	{
-		tmp = NULL;
-		k = 0;
-		while (main_data.commands->commands[k])
-			free(main_data.commands->commands[k++]);
-		free(main_data.commands->commands[k]);
-		free(main_data.commands->commands);
-		free(main_data.commands->flag);
-
-		if (main_data.commands->next)
-			tmp = main_data.commands->next;
-		free(main_data.commands);
-		main_data.commands = tmp;
-	}
-	main_data.commands = NULL;
-	main_data.null_flag = 0;
-	main_data.key_amount = 0;
-	main_data.history_id = -1;
-	main_data.cursor_place = 0;
-}
-
-int main(int argc, char **argv, char **env) {
-
-
 	init_title();
-	main_data.cursor_place = 0;
-	main_data.null_flag = 0;
-	main_data.key_amount = 0;
-	main_data.buf_hist = NULL;
-	main_data.history = NULL;
-	main_data.current_tab = 0;
-	main_data.part = NULL;
-	main_data.buf_flag = 0;
-	main_data.history_id = -1;
+	init_variables();
 
 	ENV	*list_envp;
 
@@ -318,44 +283,12 @@ int main(int argc, char **argv, char **env) {
 		if(!ft_strncmp("exit", main_data.buf_hist, 6) || !ft_strncmp("\4", main_data.buf_hist, 2))
 			break;
 		if (ft_strncmp(main_data.buf_hist, "", 2))
-		{
-			main_data.counter = 0;
-			main_data.flag1 = 0;
-			main_data.current_tab = 0;
-			main_data.part = NULL;
-			ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
-			init_commands();
-			parser(delete_spaces_behind(main_data.buf_hist));
-			if (extra_parser() && ft_strncmp(main_data.buf_hist, "\4", 2))
-			{
-				char **elements = list_to_char();
-				char **help_elements = list_to_help_char();
-				int i = 0;
-				while(elements[i])
-				 {
-					 printf("|%s|[%s]\n", elements[i], help_elements[i]);
-					 i++;
-				 }
-				set_terminal(0);
-				//read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
-				set_terminal(1);
-				int len = (int)count_arr(elements);
-				free_arr(elements, len);
-				free_arr(help_elements, len);
-			}
-			cleaning_foo();
-			int fd = open_history(O_TRUNC);
-			ft_lstadd_front(&main_data.history, ft_lstnew_history(main_data.buf_hist, (int)ft_strlen(main_data.buf_hist)));
-			numerate_history(main_data.history);
-			fill_external_history(fd);
-
-		}
+			main_engine();
 		else
 			free(main_data.buf_hist);
 
 	}
 	set_terminal(0);
-
 	write(1, "💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n",
 		  ft_strlen("💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n"));
 }
