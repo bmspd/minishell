@@ -17,11 +17,12 @@ static void	heredoc_parse(char *str, char *tmp, int *i, int *j)
 	*j = *i;
 }
 
-static void	other_parse(char *str, char *tmp, int *i, int *j)
+static void	other_parse(char *str, char **tmp, int *i, int *j)
 {
-	free(tmp);
-	tmp = ft_substr(str, *i, 1);
-	fill_flag(tmp);
+	free(*tmp);
+	*tmp = ft_substr(str, *i, 1);
+//	printf("!%s!\n", tmp);
+	fill_flag(*tmp);
 	main_data.flag1++;
 	ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 	fill_id(&main_data.commands);
@@ -52,8 +53,8 @@ void	space(char *str, int *i, int *j)
 		heredoc_parse(str, tmp, i, j);
 	else if (str[*i] == ';' || str[*i] == '|'
 		|| str[*i] == '<' || str[*i] == '>')
-		other_parse(str, tmp, i, j);
-	free(tmp);
+		other_parse(str, &tmp, i, j);
+	safe_free(tmp);
 }
 
 char	*solo_quote(char *str, int *i)
@@ -90,7 +91,8 @@ char	*slash(char *str, int *i)
 	char	*tmp2;
 
 	(*i)++;
-	tmp = ft_substr(str, 0, *i - 1);
+	tmp = ft_substr(str, 0, *i - 1);\
+	printf("tmp = |%s|\n", tmp);
 	if (!ft_strncmp("", tmp, 2))
 	{
 		(*i)++;
@@ -98,10 +100,11 @@ char	*slash(char *str, int *i)
 		return (str);
 	}
 	tmp2 = ft_strdup(str + *i);
+	printf("tmp2 = |%s|\n", tmp2);
 	free(str);
 	str = ft_strjoin(tmp, tmp2);
 	free(tmp);
 	free(tmp2);
-	(*i)++;
+	//(*i)++;
 	return (str);
 }

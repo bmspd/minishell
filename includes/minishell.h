@@ -48,6 +48,7 @@ typedef struct s_struct{
 	char *buf_hist;
 	char *title;
 	int	title_length;
+	int title_cursor_positions;
 	int cursor_place;
 	struct winsize ws;
 	t_list *commands;
@@ -79,6 +80,7 @@ void set_terminal(int type);
 
 //cursor staff
 void	moveback_cursor(void);
+int	check_ascii(void);
 
 //history staff
 void take_history(void);
@@ -152,4 +154,7 @@ void    safe_free(char *element);
 char **list_to_char(void);
 int count_elements(void);
 char **list_to_help_char(void);
+
+//builtin staff
+void	builtin_echo(char **arguments, int fd);
 #endif

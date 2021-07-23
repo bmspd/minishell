@@ -9,6 +9,7 @@ void	init_title(void)
 {
 	main_data.title = ft_strdup("\x1b[31m🔥🔥🔥 minishell \x1b[36m➜ \x1b[0m");
 	main_data.title_length = (int)ft_strlen(main_data.title);
+	main_data.title_cursor_positions = 16;
 }
 
 void	print_title(void)
@@ -58,7 +59,7 @@ void	print_small_greeting(void)
 		  "/_/\\\\   __   __  \\ \\_/_/\\   \n"
 		  "\\_\\/_\\__\\/\\__\\/\\__\\/_\\_\\/ \n"
 		  "   \\_\\/_/\\       /_\\_\\/ \n"
-		  "      \\_\\/       \\_\\/ \n";
+		  "      \\_\\/       \\_\\/ \n\n";
 	write(1, GREEN, ft_strlen(GREEN));
 	write(1, picture, ft_strlen(picture));
 	write(1, CLR_RESET, ft_strlen(CLR_RESET));
