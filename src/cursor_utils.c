@@ -5,7 +5,7 @@ int	check_ascii(void)
 	int	i;
 
 	i = 0;
-	while(main_data.buf_hist[i])
+	while (main_data.buf_hist[i])
 	{
 		if (main_data.buf_hist[i] >= 0 && main_data.buf_hist[i] < 127)
 			i++;
@@ -18,11 +18,11 @@ int	check_ascii(void)
 void	moveback_cursor(void)
 {
 	int	i;
-	int z;
+
 	if (ft_strlen(main_data.buf_hist))
 	{
 		i = (main_data.title_cursor_positions
-			+ (int)ft_strlen(main_data.buf_hist)) / main_data.ws.ws_col;
+				+ (int)ft_strlen(main_data.buf_hist)) / main_data.ws.ws_col;
 		while (i)
 		{
 			tputs(tgetstr("cr", 0), 1, ft_putint);
@@ -35,4 +35,19 @@ void	moveback_cursor(void)
 	tputs(tgetstr("dl", 0), 1, ft_putint);
 	print_title();
 	main_data.cursor_place = 0;
+}
+
+void	cursor_behaviour(char *tmp2)
+{
+	int	z;
+
+	if (main_data.cursor_place != ft_strlen(main_data.buf_hist))
+	{
+		z = 0;
+		while (z < ft_strlen(tmp2))
+		{
+			tputs(cursor_left, 1, ft_putint);
+			z++;
+		}
+	}
 }

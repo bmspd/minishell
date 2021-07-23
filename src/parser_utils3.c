@@ -38,3 +38,17 @@ char	*double_quote(char *str, int *i)
 	(*i)++;
 	return (tmp);
 }
+
+char	*delete_spaces_behind(char *str)
+{
+	int		len;
+	char	*tmp;
+
+	len = (int)ft_strlen(str) - 1;
+	while (str[len] == ' ')
+	{
+		len--;
+	}
+	tmp = ft_substr(str, 0, len + 1);
+	return (tmp);
+}

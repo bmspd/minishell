@@ -49,7 +49,8 @@ void	space(char *str, int *i, int *j)
 	while (str[*i] == ' ')
 		(*i)++;
 	*j = *i;
-	if ((str[*i] == '<' && str[*i + 1] == '<'))
+	if ((str[*i] == '<' && str[*i + 1] == '<')
+		|| (str[*i] == '>' && str[*i + 1] == '>'))
 		heredoc_parse(str, tmp, i, j);
 	else if (str[*i] == ';' || str[*i] == '|'
 		|| str[*i] == '<' || str[*i] == '>')

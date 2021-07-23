@@ -6,7 +6,9 @@ SRCS			= 	main.c print_utils.c signals.c cursor_utils.c escape_commands.c histor
 					parser_utils3.c history_file.c built_in1.c new_addfile.c\
 					new_block.c new_heredoc.c new_rdfile.c new_trfile.c\
 					pipex.c write_info_pipe_block.c create_pipe_block.c\
-					new_cmd.c get_fd.c open_files.c
+					new_cmd.c get_fd.c open_files.c\
+					parser_utils3.c history_file.c built_in1.c extra_parser.c \
+					main_cycle1.c main_cycle2.c
 DIR_S			= src
 SOURCE			=$(addprefix $(DIR_S)/,$(SRCS))
 OBJS			= $(SOURCE:.c=.o)

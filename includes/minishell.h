@@ -141,6 +141,7 @@ void set_terminal(int type);
 //cursor staff
 void	moveback_cursor(void);
 int	check_ascii(void);
+void cursor_behaviour(char *tmp2);
 
 //history staff
 void take_history(void);
@@ -180,6 +181,8 @@ char *dollar(char *str, int *i);
 char *solo_quote(char *str, int *i);
 char *slash(char *str, int *i);
 char	*double_quote(char *str, int *i);
+int extra_parser(void);
+char	*delete_spaces_behind(char *str);
 
 //list utils staff
 void	fill_id(t_list **head);
@@ -209,6 +212,7 @@ int		heredoc(char *stop_word);
 
 //memory staff
 void    safe_free(char *element);
+void	cleaning_foo(void);
 
 //Convertation list to char
 char **list_to_char(void);
@@ -279,4 +283,12 @@ void	get_fd(t_block *block, t_cmd *cmd, int i);
 //pipex
 void	pipex(t_block *block, char **envp, int in);
 char *find_path_cmd(char *value, char *name_prog, char *home);
+//main cycle staff
+void    symbol_not_enter(char *str);
+void    typing_cycle(void);
+void	init_variables(void);
+void	command_launcher(void);
+void	main_engine(void);
+
+char **convert_list_in_arr(ENV *list_envp);
 #endif
