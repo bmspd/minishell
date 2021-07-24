@@ -16,6 +16,34 @@ int	escape_ctrl(char *str)
 	return (0);
 }
 
+static int	empty_folder(int len, char **list_files)
+{
+	if (len == 2)
+	{
+		write(1, "\a", 1);
+		free_arr(list_files, len);
+		return (1);
+	}
+	return (0);
+}
+
+static char *if_folder_changed(char *list_elem)
+{
+	static char *pwd;
+	char *pwd_new;
+
+	pwd_new = get_pwd();
+	if (ft_strncmp(pwd_new, pwd, ft_strlen(pwd_new))
+		|| ft_strncmp(pwd, pwd_new, ft_strlen(pwd)))
+	{
+		safe_free(pwd);
+		pwd = get_pwd();
+		safe_free(list_elem);
+		list_elem = NULL;
+	}
+	free(pwd_new);
+	return (list_elem);
+}
 int	escape_tab(char *str)
 {
 	char		**list_files;
@@ -26,13 +54,10 @@ int	escape_tab(char *str)
 	if (!ft_strncmp(str, "\t", 2))
 	{
 		list_files = create_list_file();
+		list_elem = if_folder_changed(list_elem);
 		len = (int)count_arr(list_files);
-		if (len == 2)
-		{
-			write(1, "\a", 1);
-			free_arr(list_files, len);
+		if (empty_folder(len, list_files))
 			return (1);
-		}
 		i = take_word_part();
 		if_zero_current_tab();
 		if (main_data.part && !ft_strncmp(main_data.part, "", 1))
