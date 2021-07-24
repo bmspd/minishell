@@ -26,13 +26,14 @@ char	*choose_list_elem(char **list_files, int len, char *list_elem, int z)
 	length = fill_index_take_length(&index, list_files, len, list_elem);
 	while (z < len)
 	{
+		fprintf(stderr, "%d\n", z);
 		if (!list_elem && !ft_strncmp(main_data.part,
 				list_files[index], ft_strlen(main_data.part)))
 		{
 			safe_free(list_elem);
 			list_elem = ft_strdup(list_files[index]);
 		}
-		else if (!list_elem && !ft_strncmp(main_data.part,
+		else if (!ft_strncmp(main_data.part,
 				 list_files[index], ft_strlen(main_data.part))
 			 && ft_strncmp(list_files[index], list_elem, length))
 		{
