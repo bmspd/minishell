@@ -1,11 +1,10 @@
 #include "../includes/minishell.h"
 
-void	reg_pipe(int *i, int *this_cmd, t_block **block)
+void	reg_pipe(int *i, t_block **block)
 {
 	t_block *new = new_block();
 	block_add_back(block, new);
 	(*block) = (*block)->next;
-	(*this_cmd) = 1;
 	(*i) += 1;
 }
 
@@ -23,44 +22,49 @@ void	reg_file(int *i, t_block **block, char **str, int index)
 	(*i) += 2;
 }
 
-int	reg_file_and_pipe(int *i, char **str, int *this_cmd, t_block **block)
+int	reg_file_and_pipe(int *i, char **str, char **check, t_block **block)
 {
 	int index;
 
-	index = get_index(str[*i]);
+	index = get_index(str[*i], check[*i]);
 	if (index)
 	{
 		if (index == PIPE)
-			reg_pipe(i, this_cmd, block);
+			reg_pipe(i, block);
 		else
 		{
 			reg_file(i, block, str, index);
 		}
-		return (1);
+		return (0);
 	}
-	return (0);
+	return (1);
 }
 
-void	reg_cmd_and_arg(int *this_cmd, t_block *block, char *str)
+void	reg_cmd_and_arg(t_block *block, char *str)
 {
 	size_t size;
 
 	size = 0;
-	if(*this_cmd)
-	{
-		block->cmd->name = str;
-		block->cmd->arg[0] = str;
-		*this_cmd = 0;
-	}
-	else
-	{
-		size = count_arr(block->cmd->arg);
-		block->cmd->arg = ft_realloc(block->cmd->arg, size + 1);
+	// if(*this_cmd)
+	// {
+	// 	block->cmd->name = str;
+	// 	block->cmd->arg[0] = str;
+	// 	*this_cmd = 0;
+	// }
+	// else
+	// {
+		if (!block->cmd->name)
+			block->cmd->name = str;
+		if (block->cmd->arg[0])
+		{
+			size = count_arr(block->cmd->arg);
+			block->cmd->arg = ft_realloc(block->cmd->arg, size + 1);
+		}
 		block->cmd->arg[size] = str;
-	}
+	// }
 }
 
-t_block *create_pipe_block(char **str)
+t_block *create_pipe_block(char **str, char **check)
 {
 	int i;
 	int this_cmd;
@@ -76,10 +80,11 @@ t_block *create_pipe_block(char **str)
 	int size = count_arr(str);
 	while (i < size)
 	{
-		if (reg_file_and_pipe(&i, str, &this_cmd, &block))
+		this_cmd = reg_file_and_pipe(&i, str, check, &block);
+		if (!this_cmd)
 			continue;
 		else
-			reg_cmd_and_arg(&this_cmd, block, str[i]);
+			reg_cmd_and_arg(block, str[i]);
 		i++;
 	}
 	return (tmp);

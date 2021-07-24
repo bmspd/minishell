@@ -1,29 +1,29 @@
 #include "../includes/minishell.h"
 
-void	env(ENV *list)
+void	env(t_envp *list, int fd)
 {
 	while (list)
 	{
-			printf("%s", list->name);
-			printf("=\"");
+			write(fd, list->name, ft_strlen(list->name));
+			write(fd, "=", 1);
 			if	(list->value)
-				printf("%s", list->value);
-			printf("\"\n");
+				write(fd, list->value, ft_strlen(list->value));
+			write(fd, "\n", 1);
 		list = list->next;
 	}
 }
 
-void	free_VAR(ENV *ptr)
+void	free_VAR(t_envp *ptr)
 {
 	free(ptr->name);
 	free(ptr->value);
 	free(ptr);
 }
 
-void	rem_envp_VAR(ENV **list_envp, char *VAR)
+void	rem_envp_VAR(t_envp **list_envp, char *VAR)
 {
-	ENV *tmp;
-	ENV *tmp2;
+	t_envp *tmp;
+	t_envp *tmp2;
 
 	tmp = NULL;
 	tmp2 = *list_envp;
@@ -49,12 +49,12 @@ void	rem_envp_VAR(ENV **list_envp, char *VAR)
 	free_VAR(tmp);
 }
 
-ENV	*new_envp(char	*env, ENV	*old)
+t_envp	*new_envp(char	*env, t_envp	*old)
 {
-	ENV		*new_env;
+	t_envp		*new_env;
 	char	*tmp;
 
-	new_env = malloc(sizeof(ENV));
+	new_env = malloc(sizeof(t_envp));
 	tmp = ft_strchr(env, '=');
 	new_env->name = ft_substr(env, 0, tmp - env);
 	new_env->value = ft_strdup(ft_strchr(env, '=') + 1);
@@ -64,11 +64,11 @@ ENV	*new_envp(char	*env, ENV	*old)
 	return (new_env);
 }
 
-ENV	*init_list_envp(void)
+t_envp	*init_list_envp(void)
 {
-	ENV *pwd;
-	ENV *shlvl;
-	ENV *last_exec;
+	t_envp *pwd;
+	t_envp *shlvl;
+	t_envp *last_exec;
 
 	pwd = new_envp("PWD=", NULL);
 	free(pwd->value);
@@ -82,13 +82,13 @@ ENV	*init_list_envp(void)
 	return (pwd);
 }
 
-void	iter_shlvl(ENV **list_envp)
+void	iter_shlvl(t_envp **list_envp)
 {
-	ENV	*shlvl;
+	t_envp	*shlvl;
 	int		number;
 
 	number = 1;
-	shlvl = find_VAR_ENV(*list_envp, "SHLVL");
+	shlvl = find_VAR_t_envp(*list_envp, "SHLVL");
 	if (shlvl)
 	{
 		number = ft_atoi(shlvl->value) + 1;
@@ -101,14 +101,14 @@ void	iter_shlvl(ENV **list_envp)
 		shlvl = new_envp("SHLVL=", NULL);
 		free(shlvl->value);
 		shlvl->value = ft_strdup("1");
-		lastadd_ENV_VAR(*list_envp, shlvl);
+		lastadd_t_envp_VAR(*list_envp, shlvl);
 	}
 }
 
-ENV	*create_list_envp(char **envp)
+t_envp	*create_list_envp(char **envp)
 {
-	ENV	*list_envp;
-	ENV	*tmp;
+	t_envp	*list_envp;
+	t_envp	*tmp;
 	int i;
 
 	if(!envp[0])

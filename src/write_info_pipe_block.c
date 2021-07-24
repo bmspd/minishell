@@ -1,16 +1,16 @@
 #include "../includes/minishell.h"
 
-int	get_index(char *str)
+int	get_index(char *str, char *check)
 {
-	if (!ft_strncmp("<<", str, ft_strlen(str) + 1))
+	if (check && !ft_strncmp("<<", str, ft_strlen(str) + 1))
 		return (HEREDOC);
-	else if (!ft_strncmp("<", str, ft_strlen(str) + 1))
+	else if (check && !ft_strncmp("<", str, ft_strlen(str) + 1))
 		return (RDFILE);
-	else if (!ft_strncmp(">>", str, ft_strlen(str) + 1))
+	else if (check && !ft_strncmp(">>", str, ft_strlen(str) + 1))
 		return (WRFILEADD);
-	else if (!ft_strncmp(">", str, ft_strlen(str) + 1))
+	else if (check && !ft_strncmp(">", str, ft_strlen(str) + 1))
 		return (WRFILETR);
-	else if (!ft_strncmp("|", str, ft_strlen(str) + 1))
+	else if (check && !ft_strncmp("|", str, ft_strlen(str) + 1))
 		return (PIPE);
 	return (0);
 }

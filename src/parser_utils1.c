@@ -16,7 +16,7 @@ static char	*unsuccess_search(char *tmp, char *str, int j)
 	return (str);
 }
 
-static char	*success_search(char *tmp, char *str, int j, ENV *search)
+static char	*success_search(char *tmp, char *str, int j, t_envp *search)
 {
 	char	*tmp2;
 	char	*tmp3;
@@ -54,7 +54,7 @@ char	*dollar(char *str, int *i)
 {
 	int		j;
 	char	*tmp;
-	ENV		*search;
+	t_envp		*search;
 
 	j = *i;
 	while (str[*i])
@@ -66,7 +66,7 @@ char	*dollar(char *str, int *i)
 	tmp = ft_substr(str, j + 1, *i - j - 1);
 	if (!ft_strncmp("", tmp, 1))
 		return(empty_dollar(str, tmp));
-	search = find_VAR_ENV(main_data.list_envp, tmp);
+	search = find_VAR_t_envp(main_data.list_envp, tmp);
 	if (search)
 	{
 		(*i) = j + (int)ft_strlen(search->value);

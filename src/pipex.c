@@ -18,8 +18,14 @@ void	error_massage_exec(char *name_file)
 void	exec_cmd(t_cmd *cmd, char **envp)
 {
 	char *path;
-	
-	path = find_path_cmd(getenv("PATH"), cmd->name, getenv("HOME"));
+	t_envp *PATH;
+	t_envp *HOME;
+
+	if (!cmd->name)
+		exit(0);
+	PATH = find_VAR_t_envp(main_data.list_envp, "PATH");
+	HOME = find_VAR_t_envp(main_data.list_envp, "HOME");
+	path = find_path_cmd(PATH->value, cmd->name, HOME->value);
 	if (!path)
 	{
 		size_t size;

@@ -1,4 +1,10 @@
 #include "../includes/minishell.h"
+#define ENV		1
+#define CD		2
+#define PWD		3
+#define MYECHO	4
+#define UNSET	5
+#define EXPORT	6
 
 static int	break_condition(char *str)
 {
@@ -81,6 +87,75 @@ void	init_variables(void)
 	main_data.history_id = -1;
 }
 
+int		get_index_builtin(char	*name)
+{
+	if (!name)
+		return (0);
+	if (!ft_strncmp("env", name, ft_strlen(name)))
+		return (ENV);
+	if (!ft_strncmp("pwd", name, ft_strlen(name)))
+		return (PWD);
+	if (!ft_strncmp("cd", name, ft_strlen(name)))
+		return (CD);
+	if (!ft_strncmp("export", name, ft_strlen(name)))
+		return (EXPORT);
+	if (!ft_strncmp("echo", name, ft_strlen(name)))
+		return (MYECHO);
+	if (!ft_strncmp("unset", name, ft_strlen(name)))
+		return (UNSET);
+	return (0);
+}
+
+void	unset(t_cmd *cmd)
+{
+	int i;
+
+	i = 1;
+	while (cmd->arg[i])
+	{
+		rem_envp_VAR(&main_data.list_envp, cmd->arg[i]);
+		i++;
+	}
+}
+
+int	exec_builtin(t_cmd *cmd) 
+{
+	int index;
+
+	index = get_index_builtin(cmd->name);
+	if (index)
+	{
+		if (index == ENV)
+			env(main_data.list_envp, cmd->out);
+		if (index == PWD)
+			print_pwd(cmd->out);
+		if (index == CD)
+			go_to_direction(cmd, main_data.list_envp);
+		if (index == UNSET)
+			unset(cmd);
+		if (index == MYECHO)
+			builtin_echo(&cmd->arg[1], cmd->out);
+		return (1);
+	}
+	return (0);
+}
+
+void	one_cmd(t_block *block)
+{
+	int		reg_builtin;
+	pid_t	pid;
+	int status;
+
+	get_fd(block, block->cmd, 0);
+	reg_builtin = exec_builtin(block->cmd);
+	if (reg_builtin)
+		return ;
+	pid = fork();
+	if (!pid)
+		exec_cmd(block->cmd, convert_list_in_arr(main_data.list_envp));
+	wait(&status);
+}
+
 void	command_launcher(void)
 {
 	char	**elements;
@@ -99,23 +174,24 @@ void	command_launcher(void)
 	set_terminal(0);
 				
 	t_block *block;
-	block = create_pipe_block(elements);
+	block = create_pipe_block(elements, help_elements);
 	int status;
-	// wait(&status);
-	pipex(block, convert_list_in_arr(main_data.list_envp), STDIN);
-	i = 0;
-	// int size = count_block(block);
-	// printf("%d\n", size);
-	t_block *tmp = last_block(block);
-	// waitpid(tmp->pid, &status, 0);
-	while (block)
+	if (block->next)
 	{
-		i = (-1 == waitpid(block->pid, &status, 0));
-		if (!i)
-			block = block->next;
+		pipex(block, convert_list_in_arr(main_data.list_envp), STDIN);
+		t_block *tmp = last_block(block);
+		while (block)
+		{
+			i = (-1 == waitpid(block->pid, &status, 0));
+			if (!i)
+				block = block->next;
+		}
+		block = tmp;
 	}
-	//read_cmd(main_data.commands, &list_envp);	//функция запуска комманд <-----где-то здесь должна быть
-	free_block(tmp);
+	else
+		one_cmd(block);
+
+	free_block(block);
 	set_terminal(1);
 	len = (int)count_arr(elements);
 	free_arr(elements, len);

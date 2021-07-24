@@ -35,7 +35,7 @@ int	escape_tab(char *str)
 		}
 		i = take_word_part();
 		if_zero_current_tab();
-		if (main_data.part && !ft_strncmp(main_data.part, "", 2))
+		if (main_data.part && !ft_strncmp(main_data.part, "", 1))
 			no_buff_case(list_files, len);
 		else
 			is_buff_case(list_files, len, &list_elem, i);

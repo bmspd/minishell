@@ -22,7 +22,7 @@ char	*get_pwd(void)
 	return (pwd);
 }
 
-ENV *find_VAR_ENV(ENV *list_envp, char *VAR)
+t_envp *find_VAR_t_envp(t_envp *list_envp, char *VAR)
 {
 	size_t size;
 
@@ -49,7 +49,7 @@ void	print_error(char *cmd, char *arg)
 		write(2, "\n", 1);
 }
 
-void	lastadd_ENV_VAR(ENV *list_envp, ENV *last)
+void	lastadd_t_envp_VAR(t_envp *list_envp, t_envp *last)
 {
 	while (list_envp->next)
 	{
@@ -58,17 +58,26 @@ void	lastadd_ENV_VAR(ENV *list_envp, ENV *last)
 	list_envp->next = last;
 }
 
-void	go_to_direction(char *path_dir, ENV *list_envp)
+void	go_to_direction(t_cmd	*cmd, t_envp *list_envp)
 {
-	ENV		*pwd;
-	ENV		*oldpwd;
-	ENV		*home;
+	t_envp		*pwd;
+	t_envp		*oldpwd;
+	t_envp		*home;
 	static char	*newpwd;
 	static char	*old;
+	char *path_dir;
+
+	path_dir = cmd->arg[1];
+
+	if (count_arr(cmd->arg) > 2)
+	{
+		write(2, "cd: too many arguments\n", 24);
+		return ;
+	}
 
 	if (!path_dir)
 	{
-		home = find_VAR_ENV(list_envp, "HOME");
+		home = find_VAR_t_envp(list_envp, "HOME");
 		if (home)
 			path_dir = home->value;
 		return ;
@@ -80,13 +89,13 @@ void	go_to_direction(char *path_dir, ENV *list_envp)
 		return ;
 	}
 
-	pwd = find_VAR_ENV(list_envp, "PWD");
-	oldpwd = find_VAR_ENV(list_envp, "OLDPWD");
+	pwd = find_VAR_t_envp(list_envp, "PWD");
+	oldpwd = find_VAR_t_envp(list_envp, "OLDPWD");
 
 	if(!oldpwd)
 	{
 		oldpwd = new_envp("OLDPWD=", NULL);
-		lastadd_ENV_VAR(list_envp, oldpwd);
+		lastadd_t_envp_VAR(list_envp, oldpwd);
 	}
 
 	if(oldpwd->value)
@@ -108,12 +117,13 @@ void	go_to_direction(char *path_dir, ENV *list_envp)
 		pwd->value = newpwd;
 }
 
-void	print_pwd(void)
+void	print_pwd(int fd)
 {
 	char *tmp;
 
 	tmp = get_pwd();
-	printf("%s\n", tmp);
+	write(fd, tmp, ft_strlen(tmp));
+	write(fd, "\n", 1);
 	free(tmp);
 }
 

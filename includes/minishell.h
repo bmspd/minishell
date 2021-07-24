@@ -93,13 +93,13 @@ typedef struct s_block
 	struct s_block	*next;
 }				t_block;
 
-typedef struct s_ENV
+typedef struct s_t_envp
 {
 	char		*name;
 	char		*value;
-	struct s_ENV	*next;
+	struct s_t_envp	*next;
 
-}				ENV;
+}				t_envp;
 
 typedef struct s_struct{
 	t_list *history;
@@ -121,7 +121,7 @@ typedef struct s_struct{
 	char	*part;
 	char	*old_buf_hist;
 	int	buf_flag;
-	ENV *list_envp;
+	t_envp *list_envp;
 }t_struct;
 
 extern t_struct main_data;
@@ -191,16 +191,16 @@ void	fill_commands(char *cmd, int cntr);
 void	fill_flag(char *flag);
 
 //create envp_list and cd and unset
-ENV		*create_list_envp(char **envp);
-void	env(ENV *list);
-ENV		*new_envp(char	*env, ENV	*old);
-ENV		*find_VAR_ENV(ENV *list_envp, char *VAR);
-void	rem_envp_VAR(ENV **list_envp, char *VAR);
-void	go_to_direction(char *path_dir, ENV *list_envp);
+t_envp		*create_list_envp(char **envp);
+void	env(t_envp *list, int fd);
+t_envp		*new_envp(char	*env, t_envp	*old);
+t_envp		*find_VAR_t_envp(t_envp *list_envp, char *VAR);
+void	rem_envp_VAR(t_envp **list_envp, char *VAR);
+void	go_to_direction(t_cmd *cmd, t_envp *list_envp);
 char	*get_pwd(void);
-void	print_pwd(void);
+void	print_pwd(int fd);
 size_t	count_arr(char **arr);
-void	lastadd_ENV_VAR(ENV *list_envp, ENV *last);
+void	lastadd_t_envp_VAR(t_envp *list_envp, t_envp *last);
 void	free_arr(char **arr, int count);
 
 //Вот тебе функция обезьянна не бритая
@@ -253,10 +253,10 @@ t_block		*last_block(t_block *lst);
 void		block_add_back(t_block **lst, t_block *new);
 
 //create_pipe_block
-t_block	*create_pipe_block(char **str);
+t_block	*create_pipe_block(char **str, char **check);
 char	**ft_realloc(char **ptr, size_t size);
 
-int		get_index(char *str);
+int		get_index(char *str, char *check);
 void	init_heredoc(t_heredoc **hdoc, char *stop_word, int order);
 void	init_rdfile(t_rdfile **rdfile, char *name_file, int order);
 void	init_addfile(t_addfile **addfile, char *name_file, int order);
@@ -290,5 +290,6 @@ void	init_variables(void);
 void	command_launcher(void);
 void	main_engine(void);
 
-char **convert_list_in_arr(ENV *list_envp);
+char **convert_list_in_arr(t_envp *list_envp);
+void	exec_cmd(t_cmd *cmd, char **envp);
 #endif
