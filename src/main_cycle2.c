@@ -5,6 +5,7 @@ void	main_engine(void)
 	main_data.counter = 0;
 	main_data.flag1 = 0;
 	main_data.current_tab = 0;
+	safe_free(main_data.part);
 	main_data.part = NULL;
 	ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
 	init_commands();
