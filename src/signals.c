@@ -18,9 +18,7 @@ void	handler(int status)
 		main_data.part = NULL;
 	}
 	if (status == SIGWINCH)
-	{
 		ioctl(STDIN_FILENO, TIOCGWINSZ, &main_data.ws);
-	}
 	if (status == SIGQUIT)
 		write(1, "\a", 1);
 }
@@ -39,6 +37,7 @@ void	set_terminal(int type)
 	tcgetattr(0, &main_data.term);
 	if (type == 1)
 	{
+		signal(SIGSTOP, handler);
 		signal(SIGQUIT, handler);
 		signal(SIGINT, handler);
 		main_data.term.c_lflag &= ~(ECHO);
