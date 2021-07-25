@@ -66,7 +66,7 @@ char	*dollar(char *str, int *i)
 	tmp = ft_substr(str, j + 1, *i - j - 1);
 	if (!ft_strncmp("", tmp, 1))
 		return(empty_dollar(str, tmp));
-	search = find_VAR_t_envp(main_data.list_envp, tmp);
+	search = find_var_envp(main_data.list_envp, tmp);
 	if (search)
 	{
 		(*i) = j + (int)ft_strlen(search->value);

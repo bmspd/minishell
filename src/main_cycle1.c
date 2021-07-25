@@ -91,29 +91,45 @@ int		get_index_builtin(char	*name)
 {
 	if (!name)
 		return (0);
-	if (!ft_strncmp("env", name, ft_strlen(name)))
+	if (!ft_strncmp("env", name, ft_strlen("env")))
 		return (ENV);
-	if (!ft_strncmp("pwd", name, ft_strlen(name)))
+	if (!ft_strncmp("pwd", name, ft_strlen("pwd")))
 		return (PWD);
-	if (!ft_strncmp("cd", name, ft_strlen(name)))
+	if (!ft_strncmp("cd", name, ft_strlen("cd")))
 		return (CD);
-	if (!ft_strncmp("export", name, ft_strlen(name)))
+	if (!ft_strncmp("export", name, ft_strlen("export")))
 		return (EXPORT);
-	if (!ft_strncmp("echo", name, ft_strlen(name)))
+	if (!ft_strncmp("echo", name, ft_strlen("echo")))
 		return (MYECHO);
-	if (!ft_strncmp("unset", name, ft_strlen(name)))
+	if (!ft_strncmp("unset", name, ft_strlen("unset")))
 		return (UNSET);
+	return (0);
+}
+
+int	valid_unset(char *arg)
+{
+	if (ft_strnstr(arg, "<>;-=+~)(\\|", ft_strlen(arg)))
+	{
+		write(2, arg, ft_strlen(arg));
+		write(2, "\n", 1);
+		return (1);
+	}
 	return (0);
 }
 
 void	unset(t_cmd *cmd)
 {
 	int i;
+	t_envp	*tmp;
 
 	i = 1;
 	while (cmd->arg[i])
 	{
-		rem_envp_VAR(&main_data.list_envp, cmd->arg[i]);
+		if(valid_unset(cmd->arg[i]))
+			break;
+		tmp = find_var_envp(main_data.list_envp, cmd->arg[i]);
+		if (tmp)
+			rem_envp_VAR(&main_data.list_envp, tmp->name);
 		i++;
 	}
 }
@@ -135,6 +151,8 @@ int	exec_builtin(t_cmd *cmd)
 			unset(cmd);
 		if (index == MYECHO)
 			builtin_echo(&cmd->arg[1], cmd->out);
+		if (index == EXPORT)
+			export(cmd, cmd->out);
 		return (1);
 	}
 	return (0);
@@ -159,22 +177,15 @@ void	one_cmd(t_block *block)
 void	command_launcher(void)
 {
 	char	**elements;
+	t_block	*block;
 	char	**help_elements;
 	int		i;
 	int		len;
 
 	elements = list_to_char();
 	help_elements = list_to_help_char();
-	// i = 0;
-	// while (elements[i])
-	// {
-	// 	printf("|%s|[%s]\n", elements[i], help_elements[i]);
-	// 	i++;
-	// }
 	set_terminal(0);
-				
-	t_block *block;
-	block = create_pipe_block(elements, help_elements);
+	block = create_pipe_block(elements, help_elements);;
 	int status;
 	if (block->next)
 	{
@@ -190,7 +201,6 @@ void	command_launcher(void)
 	}
 	else
 		one_cmd(block);
-
 	free_block(block);
 	set_terminal(1);
 	len = (int)count_arr(elements);

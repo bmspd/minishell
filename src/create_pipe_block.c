@@ -45,23 +45,14 @@ void	reg_cmd_and_arg(t_block *block, char *str)
 	size_t size;
 
 	size = 0;
-	// if(*this_cmd)
-	// {
-	// 	block->cmd->name = str;
-	// 	block->cmd->arg[0] = str;
-	// 	*this_cmd = 0;
-	// }
-	// else
-	// {
-		if (!block->cmd->name)
-			block->cmd->name = str;
-		if (block->cmd->arg[0])
-		{
-			size = count_arr(block->cmd->arg);
-			block->cmd->arg = ft_realloc(block->cmd->arg, size + 1);
-		}
-		block->cmd->arg[size] = str;
-	// }
+	if (!block->cmd->name)
+		block->cmd->name = str;
+	if (block->cmd->arg[0])
+	{
+		size = count_arr(block->cmd->arg);
+		block->cmd->arg = ft_realloc(block->cmd->arg, size + 1);
+	}
+	block->cmd->arg[size] = str;
 }
 
 t_block *create_pipe_block(char **str, char **check)

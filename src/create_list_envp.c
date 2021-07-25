@@ -4,11 +4,12 @@ void	env(t_envp *list, int fd)
 {
 	while (list)
 	{
+		if (ft_strchr(list->name, '='))
+		{
 			write(fd, list->name, ft_strlen(list->name));
-			write(fd, "=", 1);
-			if	(list->value)
-				write(fd, list->value, ft_strlen(list->value));
+			write(fd, list->value, ft_strlen(list->value));
 			write(fd, "\n", 1);
+		}
 		list = list->next;
 	}
 }
@@ -29,7 +30,6 @@ void	rem_envp_VAR(t_envp **list_envp, char *VAR)
 	tmp2 = *list_envp;
 	if (!ft_strncmp(VAR, (*list_envp)->name, ft_strlen((*list_envp)->name)))
 	{
-		printf("Удален %s\n", (*list_envp)->name);
 		tmp = *list_envp;
 		(*list_envp) = (*list_envp)->next;
 		free_VAR(tmp);
@@ -43,7 +43,6 @@ void	rem_envp_VAR(t_envp **list_envp, char *VAR)
 			break;
 		tmp2 = tmp2->next;
 	}
-	printf("Удален %s\n", tmp2->next->name);
 	tmp = tmp2->next;
 	tmp2->next = tmp2->next->next;
 	free_VAR(tmp);
@@ -53,11 +52,20 @@ t_envp	*new_envp(char	*env, t_envp	*old)
 {
 	t_envp		*new_env;
 	char	*tmp;
+	size_t	size;
 
 	new_env = malloc(sizeof(t_envp));
 	tmp = ft_strchr(env, '=');
-	new_env->name = ft_substr(env, 0, tmp - env);
-	new_env->value = ft_strdup(ft_strchr(env, '=') + 1);
+	if (tmp)
+		size = (tmp - env) + 1;
+	else
+		size = ft_strlen(env);
+	new_env->name = ft_substr(env, 0, size);
+	tmp = ft_strchr(env, '=');
+	if (tmp)
+		new_env->value = ft_strdup(tmp + 1);
+	else
+		new_env->value = ft_strdup("");
 	if(old)
 		old->next = new_env;
 	new_env->next = NULL;
@@ -88,7 +96,7 @@ void	iter_shlvl(t_envp **list_envp)
 	int		number;
 
 	number = 1;
-	shlvl = find_VAR_t_envp(*list_envp, "SHLVL");
+	shlvl = find_var_envp(*list_envp, "SHLVL");
 	if (shlvl)
 	{
 		number = ft_atoi(shlvl->value) + 1;
@@ -101,7 +109,7 @@ void	iter_shlvl(t_envp **list_envp)
 		shlvl = new_envp("SHLVL=", NULL);
 		free(shlvl->value);
 		shlvl->value = ft_strdup("1");
-		lastadd_t_envp_VAR(*list_envp, shlvl);
+		lastadd_envp(*list_envp, shlvl);
 	}
 }
 
