@@ -185,6 +185,8 @@ void	one_cmd(t_block *block)
 
 	get_fd(block, block->cmd, 0);
 	reg_builtin = exec_builtin(block->cmd);
+	if (!block->cmd->name)
+		return ;
 	if (reg_builtin)
 		return ;
 	pid = fork();
