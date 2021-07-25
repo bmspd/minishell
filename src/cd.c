@@ -79,6 +79,7 @@ void	go_to_direction(t_cmd	*cmd, t_envp *list_envp)
 		home = find_var_envp(list_envp, "HOME");
 		if (home)
 			path_dir = home->value;
+		chdir(path_dir);
 		return ;
 	}
 
@@ -91,12 +92,22 @@ void	go_to_direction(t_cmd	*cmd, t_envp *list_envp)
 	pwd = find_var_envp(list_envp, "PWD");
 	oldpwd = find_var_envp(list_envp, "OLDPWD");
 
+
 	if(!oldpwd)
 	{
 		oldpwd = new_envp("OLDPWD=", NULL);
 		lastadd_envp(list_envp, oldpwd);
 	}
-
+	if (!ft_strchr(oldpwd->name, '='))
+		{
+			free(oldpwd->name);
+			oldpwd->name = ft_strdup("OLDPWD=");
+		}
+	if (pwd && !ft_strchr(pwd->name, '='))
+		{
+			free(pwd->name);
+			pwd->name = ft_strdup("PWD=");
+		}
 	if(oldpwd->value)
 		free(oldpwd->value);
 

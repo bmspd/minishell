@@ -1,3 +1,45 @@
+env
+ls
+cat
+env
+export NEW=34 NEW=35 NEW=11
+export
+env
+cd minishelll
+cd ..
+export PWD
+env
+cd minishelll
+cd ..
+unset PWD
+env
+unset PWD
+env
+env
+unset PWD
+cd minishelll
+export
+env
+cd ..
+export
+env
+env
+export
+cd ..
+cd libft
+export
+env
+cd minishelll
+cd ..
+export
+env
+env -i bash
+export
+env
+cd minishelll
+cd ..
+env
+export
 export
 env
 env

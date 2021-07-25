@@ -222,4 +222,5 @@ int main(int argc, char **argv, char **env)
 	set_terminal(0);
 	write(1, "💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n",
 		  ft_strlen("💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n"));
+	return (0);
 }

@@ -80,6 +80,7 @@ t_envp	*init_list_envp(void)
 	t_envp *pwd;
 	t_envp *shlvl;
 	t_envp *last_exec;
+	t_envp *oldpwd;
 
 	pwd = new_envp("PWD=", NULL);
 	free(pwd->value);
@@ -90,6 +91,7 @@ t_envp	*init_list_envp(void)
 	last_exec = new_envp("_=", shlvl);
 	free(last_exec->value);
 	last_exec->value = ft_strdup("minishell");
+	oldpwd = new_envp("OLDPWD", last_exec);
 	return (pwd);
 }
 

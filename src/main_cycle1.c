@@ -188,8 +188,16 @@ void	one_cmd(t_block *block)
 	if (reg_builtin)
 		return ;
 	pid = fork();
+	if (pid == -1)
+	{
+		perror("minishell: ");
+		return ;
+	}
+	reg_last_exec(block->cmd, block);
 	if (!pid)
+	{
 		exec_cmd(block->cmd, convert_list_in_arr(main_data.list_envp));
+	}
 	wait(&status);
 }
 
@@ -202,6 +210,7 @@ void	command_launcher(void)
 	int		len;
 	int status;
 	t_block * tmp;
+	char	**envp;
 
 	elements = list_to_char();
 	help_elements = list_to_help_char();
@@ -217,8 +226,9 @@ void	command_launcher(void)
 	}
 	if (block->next)
 	{
-		tmp = last_block(block);
-		if (pipex(block, convert_list_in_arr(main_data.list_envp), STDIN) != -1)
+		envp = convert_list_in_arr(main_data.list_envp);
+		tmp = block;
+		if (pipex(block, envp, STDIN) != -1)
 		{
 			while (block)
 			{
@@ -238,6 +248,7 @@ void	command_launcher(void)
 			}
 			block = tmp;
 		}
+		free_arr(envp, count_arr(envp));
 	}
 	else
 		one_cmd(block);

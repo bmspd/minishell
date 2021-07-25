@@ -299,4 +299,5 @@ void	exec_cmd(t_cmd *cmd, char **envp);
 int		exec_builtin(t_cmd *cmd);
 void	export(t_cmd *cmd, int fd);
 int		ft_overlap(char *s1, char *s2);
+void	reg_last_exec(t_cmd *cmd, t_block *block);
 #endif

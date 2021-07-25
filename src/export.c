@@ -119,12 +119,6 @@ void	export(t_cmd *cmd, int fd)
 		print_export(fd);
 		return ;
 	}
-	i = 1;
-	while (cmd->arg[i])
-	{
-		printf("%s\n", cmd->arg[i]);
-		i++;
-	}
 	
 	i = 1;
 	while(cmd->arg[i])
