@@ -1,3 +1,85 @@
+./minishell
+env
+./minishell
+./minishell
+./minishell
+env
+./minishell
+env
+./minishell
+env
+make
+./minishell
+env
+make
+./minishell
+./minishell
+env
+./minishell
+./minishell
+env
+env
+make
+./minishell
+env
+env
+./minishell
+env
+./minishell
+env
+./minishell
+env
+ls
+env
+unset
+unset NEW
+env
+export NEW=1234
+cat -e | cat -e | cat -e
+cat -e
+env
+export NEW1=1 NEW2=2 NEW
+env
+export NEW1=1 NEW2=2 NEW
+env
+export NEW1=1 NEW2=2 NEW
+env
+env
+export NEW1=1 NEW2=2 NEW
+env
+export NEW1=1 NEW2=2 NEW
+env
+export NEW1=1 NEW2=2 NEW
+env
+export NEW1=1 NEW2=2 NEW
+env
+export NEW1=1 NEW2=2 NEW
+env
+export NEW1=1 NEW2=2 NEW
+env
+export NEW1=1 NEW2=2 NEW
+env
+export NEW1=1 NEW2=2 NEW
+env
+export NEW1=1 NEW2=2 NEW
+env
+export 1234
+env
+export NEW1324
+env
+export NEW
+env
+export NEW=1234
+export NEWFILe?
+export NEWFILe
+export NEWFILe?
+env
+export NEWFILe?
+unset NEWFILE?
+env
+unset NEWFILE
+env
+export NEWFILE
 unset NEW
 env
 export NEW

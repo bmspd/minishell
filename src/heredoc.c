@@ -29,7 +29,11 @@ int	heredoc(char *stop_word)
 	int		fd[2];
 	int		status;
 
-	pipe(fd);
+	if(pipe(fd) == -1)
+	{
+		perror("minishel: ");
+		return (-1);
+	}
 	heredoc = fork();
 	if (!heredoc)
 	{

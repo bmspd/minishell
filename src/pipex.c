@@ -49,7 +49,7 @@ void	exec_cmd(t_cmd *cmd, char **envp)
 		error_massage_exec(cmd->name);
 }
 
-void	pipex(t_block *block, char **envp, int in)
+int	pipex(t_block *block, char **envp, int in)
 {
 	int fd[2];
 
@@ -59,12 +59,13 @@ void	pipex(t_block *block, char **envp, int in)
 	{
 		if (in > 2)
 			close(in);
-		return ;
+		return (0);
 	}
 	block->cmd->in = in;
 	if (block->next)
 	{
-		pipe(fd);
+		if (pipe(fd) == -1)
+			return (-1);
 		block->cmd->out = fd[1];
 	}
 	block->pid = fork();
@@ -82,4 +83,5 @@ void	pipex(t_block *block, char **envp, int in)
 		exec_cmd(block->cmd, envp);
 		exit(127);
 	}
+	return (0);
 }

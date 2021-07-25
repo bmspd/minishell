@@ -258,7 +258,7 @@ t_block	*create_pipe_block(char **str, char **check);
 char	**ft_realloc(char **ptr, size_t size);
 
 int		get_index(char *str, char *check);
-void	init_heredoc(t_heredoc **hdoc, char *stop_word, int order);
+int		init_heredoc(t_heredoc **hdoc, char *stop_word, int order);
 void	init_rdfile(t_rdfile **rdfile, char *name_file, int order);
 void	init_addfile(t_addfile **addfile, char *name_file, int order);
 void	init_trfile(t_trfile **trfile, char *name_file, int order);
@@ -282,7 +282,7 @@ int		open_rdfile(char *name_file);
 void	get_fd(t_block *block, t_cmd *cmd, int i);
 
 //pipex
-void	pipex(t_block *block, char **envp, int in);
+int		pipex(t_block *block, char **envp, int in);
 char *find_path_cmd(char *value, char *name_prog, char *home);
 //main cycle staff
 void    symbol_not_enter(char *str);
@@ -295,4 +295,5 @@ char **convert_list_in_arr(t_envp *list_envp);
 void	exec_cmd(t_cmd *cmd, char **envp);
 int		exec_builtin(t_cmd *cmd);
 void	export(t_cmd *cmd, int fd);
+int		ft_overlap(char *s1, char *s2);
 #endif

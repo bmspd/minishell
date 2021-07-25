@@ -96,7 +96,7 @@ void	iter_shlvl(t_envp **list_envp)
 	int		number;
 
 	number = 1;
-	shlvl = find_var_envp(*list_envp, "SHLVL");
+	shlvl = find_var_envp(*list_envp, "SHLVL=");
 	if (shlvl)
 	{
 		number = ft_atoi(shlvl->value) + 1;
@@ -106,7 +106,7 @@ void	iter_shlvl(t_envp **list_envp)
 	}
 	else
 	{
-		shlvl = new_envp("SHLVL=", NULL);
+		shlvl = new_envp("SHLVL", NULL);
 		free(shlvl->value);
 		shlvl->value = ft_strdup("1");
 		lastadd_envp(*list_envp, shlvl);

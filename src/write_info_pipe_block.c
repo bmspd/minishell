@@ -15,12 +15,15 @@ int	get_index(char *str, char *check)
 	return (0);
 }
 
-void	init_heredoc(t_heredoc **hdoc, char *stop_word, int order)
+int	init_heredoc(t_heredoc **hdoc, char *stop_word, int order)
 {
 	t_heredoc *new;
 	new = new_heredoc(stop_word, order);
 	new->fd = heredoc(new->stop_word);
+	if (new->fd == -1)
+		return (-1);
 	heredoc_add_back(hdoc, new);
+	return (0);
 }
 
 void	init_rdfile(t_rdfile **rdfile, char *name_file, int order)
