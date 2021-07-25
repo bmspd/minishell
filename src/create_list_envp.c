@@ -16,9 +16,12 @@ void	env(t_envp *list, int fd)
 
 void	free_VAR(t_envp *ptr)
 {
-	free(ptr->name);
-	free(ptr->value);
-	free(ptr);
+	if (ptr->name)
+		free(ptr->name);
+	if (ptr->value)
+		free(ptr->value);
+	if (ptr)
+		free(ptr);
 }
 
 void	rem_envp_VAR(t_envp **list_envp, char *VAR)

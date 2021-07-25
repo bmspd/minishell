@@ -1,3 +1,21 @@
+export
+env
+env
+cd minishell
+cd ..
+ls
+cd minitalk
+cd ..
+env
+export
+export OLDPWD
+export
+export OLDPWD
+env
+export
+export OLDPWD
+export
+env
 ./minishell
 env
 ./minishell

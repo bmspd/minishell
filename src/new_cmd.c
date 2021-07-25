@@ -38,6 +38,8 @@ void	free_cmd(t_cmd *cmd)
 {
 	if (!cmd)
 		return ;
+	if (!cmd->arg)
+		return ;
 	free(cmd->arg);
 	free(cmd);
 }

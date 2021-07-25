@@ -274,6 +274,8 @@ void	free_block(t_block *block);
 
 //for_print_and_count
 int		count_block(t_block *block);
+void 	free_VAR(t_envp *);
+
 
 
 //open_files

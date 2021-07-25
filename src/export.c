@@ -9,7 +9,7 @@ static t_envp *make_copy_envp(void)
 	tmp = main_data.list_envp;
 	if (tmp == NULL)
 		return (NULL);
-	head = malloc(sizeof(t_envp *));
+	head = malloc(sizeof(t_envp));
 	if (!head)
 		exit(42);
 	head->name = ft_strdup(tmp->name);
@@ -62,6 +62,7 @@ static t_envp *sort_envp(t_envp *head)
 		}
 		tmp = tmp->next;
 	}
+	tmp = NULL;
 	return (head);
 }
 
@@ -75,11 +76,21 @@ void	print_export(int fd)
 	tmp = copy;
 	while (tmp)
 	{
-		printf("|%s|%s|\n", tmp->name, tmp->value);
+		write(fd, "declare -x ", ft_strlen("declare - x"));
+		write(fd, tmp->name, ft_strlen(tmp->name));
+
+		if(ft_strchr(tmp->name, '='))
+		{
+			write(fd, "\"", 1);
+			write(fd, tmp->value, ft_strlen(tmp->value));
+			write(fd, "\"\n", 2);
+		}
+		else
+			write(fd, "\n", 1);
 		tmp = tmp->next;
 	}
-
-	//printf("print\n");
+	while (copy)
+		rem_envp_VAR(&copy, copy->name);
 }
 
 int	valid_export(char *arg, char *out)
