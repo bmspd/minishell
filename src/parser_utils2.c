@@ -92,9 +92,9 @@ char	*slash(char *str, int *i)
 	char	*tmp2;
 
 	(*i)++;
-	tmp = ft_substr(str, 0, *i - 1);\
+	tmp = ft_substr(str, 0, *i - 1);
 	printf("tmp = |%s|\n", tmp);
-	if (!ft_strncmp("", tmp, 2))
+	if (!ft_strncmp("", tmp, 1))
 	{
 		(*i)++;
 		free(tmp);

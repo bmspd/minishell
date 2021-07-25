@@ -263,10 +263,6 @@ int main(int argc, char **argv, char **env)
 	init_title();
 	init_variables();
 
-	t_envp	*list_envp;
-
-
-	list_envp = create_list_envp(env);
 	main_data.list_envp = create_list_envp(env);
 	external_history();
 	set_terminal(1);

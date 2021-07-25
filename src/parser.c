@@ -19,7 +19,6 @@ static int	pipes_squote_slash(char **str, int *i, int *j)
 	else if ((*str)[*i] == '\\')
 	{
 		*str = slash(*str, i);
-		*i = *i - 1;
 		return (3);
 	}
 	return (0);

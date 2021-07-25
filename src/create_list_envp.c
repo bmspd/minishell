@@ -29,7 +29,6 @@ void	rem_envp_VAR(t_envp **list_envp, char *VAR)
 	tmp2 = *list_envp;
 	if (!ft_strncmp(VAR, (*list_envp)->name, ft_strlen((*list_envp)->name)))
 	{
-		printf("Удален %s\n", (*list_envp)->name);
 		tmp = *list_envp;
 		(*list_envp) = (*list_envp)->next;
 		free_VAR(tmp);

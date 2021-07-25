@@ -93,11 +93,11 @@ typedef struct s_block
 	struct s_block	*next;
 }				t_block;
 
-typedef struct s_t_envp
+typedef struct s_envp
 {
 	char		*name;
 	char		*value;
-	struct s_t_envp	*next;
+	struct s_envp	*next;
 
 }				t_envp;
 
@@ -122,6 +122,7 @@ typedef struct s_struct{
 	char	*old_buf_hist;
 	int	buf_flag;
 	t_envp *list_envp;
+	t_envp *sorted_list_envp;
 }t_struct;
 
 extern t_struct main_data;
