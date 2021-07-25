@@ -15,11 +15,30 @@ void	error_massage_exec(char *name_file)
 	exit(127);
 }
 
-void	exec_cmd(t_cmd *cmd, char **envp)
+char	*check_relative_path(t_cmd *cmd, int flag)
 {
-	char *path;
+	char	*path;
+	size_t	size;
+
+	size = ft_strrchr(cmd->name, '/') - cmd->name;
+	if (ft_strrchr(cmd->name, '/') < cmd->name)
+	{
+		write(2, "minishell: ", 12);
+		write(2, cmd->name, ft_strlen(cmd->name));
+		write(2, ": command not found\n", 21);
+		if (flag == 1)
+			exit(127);
+		if (flag == 2)
+			return (NULL);
+	}
+	path = cmd->name;
+	return (path);
+}
+
+char	*get_path(t_cmd *cmd)
+{
+	char	*path;
 	t_envp *PATH;
-	size_t size;
 	t_envp *HOME;
 
 	path = NULL;
@@ -28,19 +47,17 @@ void	exec_cmd(t_cmd *cmd, char **envp)
 	PATH = find_var_envp(main_data.list_envp, "PATH");
 	HOME = find_var_envp(main_data.list_envp, "HOME");
 	if (PATH && HOME)
-	path = find_path_cmd(PATH->value, cmd->name, HOME->value);
+		path = find_path_cmd(PATH->value, cmd->name, HOME->value);
+	return (path);
+}
+
+void	exec_cmd(t_cmd *cmd, char **envp)
+{
+	char *path;
+
+	path = get_path(cmd);
 	if (!path)
-	{
-		size = ft_strrchr(cmd->name, '/') - cmd->name;
-		if (ft_strrchr(cmd->name, '/') < cmd->name)
-		{
-			write(2, "minishell: ", 12);
-			write(2, cmd->name, ft_strlen(cmd->name));
-			write(2, ": command not found\n", 21);
-			exit(127);
-		}
-		path = cmd->name;
-	}
+		path = check_relative_path(cmd, 1);
 	if (cmd->in >= 0)
 		dup2(cmd->in, 0);
 	if (cmd->out >= 0)
@@ -49,9 +66,38 @@ void	exec_cmd(t_cmd *cmd, char **envp)
 		error_massage_exec(cmd->name);
 }
 
+void	reg_last_exec(t_cmd *cmd, t_block *block)
+{
+	t_envp		*last_exec;
+	char		*path;
+	static int	flag;
+	
+	last_exec = find_var_envp(main_data.list_envp, "_");
+	if (last_exec && !flag)
+	{
+		path = get_path(cmd);
+		if (!path)
+		{
+			path = check_relative_path(cmd, 2);
+			if (path)
+				path = ft_strdup(path);
+		}
+		if (path)
+		{
+			free(last_exec->value);
+			last_exec->value = path;
+		}
+		else
+			flag = 1;
+	}
+	if (!block->next)
+		flag = 0;
+}
+
 int	pipex(t_block *block, char **envp, int in)
 {
 	int fd[2];
+
 
 	fd[0] = -1;
 	fd[1] = -1;
@@ -71,6 +117,7 @@ int	pipex(t_block *block, char **envp, int in)
 	block->pid = fork();
 	if (block->pid)
 	{
+		reg_last_exec(block->cmd, block);
 		close(fd[1]);
 		pipex(block->next, envp, fd[0]);
 	}
@@ -81,7 +128,6 @@ int	pipex(t_block *block, char **envp, int in)
 		if (exec_builtin(block->cmd))
 			exit(0);
 		exec_cmd(block->cmd, envp);
-		exit(127);
 	}
 	return (0);
 }
