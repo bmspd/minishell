@@ -2,7 +2,7 @@
 
 int	escape_up(char *str)
 {
-	if (!strcmp(str, ESC_UP))
+	if (!ft_strncmp(ESC_UP, str, 4))
 	{
 		moveback_cursor();
 		free(main_data.buf_hist);
@@ -25,7 +25,7 @@ int	escape_up(char *str)
 
 int	escape_down(char *str)
 {
-	if (!strcmp(str, ESC_DOWN))
+	if (!ft_strncmp(ESC_DOWN, str, 4))
 	{
 		moveback_cursor();
 		free(main_data.buf_hist);
@@ -48,7 +48,7 @@ int	escape_down(char *str)
 
 int	escape_left(char *str)
 {
-	if (!strcmp(str, ESC_LEFT))
+	if (!ft_strncmp(ESC_LEFT, str, 4))
 	{
 		if (ft_strlen(main_data.buf_hist)
 			+ main_data.title_length <= main_data.ws.ws_col - 1)
@@ -76,7 +76,7 @@ int	escape_left(char *str)
 
 int	escape_right(char *str)
 {
-	if (!strcmp(str, ESC_RIGHT))
+	if (!ft_strncmp(ESC_RIGHT, str, 4))
 	{
 		if (ft_strlen(main_data.buf_hist)
 			+ main_data.title_length <= main_data.ws.ws_col - 1)

@@ -16,6 +16,8 @@ int key_control(char *str)
 		return (6);
 	else if (escape_tab(str))
 		return (7);
+	else if (ignore_escape(str))
+		return (8);
 	return (0);
 }
 

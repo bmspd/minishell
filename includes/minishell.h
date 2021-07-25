@@ -161,6 +161,7 @@ int	escape_right(char *str);
 int	escape_backspace(char *str);
 int escape_ctrl(char *str);
 int	escape_tab(char *str);
+int	ignore_escape(char *str);
 
 //AUTOCOMPLETE UTILS
 int	check_list_file(char **list_file, int len);
