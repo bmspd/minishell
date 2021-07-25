@@ -123,6 +123,7 @@ typedef struct s_struct{
 	int	buf_flag;
 	t_envp *list_envp;
 	t_envp *sorted_list_envp;
+	int new_cmd_flag;
 }t_struct;
 
 extern t_struct main_data;

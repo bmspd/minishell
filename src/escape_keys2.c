@@ -33,13 +33,14 @@ static char *if_folder_changed(char *list_elem)
 	char *pwd_new;
 
 	pwd_new = get_pwd();
-	if (ft_strncmp(pwd_new, pwd, ft_strlen(pwd_new))
-		|| ft_strncmp(pwd, pwd_new, ft_strlen(pwd)))
+	if ((ft_strncmp(pwd_new, pwd, ft_strlen(pwd_new))
+		|| ft_strncmp(pwd, pwd_new, ft_strlen(pwd))) || main_data.new_cmd_flag)
 	{
 		safe_free(pwd);
 		pwd = get_pwd();
 		safe_free(list_elem);
 		list_elem = NULL;
+		main_data.new_cmd_flag = 0;
 	}
 	free(pwd_new);
 	return (list_elem);

@@ -86,6 +86,7 @@ void	init_variables(void)
 	main_data.part = NULL;
 	main_data.buf_flag = 0;
 	main_data.history_id = -1;
+	main_data.new_cmd_flag = 0;
 }
 
 int		get_index_builtin(char	*name)
