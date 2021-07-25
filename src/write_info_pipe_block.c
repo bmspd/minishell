@@ -18,10 +18,8 @@ int	get_index(char *str, char *check)
 void	init_heredoc(t_heredoc **hdoc, char *stop_word, int order)
 {
 	t_heredoc *new;
-	// int status;
 	new = new_heredoc(stop_word, order);
 	new->fd = heredoc(new->stop_word);
-	// wait(&status);
 	heredoc_add_back(hdoc, new);
 }
 

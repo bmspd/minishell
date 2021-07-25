@@ -196,13 +196,13 @@ void	fill_flag(char *flag);
 t_envp		*create_list_envp(char **envp);
 void	env(t_envp *list, int fd);
 t_envp		*new_envp(char	*env, t_envp	*old);
-t_envp		*find_VAR_t_envp(t_envp *list_envp, char *VAR);
+t_envp		*find_var_envp(t_envp *list_envp, char *VAR);
 void	rem_envp_VAR(t_envp **list_envp, char *VAR);
 void	go_to_direction(t_cmd *cmd, t_envp *list_envp);
 char	*get_pwd(void);
 void	print_pwd(int fd);
 size_t	count_arr(char **arr);
-void	lastadd_t_envp_VAR(t_envp *list_envp, t_envp *last);
+void	lastadd_envp(t_envp *list_envp, t_envp *last);
 void	free_arr(char **arr, int count);
 
 //Вот тебе функция обезьянна не бритая
@@ -294,4 +294,6 @@ void	main_engine(void);
 
 char **convert_list_in_arr(t_envp *list_envp);
 void	exec_cmd(t_cmd *cmd, char **envp);
+int		exec_builtin(t_cmd *cmd);
+void	export(t_cmd *cmd, int fd);
 #endif

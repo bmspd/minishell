@@ -19,17 +19,18 @@ void	exec_cmd(t_cmd *cmd, char **envp)
 {
 	char *path;
 	t_envp *PATH;
+	size_t size;
 	t_envp *HOME;
 
+	path = NULL;
 	if (!cmd->name)
 		exit(0);
-	PATH = find_VAR_t_envp(main_data.list_envp, "PATH");
-	HOME = find_VAR_t_envp(main_data.list_envp, "HOME");
+	PATH = find_var_envp(main_data.list_envp, "PATH");
+	HOME = find_var_envp(main_data.list_envp, "HOME");
+	if (PATH && HOME)
 	path = find_path_cmd(PATH->value, cmd->name, HOME->value);
 	if (!path)
 	{
-		size_t size;
-
 		size = ft_strrchr(cmd->name, '/') - cmd->name;
 		if (ft_strrchr(cmd->name, '/') < cmd->name)
 		{
@@ -76,6 +77,8 @@ void	pipex(t_block *block, char **envp, int in)
 	{
 		close(fd[0]);
 		get_fd(block, block->cmd, 0);
+		if (exec_builtin(block->cmd))
+			exit(0);
 		exec_cmd(block->cmd, envp);
 		exit(127);
 	}

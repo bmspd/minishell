@@ -6,7 +6,6 @@ char	*get_pwd(void)
 	char	*chek;
 	int		nb;
 
-	// nb = ft_strlen(oldvalue);
 	nb = 100;
 	pwd = ft_calloc(sizeof(char), nb); //Защетить malloc
 	chek = getcwd(pwd, nb);
@@ -22,14 +21,14 @@ char	*get_pwd(void)
 	return (pwd);
 }
 
-t_envp *find_VAR_t_envp(t_envp *list_envp, char *VAR)
+t_envp *find_var_envp(t_envp *list_envp, char *VAR)
 {
 	size_t size;
 
 	size = ft_strlen(VAR);
 	while (list_envp)
 	{
-		if(!ft_strncmp(VAR, list_envp->name, size + 1))
+		if(!ft_strncmp(VAR, list_envp->name, size))
 			return (list_envp);
 		list_envp = list_envp->next;
 	}
@@ -49,7 +48,7 @@ void	print_error(char *cmd, char *arg)
 		write(2, "\n", 1);
 }
 
-void	lastadd_t_envp_VAR(t_envp *list_envp, t_envp *last)
+void	lastadd_envp(t_envp *list_envp, t_envp *last)
 {
 	while (list_envp->next)
 	{
@@ -77,7 +76,7 @@ void	go_to_direction(t_cmd	*cmd, t_envp *list_envp)
 
 	if (!path_dir)
 	{
-		home = find_VAR_t_envp(list_envp, "HOME");
+		home = find_var_envp(list_envp, "HOME");
 		if (home)
 			path_dir = home->value;
 		return ;
@@ -89,13 +88,13 @@ void	go_to_direction(t_cmd	*cmd, t_envp *list_envp)
 		return ;
 	}
 
-	pwd = find_VAR_t_envp(list_envp, "PWD");
-	oldpwd = find_VAR_t_envp(list_envp, "OLDPWD");
+	pwd = find_var_envp(list_envp, "PWD");
+	oldpwd = find_var_envp(list_envp, "OLDPWD");
 
 	if(!oldpwd)
 	{
 		oldpwd = new_envp("OLDPWD=", NULL);
-		lastadd_t_envp_VAR(list_envp, oldpwd);
+		lastadd_envp(list_envp, oldpwd);
 	}
 
 	if(oldpwd->value)

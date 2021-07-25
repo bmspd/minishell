@@ -92,6 +92,8 @@ char *find_path_cmd(char *value, char *name_prog, char *home)
 	int i;
 
 	i = 0;
+	if (!value)
+		return (NULL);
 	paths = ft_split(value, ':');
 	if (!paths)
 		return (NULL);
@@ -99,6 +101,8 @@ char *find_path_cmd(char *value, char *name_prog, char *home)
 	{
 		if(!ft_strncmp(paths[i], "~", 1))
 		{
+			if (!home)
+				break;
 			tmp = paths[i];
 			paths[i] = ft_strjoin(home, ft_strchr(tmp, '/'));
 			free(tmp);
@@ -248,8 +252,8 @@ char **convert_list_in_arr(t_envp *list_envp)
 // 			// if (!ft_strncmp("<<", cmd->flag, 3))
 // 			// 	heredoc(cmd->next->commands[0]);
 // 			else
-// 				exec_fork(cmd->commands, find_VAR_t_envp(*list_envp, "PATH"), convert_list_in_arr(*list_envp),
-// 						  find_VAR_t_envp(*list_envp,"HOME"));
+// 				exec_fork(cmd->commands, find_var_envp(*list_envp, "PATH"), convert_list_in_arr(*list_envp),
+// 						  find_var_envp(*list_envp,"HOME"));
 // 		// }
 // 		cmd = cmd->next;
 // 	}	
