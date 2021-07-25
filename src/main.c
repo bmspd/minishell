@@ -165,12 +165,9 @@ int		count_list(t_envp *list)
 
 char *convert_in_str(char *s1, char *s2)
 {
-	char *tmp;
 	char *out;
 
-	tmp = ft_strjoin(s1, "=");
-	out = ft_strjoin(tmp, s2);
-	free(tmp);
+	out = ft_strjoin(s1, s2);
 	return (out);
 }
 
@@ -192,72 +189,6 @@ char **convert_list_in_arr(t_envp *list_envp)
 	envp[i] = NULL;
 	return (envp);
 }
-
-// int	creat_file(char *name_file)
-// {
-// 	int fd;
-
-// 	fd = open(name_file, O_RDWR | O_CREAT | O_TRUNC, 0777);
-// 	return (fd);
-// }
-
-// int		builtin(t_list *cmd, t_envp **list_envp)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	if (!cmd->commands[0])
-// 		return (i);
-// 	if (!ft_strncmp(cmd->commands[0], "env", 4))
-// 	{
-// 		env(*list_envp);
-// 		i = 1;
-// 	}
-// 	if (!ft_strncmp(cmd->commands[0], "cd", 3))
-// 	{
-// 		go_to_direction(cmd->commands[1], *list_envp);
-// 		i = 1;
-// 	}
-// 	if ((!ft_strncmp(cmd->commands[0], "unset", 6)))
-// 	{
-// 		rem_envp_VAR(list_envp, cmd->commands[1]);
-// 		i = 1;
-// 	}
-// 	if ((!ft_strncmp(cmd->commands[0], "pwd", 6)))
-// 	{
-// 		print_pwd();
-// 		i = 1;
-// 	}
-// 	return (i);
-// }
-
-
-// void	read_cmd(t_list *cmd, t_envp **list_envp)
-// {
-
-// 	int i;
-// 	// print_cmds();
-// 	i = 0;
-// 	while (cmd)
-// 	{
-// 		// if(cmd->commands[0])
-// 		// {
-// 			if (builtin(cmd, list_envp))
-// 			;
-// 			// else
-// 			// {
-// 			// 	// read_flag(cmd);
-// 			// }
-// 			// i++;
-// 			// if (!ft_strncmp("<<", cmd->flag, 3))
-// 			// 	heredoc(cmd->next->commands[0]);
-// 			else
-// 				exec_fork(cmd->commands, find_var_envp(*list_envp, "PATH"), convert_list_in_arr(*list_envp),
-// 						  find_var_envp(*list_envp,"HOME"));
-// 		// }
-// 		cmd = cmd->next;
-// 	}	
-// }
 
 /* end exec cmd - -- -- -- -- -- -- --- -- -- --- -- -- -- -- -- -- -- -- -- -- --- --- --- --- --- --- --- -- -- -- -- - */
 

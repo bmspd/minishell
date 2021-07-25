@@ -8,10 +8,13 @@ void	reg_pipe(int *i, t_block **block)
 	(*i) += 1;
 }
 
-void	reg_file(int *i, t_block **block, char **str, int index)
+int	reg_file(int *i, t_block **block, char **str, int index)
 {
+	int	check;
+
+	check = 0;
 	if (index == HEREDOC)
-		init_heredoc(&((*block)->heredoc), str[(*i) + 1], (*block)->order);
+		check = init_heredoc(&((*block)->heredoc), str[(*i) + 1], (*block)->order);
 	if (index == RDFILE)
 		init_rdfile(&((*block)->rdfile), str[(*i) + 1], (*block)->order);
 	if (index == WRFILEADD)
@@ -20,6 +23,7 @@ void	reg_file(int *i, t_block **block, char **str, int index)
 		init_trfile(&((*block)->trfile), str[(*i) + 1], (*block)->order);
 	((*block)->order)++;
 	(*i) += 2;
+	return (check);
 }
 
 int	reg_file_and_pipe(int *i, char **str, char **check, t_block **block)
@@ -33,7 +37,7 @@ int	reg_file_and_pipe(int *i, char **str, char **check, t_block **block)
 			reg_pipe(i, block);
 		else
 		{
-			reg_file(i, block, str, index);
+			return(reg_file(i, block, str, index));
 		}
 		return (0);
 	}
@@ -72,6 +76,11 @@ t_block *create_pipe_block(char **str, char **check)
 	while (i < size)
 	{
 		this_cmd = reg_file_and_pipe(&i, str, check, &block);
+		if (this_cmd == -1)
+		{
+			free_block(block);
+			return (NULL);
+		}
 		if (!this_cmd)
 			continue;
 		else

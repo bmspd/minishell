@@ -25,10 +25,10 @@ t_envp *find_var_envp(t_envp *list_envp, char *VAR)
 {
 	size_t size;
 
-	size = ft_strlen(VAR);
+	// size = ft_strlen(VAR);
 	while (list_envp)
 	{
-		if(!ft_strncmp(VAR, list_envp->name, size))
+		if(!ft_strncmp(VAR, list_envp->name, ft_strlen(list_envp->name) - 1))
 			return (list_envp);
 		list_envp = list_envp->next;
 	}
