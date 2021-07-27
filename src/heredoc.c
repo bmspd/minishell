@@ -59,6 +59,7 @@ int	heredoc(char *stop_word)
 	if (WEXITSTATUS(status) == 1)
 	{
 		close (fd[1]);
+		main_data.exit_status = WEXITSTATUS(status);
 		set_terminal(0);
 		return (-1);
 	}
