@@ -290,7 +290,7 @@ void 	free_VAR(t_envp *);
 int		open_trfile(char *name_file);
 int		open_addfile(char *name_file);
 int		open_rdfile(char *name_file);
-void	get_fd(t_block *block, t_cmd *cmd, int i);
+int		get_fd(t_block *block, t_cmd *cmd, int i);
 
 //pipex
 int		pipex(t_block *block, char **envp, int in);
@@ -307,6 +307,6 @@ void	exec_cmd(t_cmd *cmd, char **envp);
 int		exec_builtin(t_cmd *cmd);
 void	export(t_cmd *cmd, int fd);
 int		ft_overlap(char *s1, char *s2);
-void	reg_last_exec(t_cmd *cmd, t_block *block);
+void	reg_last_exec(t_cmd *cmd, t_block *block, int flag);
 void	crash(void);
 #endif

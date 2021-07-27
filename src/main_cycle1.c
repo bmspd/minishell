@@ -177,7 +177,8 @@ void	one_cmd(t_block *block)
 	pid_t	pid;
 	int status;
 
-	get_fd(block, block->cmd, 0);
+	if(get_fd(block, block->cmd, 0))
+		return ;
 	if(exec_builtin(block->cmd))
 		return ;
 	if (!block->cmd->name)
@@ -186,7 +187,7 @@ void	one_cmd(t_block *block)
 	if (pid == -1)
 		crash();
 	if (pid)
-		reg_last_exec(block->cmd, block);
+		reg_last_exec(block->cmd, block, 1);
 	if (!pid)
 		exec_cmd(block->cmd, convert_list_in_arr(main_data.list_envp));
 	wait(&status);

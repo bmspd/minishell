@@ -19,8 +19,12 @@ char	*check_relative_path(t_cmd *cmd, int flag)
 {
 	char	*path;
 	size_t	size;
-
-	size = ft_strrchr(cmd->name, '/') - cmd->name;
+	if (cmd->name)
+		size = ft_strrchr(cmd->name, '/') - cmd->name;
+	else if(flag == 2)
+		return (NULL);
+	else if(flag == 1)
+		exit(127);
 	if (ft_strrchr(cmd->name, '/') < cmd->name)
 	{
 		if (flag == 2)
@@ -38,15 +42,17 @@ char	*check_relative_path(t_cmd *cmd, int flag)
 	return (path);
 }
 
-char	*get_path(t_cmd *cmd)
+char	*get_path(t_cmd *cmd, int flag)
 {
 	char	*path;
 	t_envp	*PATH;
 	t_envp	*HOME;
 
 	path = NULL;
-	if (!cmd->name)
+	if (!cmd->name && flag == 2)
 		exit(0);
+	if (!cmd->name && flag == 1)
+		return (NULL);
 	PATH = find_var_envp(main_data.list_envp, "PATH");
 	HOME = find_var_envp(main_data.list_envp, "HOME");
 	if (PATH && HOME)
@@ -58,7 +64,7 @@ void	exec_cmd(t_cmd *cmd, char **envp)
 {
 	char *path;
 
-	path = get_path(cmd);
+	path = get_path(cmd, 2);
 	if (!path)
 		path = check_relative_path(cmd, 1);
 	if (cmd->in >= 0)
@@ -69,7 +75,7 @@ void	exec_cmd(t_cmd *cmd, char **envp)
 		error_massage_exec(cmd->name);
 }
 
-void	reg_last_exec(t_cmd *cmd, t_block *block)
+void	reg_last_exec(t_cmd *cmd, t_block *block, int flag)
 {
 	t_envp	*last_exec;
 	char	*path;
@@ -77,7 +83,7 @@ void	reg_last_exec(t_cmd *cmd, t_block *block)
 	last_exec = find_var_envp(main_data.list_envp, "_");
 	if (last_exec)
 	{
-		path = get_path(cmd);
+		path = get_path(cmd, flag);
 		if (!path)
 		{
 			path = check_relative_path(cmd, 2);
@@ -131,14 +137,15 @@ int	pipex(t_block *block, char **envp, int in)
 		crash();
 	if (block->pid)
 	{
-		reg_last_exec(block->cmd, block);
+		reg_last_exec(block->cmd, block, 1);
 		close(fd[1]);
 		flag = pipex(block->next, envp, fd[0]);
 	}
 	else if(!block->pid)
 	{
 		close(fd[0]);
-		get_fd(block, block->cmd, 0);
+		if(get_fd(block, block->cmd, 0))
+			exit(127);
 		if (exec_builtin(block->cmd))
 			exit(0);
 		exec_cmd(block->cmd, envp);
