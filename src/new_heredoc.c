@@ -26,7 +26,7 @@ t_heredoc	*new_heredoc(char *stop_word, int order)
 {
 	t_heredoc *heredoc;
 
-	heredoc = malloc(sizeof(t_heredoc));
+	heredoc = malloc_x(sizeof(t_heredoc));
 	if (!heredoc)
 		exit(42);
 	heredoc->stop_word = stop_word;

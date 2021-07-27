@@ -31,7 +31,7 @@ char	**list_to_help_char(void)
 	t_list	*tmp;
 
 	len = count_elements();
-	help_elements = malloc(sizeof(char *) * (len + 1));
+	help_elements = malloc_x(sizeof(char *) * (len + 1));
 	if (!help_elements)
 		exit(1);
 	len = 0;
@@ -57,7 +57,7 @@ char	**list_to_char(void)
 	t_list	*tmp;
 
 	len = count_elements();
-	elements = malloc(sizeof(char *) * (len + 1));
+	elements = malloc_x(sizeof(char *) * (len + 1));
 	if (!elements)
 		exit(1);
 	len = 0;

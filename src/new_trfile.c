@@ -26,7 +26,7 @@ t_trfile *new_trfile(char *name_file, int order)
 {
 	t_trfile *trfile;
 
-	trfile = malloc(sizeof(t_trfile));
+	trfile = malloc_x(sizeof(t_trfile));
 	if (!trfile)
 		exit(42);
 	trfile->name_file = name_file;

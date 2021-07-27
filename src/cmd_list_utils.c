@@ -26,7 +26,7 @@ void	init_commands(void)
 			break ;
 		tmp = tmp->next;
 	}
-	tmp->commands = malloc(sizeof (char *) * 1);
+	tmp->commands = malloc_x(sizeof (char *) * 1);
 	tmp->commands[0] = NULL;
 	tmp->flag = NULL;
 }
@@ -41,7 +41,7 @@ void	fill_commands(char *cmd, int cntr)
 			break ;
 		tmp = tmp->next;
 	}
-	char **new = malloc(sizeof(char *) * (cntr + 1));
+	char **new = malloc_x(sizeof(char *) * (cntr + 1));
 	while(tmp->commands[i])
 	{
 		new[i] = ft_strdup(tmp->commands[i]);

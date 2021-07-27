@@ -41,7 +41,7 @@ t_list	*ft_lstnew_history(void *content, int amount)
 {
 	t_list	*new;
 
-	new = (struct s_list *)malloc(sizeof(t_list));
+	new = (struct s_list *)malloc_x(sizeof(t_list));
 	if (new)
 	{
 		new -> content = content;

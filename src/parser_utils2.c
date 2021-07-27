@@ -21,7 +21,6 @@ static void	other_parse(char *str, char **tmp, int *i, int *j)
 {
 	free(*tmp);
 	*tmp = ft_substr(str, *i, 1);
-//	printf("!%s!\n", tmp);
 	fill_flag(*tmp);
 	main_data.flag1++;
 	ft_lstadd_back(&main_data.commands, ft_lstnew(NULL));
@@ -93,7 +92,6 @@ char	*slash(char *str, int *i)
 
 	(*i)++;
 	tmp = ft_substr(str, 0, *i - 1);
-	printf("tmp = |%s|\n", tmp);
 	if (!ft_strncmp("", tmp, 1))
 	{
 		(*i)++;
@@ -101,7 +99,6 @@ char	*slash(char *str, int *i)
 		return (str);
 	}
 	tmp2 = ft_strdup(str + *i);
-	printf("tmp2 = |%s|\n", tmp2);
 	free(str);
 	str = ft_strjoin(tmp, tmp2);
 	free(tmp);
