@@ -1,9 +1,5 @@
 
 #include "../includes/minishell.h"
-char info[2048];
-char *name;
-char buf[100];
-char *buffer;
 t_struct main_data;
 
 void	print_cmds(void)
@@ -167,7 +163,7 @@ char **convert_list_in_arr(t_envp *list_envp)
 	int i;
 
 	count = count_list(list_envp);
-	envp = malloc(sizeof(char *) * (count + 1));
+	envp = malloc_x(sizeof(char *) * (count + 1));
 	i = 0;
 	while (i < count)
 	{

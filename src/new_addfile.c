@@ -26,7 +26,7 @@ t_addfile	*new_addfile(char *name_file, int order)
 {
 	t_addfile	*addfile;
 
-	addfile = malloc(sizeof(t_addfile));
+	addfile = malloc_x(sizeof(t_addfile));
 	if (!addfile)
 		exit(42);
 	addfile->name_file = name_file;

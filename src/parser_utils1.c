@@ -44,9 +44,26 @@ int	ifkey(char c)
 	return (0);
 }
 
-static char	*empty_dollar(char *str, char *tmp)
+static char	*empty_dollar(char *str, char *tmp, int i, int j)
 {
+	char *tmp1;
+	char *tmp2;
 	free(tmp);
+	if (str[i] == '?')
+	{
+		tmp = ft_itoa(main_data.exit_status);
+		tmp1 = ft_substr(str, 0, j);
+		tmp2 = ft_substr(str, i + 1, ft_strlen(str) - j - 1);
+		free(str);
+		str = ft_strjoin(tmp1, tmp);
+		free(tmp);
+		tmp = ft_strjoin(str, tmp2);
+		free(str);
+		free(tmp2);
+		free(tmp1);
+		return (tmp);
+	}
+
 	return (str);
 }
 
@@ -65,7 +82,9 @@ char	*dollar(char *str, int *i)
 	}
 	tmp = ft_substr(str, j + 1, *i - j - 1);
 	if (!ft_strncmp("", tmp, 1))
-		return(empty_dollar(str, tmp));
+	{
+		return(empty_dollar(str, tmp, *i, j));
+	}
 	search = find_var_envp(main_data.list_envp, tmp);
 	if (search)
 	{

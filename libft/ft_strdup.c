@@ -13,7 +13,7 @@ char	*ft_strdup(const char *s1)
 		len++;
 		i++;
 	}
-	copy = malloc((len + 1) * (sizeof(char)));
+	copy = malloc_x((len + 1) * (sizeof(char)));
 	if (!copy)
 	{
 		return (0);

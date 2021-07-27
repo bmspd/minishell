@@ -26,7 +26,7 @@ t_block	*new_block(void)
 {
 	t_block	*block;
 
-	block = malloc(sizeof(t_block));
+	block = malloc_x(sizeof(t_block));
 	if (!block)
 		exit(42);
 	block->cmd = new_cmd(NULL);

@@ -24,7 +24,7 @@ t_rdfile *new_rdfile(char *name_file, int order)
 {
 	t_rdfile *rdfile;
 
-	rdfile = malloc(sizeof(t_rdfile));
+	rdfile = malloc_x(sizeof(t_rdfile));
 	if (!rdfile)
 		exit(42);
 	rdfile->name_file = name_file;

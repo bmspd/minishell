@@ -16,7 +16,6 @@ static int	parser_decision(int last_flag_pipe, t_list *tmp)
 			;
 		else
 		{
-			printf("PARSER ERROR!\n");
 			return (1);
 		}
 	}
@@ -56,8 +55,11 @@ int	extra_parser(void)
 	{
 		if (tmp->id == ft_lstsize(main_data.commands) - 1 && tmp_flag)
 			return (1);
-		if (parser_decision(last_flag_pipe, tmp))
+		if (parser_decision(last_flag_pipe, tmp) || !ft_strncmp(";", tmp->flag, 2))
+		{
+			printf("minishell: syntax error!\n");
 			return (0);
+		}
 		flag_condition(&tmp_flag, &last_flag_pipe, tmp);
 		tmp = tmp->next;
 	}

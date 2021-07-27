@@ -9,7 +9,7 @@ static t_envp *make_copy_envp(void)
 	tmp = main_data.list_envp;
 	if (tmp == NULL)
 		return (NULL);
-	head = malloc(sizeof(t_envp));
+	head = malloc_x(sizeof(t_envp));
 	if (!head)
 		exit(42);
 	head->name = ft_strdup(tmp->name);
@@ -23,7 +23,7 @@ static t_envp *make_copy_envp(void)
 			tmp = tmp->next;
 			continue;
 		}
-		p->next = malloc(sizeof(t_envp));
+		p->next = malloc_x(sizeof(t_envp));
 		if (!p->next)
 			exit(42);
 		p = p->next;

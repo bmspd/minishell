@@ -60,7 +60,7 @@ t_envp	*new_envp(char	*env, t_envp	*old)
 	char	*tmp;
 	size_t	size;
 
-	new_env = malloc(sizeof(t_envp));
+	new_env = malloc_x(sizeof(t_envp));
 	tmp = ft_strchr(env, '=');
 	if (tmp)
 		size = (tmp - env) + 1;

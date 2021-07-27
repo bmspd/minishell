@@ -129,7 +129,6 @@ typedef struct s_struct{
 	char	*old_buf_hist;
 	int	buf_flag;
 	t_envp *list_envp;
-	t_envp *sorted_list_envp;
 	int new_cmd_flag;
 }t_struct;
 
@@ -223,6 +222,7 @@ int		heredoc(char *stop_word);
 //memory staff
 void    safe_free(char *element);
 void	cleaning_foo(void);
+void	*malloc_x(size_t bytes);
 
 //Convertation list to char
 char **list_to_char(void);

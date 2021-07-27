@@ -27,7 +27,7 @@ char	**creat_arr(int count)
 
 	if (!count)
 		return (NULL);
-	out = malloc(sizeof(char *) * (count + 1));
+	out = malloc_x(sizeof(char *) * (count + 1));
 	return (out);
 }
 

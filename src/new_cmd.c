@@ -20,7 +20,7 @@ t_cmd	*new_cmd(char *name)
 {
 	t_cmd	*cmd;
 
-	cmd = malloc(sizeof(t_cmd));
+	cmd = malloc_x(sizeof(t_cmd));
 	if (!cmd)
 		exit(42);
 	cmd->in = 0;

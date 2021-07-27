@@ -66,4 +66,6 @@ int		get_next_line(int fd, int buff_size, char **line);
 void	ft_putchar(char c);
 void	ft_putstr(char *string);
 
+void	*malloc_x(size_t bytes);
+
 #endif
