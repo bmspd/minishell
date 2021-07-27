@@ -47,7 +47,6 @@ void	free_arr(char **arr, int count)
 
 /* this for exec cmd - ------- - --- - - - - ------------------ ------------ --- -- ---------- -- - --- -- ------- -- - - -- --*/
 
-
 int	look_in_direction(char *path, char *find_file)
 {
 	DIR *direction;
@@ -78,7 +77,9 @@ char *find_path_cmd(char *value, char *name_prog, char *home)
 	char *tmp;
 	char *out;
 	int i;
+	char *tmp_name;
 
+	tmp_name = ft_strdup(name_prog);
 	i = 0;
 	if (!value)
 		return (NULL);
@@ -100,16 +101,18 @@ char *find_path_cmd(char *value, char *name_prog, char *home)
 	i = 0;
 	while (paths[i])
 	{
-		if (look_in_direction(paths[i], name_prog))
+		if (look_in_direction(paths[i], tolower_str(tmp_name)))
 		{
-			tmp = ft_strjoin("/", name_prog);
+			tmp = ft_strjoin("/", tmp_name);
 			out = ft_strjoin(paths[i], tmp);
 			free(tmp);
+			free(tmp_name);
 			free_arr(paths, count_arr(paths));
 			return (out);
 		}
 		i++;
 	}
+	free(tmp_name);
 	free_arr(paths, count_arr(paths));
 	return (NULL);
 }
