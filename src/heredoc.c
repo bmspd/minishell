@@ -1,16 +1,30 @@
 #include "../includes/minishell.h"
 
+void	sigint(int a)
+{
+	(void)a;
+	exit(1);
+}
+
 void	heredoc_write(char *stop_word, int *fd)
 {
 	int		tumbler;
 	char	*buf;
 
-
+	
+	main_data.term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(0, TCSANOW, &main_data.term);
+	tgetent(0, main_data.term_name);
+	signal(SIGINT, sigint);
 	tumbler = 1;
 	while (tumbler)
 	{
 		write(1, "> ", 2);
-		get_next_line(0, 256, &buf);
+		if(!get_next_line(0, 256, &buf))
+		{
+			exit (EXIT_SUCCESS);
+
+		}
 		tumbler = ft_strncmp(stop_word, buf, ft_strlen(stop_word));
 		if (!tumbler)
 		{
@@ -28,7 +42,6 @@ int	heredoc(char *stop_word)
 	pid_t	heredoc;
 	int		fd[2];
 	int		status;
-
 	if(pipe(fd) == -1)
 	{
 		perror("minishell");
@@ -36,19 +49,19 @@ int	heredoc(char *stop_word)
 	}
 	heredoc = fork();
 	if (heredoc == -1)
-	{
-		perror("minishell");
-		kill(0, SIGKILL);
-	}
+		crash();
 	if (!heredoc)
 	{
 		close(fd[0]);
 		heredoc_write(stop_word, fd);
-		exit (-1);
 	}
 	waitpid(heredoc, &status, 0);
-	if (WEXITSTATUS(status))
+	if (WEXITSTATUS(status) == 1)
+	{
+		close (fd[1]);
+		set_terminal(0);
 		return (-1);
+	}
 	close(fd[1]);
 	return (fd[0]);
 }

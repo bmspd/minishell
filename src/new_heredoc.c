@@ -43,7 +43,8 @@ void	free_heredoc(t_heredoc *heredoc)
 	while (heredoc)
 	{
 		tmp = heredoc->next;
-		close(heredoc->fd);
+		if (heredoc->fd > 2)
+			close(heredoc->fd);
 		free(heredoc);
 		heredoc = tmp;
 	}

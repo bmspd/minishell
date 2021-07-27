@@ -133,7 +133,7 @@ int	pipex(t_block *block, char **envp, int in)
 	{
 		reg_last_exec(block->cmd, block);
 		close(fd[1]);
-		pipex(block->next, envp, fd[0]);
+		flag = pipex(block->next, envp, fd[0]);
 	}
 	else if(!block->pid)
 	{
@@ -143,5 +143,5 @@ int	pipex(t_block *block, char **envp, int in)
 			exit(0);
 		exec_cmd(block->cmd, envp);
 	}
-	return (0);
+	return (flag);
 }

@@ -1,11 +1,4 @@
 #include "../includes/minishell.h"
-#define ENV		1
-#define CD		2
-#define PWD		3
-#define MYECHO	4
-#define UNSET	5
-#define EXPORT	6
-
 
 static int	break_condition(char *str)
 {
@@ -87,6 +80,7 @@ void	init_variables(void)
 	main_data.buf_flag = 0;
 	main_data.history_id = -1;
 	main_data.new_cmd_flag = 0;
+	main_data.exit_status = 0;
 }
 
 int		get_index_builtin(char	*name)
@@ -180,84 +174,89 @@ int	exec_builtin(t_cmd *cmd)
 
 void	one_cmd(t_block *block)
 {
-	int		reg_builtin;
 	pid_t	pid;
 	int status;
 
 	get_fd(block, block->cmd, 0);
-	reg_builtin = exec_builtin(block->cmd);
-	if (!block->cmd->name)
+	if(exec_builtin(block->cmd))
 		return ;
-	if (reg_builtin)
+	if (!block->cmd->name)
 		return ;
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("minishell");
-		kill(0, SIGKILL);
-		return ;
-	}
+		crash();
 	if (pid)
 		reg_last_exec(block->cmd, block);
 	if (!pid)
-	{
 		exec_cmd(block->cmd, convert_list_in_arr(main_data.list_envp));
-	}
 	wait(&status);
+	main_data.exit_status = WEXITSTATUS(status);
 }
 
-void	command_launcher(void)
+void	kill_childprocess(t_block *block)
 {
-	char	**elements;
+	while (block)
+	{
+		if (block->pid)
+			kill(block->pid, SIGKILL);
+		block = block->next;
+	}
+}
+
+void	wait_child(t_block *block)
+{
+	int	status;
+	int	i;
+
+	while (block)
+	{
+		i = (-1 == waitpid(block->pid, &status, 0));
+		if (!i)
+		{
+			main_data.exit_status = WEXITSTATUS(status);
+			if (main_data.exit_status == 130)
+			{
+				kill_childprocess(block);
+				break ;
+			}
+			block = block->next;
+		}
+	}
+}
+
+void	read_block(char **elements, char **help_elements)
+{
 	t_block	*block;
-	char	**help_elements;
-	int		i;
-	int		len;
-	int status;
-	t_block * tmp;
 	char	**envp;
 
-	elements = list_to_char();
-	help_elements = list_to_help_char();
-	set_terminal(0);
 	block = create_pipe_block(elements, help_elements);;
 	if (!block)
-	{
-		set_terminal(1);
-		len = (int)count_arr(elements);
-		free_arr(elements, len);
-		free_arr(help_elements, len);
 		return ;
-	}
 	if (block->next)
 	{
 		envp = convert_list_in_arr(main_data.list_envp);
-		tmp = block;
 		if (pipex(block, envp, STDIN) != -1)
-		{
-			while (block)
-			{
-				i = (-1 == waitpid(block->pid, &status, 0));
-				if (!i)
-					block = block->next;
-			}
-			block = tmp;
-		}
+			wait_child(block);
 		else
-		{
-			while (block)
-			{
-				if (block->pid)
-					kill(block->pid, SIGKILL);
-				block = block->next;
-			}
-			block = tmp;
-		}
+			kill_childprocess(block);
 		free_arr(envp, count_arr(envp));
 	}
 	else
 		one_cmd(block);
 	free_block(block);
+}
+
+void	command_launcher(void)
+{
+	char	**elements;
+	char	**help_elements;
+	int		len;
+
+
+	elements = list_to_char();
+	help_elements = list_to_help_char();
+	set_terminal(0);
+	read_block(elements, help_elements);
 	set_terminal(1);
 	len = (int)count_arr(elements);
 	free_arr(elements, len);

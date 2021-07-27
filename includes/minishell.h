@@ -41,6 +41,12 @@
 #define	 PIPE		6
 #define STDIN	0
 #define STDOUT	1
+#define ENV		1
+#define CD		2
+#define PWD		3
+#define MYECHO	4
+#define UNSET	5
+#define EXPORT	6
 
 typedef struct s_file_read
 {
@@ -118,6 +124,7 @@ typedef struct s_struct{
 	char *term_name;
 	struct termios term;
 	int current_tab;
+	int	exit_status;
 	char	*part;
 	char	*old_buf_hist;
 	int	buf_flag;
@@ -301,4 +308,5 @@ int		exec_builtin(t_cmd *cmd);
 void	export(t_cmd *cmd, int fd);
 int		ft_overlap(char *s1, char *s2);
 void	reg_last_exec(t_cmd *cmd, t_block *block);
+void	crash(void);
 #endif

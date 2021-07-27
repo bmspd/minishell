@@ -47,18 +47,6 @@ void	free_arr(char **arr, int count)
 
 /* this for exec cmd - ------- - --- - - - - ------------------ ------------ --- -- ---------- -- - --- -- ------- -- - - -- --*/
 
-void	print_arg(char **arg)
-{
-	int i;
-
-	i = 0;
-	printf("------------------\n");
-	while (arg[i])
-	{
-		printf("%s\n",arg[i]);
-		i++;
-	}
-}
 
 int	look_in_direction(char *path, char *find_file)
 {
@@ -124,30 +112,6 @@ char *find_path_cmd(char *value, char *name_prog, char *home)
 	}
 	free_arr(paths, count_arr(paths));
 	return (NULL);
-}
-
-void	exec_fork(char	**prog, t_envp *PATH, char **envp, t_envp *HOME)
-{
-	pid_t pid;
-	char	*path;
-
-	if (PATH)
-		path = find_path_cmd(PATH->value, prog[0], HOME->value);
-	else
-		path = NULL;
-	if (!path)
-		path = prog[0];
-	pid = fork();
-	wait(0);
-	if(!pid)
-	{
-		execve(path, prog, envp);
-		perror(prog[0]);
-		exit (EXIT_FAILURE);
-	}
-	if (path && ft_strncmp(prog[0], path, ft_strlen(path)))
-		free(path);
-	free_arr(envp, count_arr(envp));
 }
 
 int		count_list(t_envp *list)
