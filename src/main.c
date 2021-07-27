@@ -71,21 +71,14 @@ int	look_in_direction(char *path, char *find_file)
 	return (0);
 }
 
-char *find_path_cmd(char *value, char *name_prog, char *home)
+void	addhomedir(char **paths)
 {
-	char **paths;
+	int	i;
 	char *tmp;
-	char *out;
-	int i;
-	char *tmp_name;
+	t_envp	*home;
 
-	tmp_name = ft_strdup(name_prog);
 	i = 0;
-	if (!value)
-		return (NULL);
-	paths = ft_split(value, ':');
-	if (!paths)
-		return (NULL);
+	home = find_var_envp(main_data.list_envp, "HOME");
 	while (paths[i])
 	{
 		if(!ft_strncmp(paths[i], "~", 1))
@@ -93,11 +86,19 @@ char *find_path_cmd(char *value, char *name_prog, char *home)
 			if (!home)
 				break;
 			tmp = paths[i];
-			paths[i] = ft_strjoin(home, ft_strchr(tmp, '/'));
+			paths[i] = ft_strjoin(home->value, ft_strchr(tmp, '/'));
 			free(tmp);
 		}
 		i++;
 	}
+}
+
+char	*out_path(char **paths, char *tmp_name)
+{
+	char	*out;
+	int		i;
+	char	*tmp;
+
 	i = 0;
 	while (paths[i])
 	{
@@ -115,6 +116,27 @@ char *find_path_cmd(char *value, char *name_prog, char *home)
 	free(tmp_name);
 	free_arr(paths, count_arr(paths));
 	return (NULL);
+}
+
+char	*find_path_cmd(char *value, char *name_prog, char *home)
+{
+	char	**paths;
+	int		i;
+	char	*tmp_name;
+
+	tmp_name = ft_strdup(name_prog);
+	if (!tmp_name)
+		return (NULL);
+	if (!value)
+		return (NULL);
+	paths = ft_split(value, ':');
+	if (!paths)
+	{
+		free(tmp_name);
+		return (NULL);
+	}
+	addhomedir(paths);
+	return (out_path(paths, tmp_name));
 }
 
 int		count_list(t_envp *list)
