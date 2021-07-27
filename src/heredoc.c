@@ -5,7 +5,7 @@ void	sigint(int a)
 	if(a == SIGINT)
 	exit(1);
 	if (a == SIGQUIT)
-		;
+		return ;
 }
 
 void	heredoc_write(char *stop_word, int *fd)
@@ -13,7 +13,6 @@ void	heredoc_write(char *stop_word, int *fd)
 	int		tumbler;
 	char	*buf;
 
-	
 	main_data.term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(0, TCSANOW, &main_data.term);
 	tgetent(0, main_data.term_name);
@@ -24,10 +23,7 @@ void	heredoc_write(char *stop_word, int *fd)
 	{
 		write(1, "> ", 2);
 		if(!get_next_line(0, 256, &buf))
-		{
 			exit (EXIT_SUCCESS);
-
-		}
 		tumbler = ft_strncmp(stop_word, buf, ft_strlen(stop_word));
 		if (!tumbler)
 		{
@@ -58,7 +54,8 @@ int	heredoc(char *stop_word)
 	waitpid(heredoc, &status, 0);
 	if (WEXITSTATUS(status) == 1)
 	{
-		close (fd[1]);
+		close(fd[1]);
+		close(fd[0]);
 		main_data.exit_status = WEXITSTATUS(status);
 		set_terminal(0);
 		return (-1);

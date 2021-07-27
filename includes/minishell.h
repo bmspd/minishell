@@ -47,6 +47,7 @@
 #define MYECHO	4
 #define UNSET	5
 #define EXPORT	6
+#define EXIT	7
 
 typedef struct s_file_read
 {
@@ -309,4 +310,5 @@ void	export(t_cmd *cmd, int fd);
 int		ft_overlap(char *s1, char *s2);
 void	reg_last_exec(t_cmd *cmd, t_block *block, int flag);
 void	crash(void);
+int		get_index_builtin(char	*name);
 #endif

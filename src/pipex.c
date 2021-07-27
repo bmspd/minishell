@@ -137,7 +137,8 @@ int	pipex(t_block *block, char **envp, int in)
 		crash();
 	if (block->pid)
 	{
-		reg_last_exec(block->cmd, block, 1);
+		if (!get_index_builtin(block->cmd->name))
+			reg_last_exec(block->cmd, block, 1);
 		close(fd[1]);
 		flag = pipex(block->next, envp, fd[0]);
 	}

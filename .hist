@@ -1,3 +1,11 @@
+/bin/ls
+ls
+cd minishelll
+pwd
+ls
+cd ..
+env
+en
 env
 cd
 env
