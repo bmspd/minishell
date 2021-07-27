@@ -31,10 +31,15 @@ int	heredoc(char *stop_word)
 
 	if(pipe(fd) == -1)
 	{
-		perror("minishel: ");
+		perror("minishell");
 		return (-1);
 	}
 	heredoc = fork();
+	if (heredoc == -1)
+	{
+		perror("minishell");
+		kill(0, SIGKILL);
+	}
 	if (!heredoc)
 	{
 		close(fd[0]);

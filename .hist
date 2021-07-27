@@ -1,4 +1,270 @@
 env
+cd
+env
+export PWD
+env
+cd
+cd
+env
+unset PWD
+env
+cd
+export HOME=
+cd
+env
+export PWD
+cd
+env
+cd
+unset PWD
+env
+cd
+env
+export HOME=
+cd ljk
+cd
+env
+cd
+export PWD
+env
+cd
+cd
+unset PWD
+env
+cd
+cd
+export HOME=
+env
+unset PWD
+env
+cd
+cd
+export HOME=
+cd
+env
+cd
+cd
+env
+env
+cd
+export
+env
+export PWD
+env
+cd
+env
+cd
+env
+unset PWD
+cd
+cd
+export HOME=
+env
+cd
+env
+cd
+env
+cd
+unset PWD
+cd
+cd
+export HOME=
+env
+cd
+env
+cd
+env
+cd
+env
+unset PWD
+env
+cd
+cd
+cd
+cd
+cd
+export PWD
+cd
+cd
+cd
+cd
+cd
+cd
+unset PWD
+cd
+cd
+export HOME=
+env
+cd
+cd
+cd
+cd
+cd
+cd
+unset PWD
+cd
+cd
+export HOME=
+cd
+cd
+cd
+unset PWD
+cd
+cd
+export HOME=
+cd
+unset PWD
+cd
+cd
+cd
+export HOME=
+cd
+cd
+cd
+cd
+cd
+export HOME=
+cd
+cd
+cd
+unset PWD
+cd
+cd
+cd
+unset PWD
+cd
+cd
+export HOME=
+cd
+cd
+unset PWD
+cd
+cd
+export HOME=
+cd
+cd
+unset PWD
+cd
+cd
+export HOME=
+cd
+unset PWD
+cd
+cd
+export HOME=
+cd
+cd
+unset PWD
+cd
+cd
+ls
+cd
+export HOME=
+cd
+export HOME=
+cd
+env
+export HOME=
+env
+cd
+ls
+cd
+env
+unset PWD
+env
+cd
+env
+cd
+export PWD
+env
+cd
+cd
+export HOME=
+cd
+cd
+env
+cd
+unset PWD
+env
+cd
+export HOME=
+cd
+cd
+cd
+unset PWD
+env
+cd
+cd
+cd
+export HOME=
+cd
+cd
+unset PWD
+env
+cd
+unset PWD
+env
+cd
+export HOME=
+cd
+env
+pwd
+cd
+env
+unset PWD
+env
+cd minishelll
+env
+pwd
+cd ..
+pwd
+env
+cd
+export HOME=
+env
+cd
+export HOME
+env
+cd
+export HOME
+env
+pwd
+cd
+ls
+cd
+env
+pwd
+cd 
+pwd
+env
+cd
+env
+ls
+ls
+lls
+ls
+ls
+ls
+ls
+ls | cat
+ls
+cat
+ls
+ls
+ls
+ls
+unset PWD
+env
+pwd
+cd
+cd
+cd
+env
+cd
+./minishell
+/bin/ls
+env
+env
 ls
 cat
 env

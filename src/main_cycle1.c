@@ -193,10 +193,12 @@ void	one_cmd(t_block *block)
 	pid = fork();
 	if (pid == -1)
 	{
-		perror("minishell: ");
+		perror("minishell");
+		kill(0, SIGKILL);
 		return ;
 	}
-	reg_last_exec(block->cmd, block);
+	if (pid)
+		reg_last_exec(block->cmd, block);
 	if (!pid)
 	{
 		exec_cmd(block->cmd, convert_list_in_arr(main_data.list_envp));

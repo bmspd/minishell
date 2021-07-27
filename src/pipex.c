@@ -23,9 +23,12 @@ char	*check_relative_path(t_cmd *cmd, int flag)
 	size = ft_strrchr(cmd->name, '/') - cmd->name;
 	if (ft_strrchr(cmd->name, '/') < cmd->name)
 	{
-		write(2, "minishell: ", 12);
-		write(2, cmd->name, ft_strlen(cmd->name));
-		write(2, ": command not found\n", 21);
+		if (flag == 2)
+		{
+			write(2, "minishell: ", 12);
+			write(2, cmd->name, ft_strlen(cmd->name));
+			write(2, ": command not found\n", 21);
+		}
 		if (flag == 1)
 			exit(127);
 		if (flag == 2)
@@ -38,8 +41,8 @@ char	*check_relative_path(t_cmd *cmd, int flag)
 char	*get_path(t_cmd *cmd)
 {
 	char	*path;
-	t_envp *PATH;
-	t_envp *HOME;
+	t_envp	*PATH;
+	t_envp	*HOME;
 
 	path = NULL;
 	if (!cmd->name)
@@ -68,12 +71,11 @@ void	exec_cmd(t_cmd *cmd, char **envp)
 
 void	reg_last_exec(t_cmd *cmd, t_block *block)
 {
-	t_envp		*last_exec;
-	char		*path;
-	static int	flag;
+	t_envp	*last_exec;
+	char	*path;
 	
 	last_exec = find_var_envp(main_data.list_envp, "_");
-	if (last_exec && !flag)
+	if (last_exec)
 	{
 		path = get_path(cmd);
 		if (!path)
@@ -87,18 +89,11 @@ void	reg_last_exec(t_cmd *cmd, t_block *block)
 			free(last_exec->value);
 			last_exec->value = path;
 		}
-		else
-			flag = 1;
 	}
-	if (!block->next)
-		flag = 0;
 }
 
-int	pipex(t_block *block, char **envp, int in)
+int	init_fdpipe(t_block *block, int *fd, int in)
 {
-	int fd[2];
-
-
 	fd[0] = -1;
 	fd[1] = -1;
 	if(!block)
@@ -114,7 +109,26 @@ int	pipex(t_block *block, char **envp, int in)
 			return (-1);
 		block->cmd->out = fd[1];
 	}
+	return (1);
+}
+
+void	crash(void)
+{
+		perror("minishell");
+		kill(0, SIGKILL);
+}
+
+int	pipex(t_block *block, char **envp, int in)
+{
+	int	fd[2];
+	int	flag;
+
+	flag = init_fdpipe(block, fd, in);
+	if (flag != 1)
+		return (flag);
 	block->pid = fork();
+	if (block->pid == -1)
+		crash();
 	if (block->pid)
 	{
 		reg_last_exec(block->cmd, block);

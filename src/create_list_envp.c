@@ -18,10 +18,13 @@ void	free_VAR(t_envp *ptr)
 {
 	if (ptr->name)
 		free(ptr->name);
+		ptr->name = NULL;
 	if (ptr->value)
 		free(ptr->value);
+		ptr->value = NULL;
 	if (ptr)
 		free(ptr);
+		ptr = NULL;
 }
 
 void	rem_envp_VAR(t_envp **list_envp, char *VAR)
