@@ -17,9 +17,9 @@ void	one_cmd(t_block *block)
 	if (pid)
 		reg_last_exec(block->cmd, 1);
 	if (!pid)
-		exec_cmd(block->cmd, convert_list_in_arr(main_data.list_envp));
+		exec_cmd(block->cmd, convert_list_in_arr(g_main_data.list_envp));
 	wait(&status);
-	main_data.exit_status = WEXITSTATUS(status);
+	g_main_data.exit_status = WEXITSTATUS(status);
 }
 
 void	kill_childprocess(t_block *block)
@@ -42,8 +42,8 @@ void	wait_child(t_block *block)
 		i = (-1 == waitpid(block->pid, &status, 0));
 		if (!i)
 		{
-			main_data.exit_status = WEXITSTATUS(status);
-			if (main_data.exit_status == 130)
+			g_main_data.exit_status = WEXITSTATUS(status);
+			if (g_main_data.exit_status == 130)
 			{
 				kill_childprocess(block);
 				break ;
@@ -63,7 +63,7 @@ void	read_block(char **elements, char **help_elements)
 		return ;
 	if (block->next)
 	{
-		envp = convert_list_in_arr(main_data.list_envp);
+		envp = convert_list_in_arr(g_main_data.list_envp);
 		if (pipex(block, envp, STDIN) != -1)
 			wait_child(block);
 		else

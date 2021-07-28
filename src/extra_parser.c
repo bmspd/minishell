@@ -48,18 +48,18 @@ int	extra_parser(void)
 
 	last_flag_pipe = 0;
 	tmp_flag = 0;
-	tmp = main_data.commands;
+	tmp = g_main_data.commands;
 	if (ft_lstsize(tmp) == 1 && !tmp->commands[0])
 		return (1);
 	while (tmp)
 	{
-		if (tmp->id == ft_lstsize(main_data.commands) - 1 && tmp_flag)
+		if (tmp->id == ft_lstsize(g_main_data.commands) - 1 && tmp_flag)
 			return (1);
 		if (parser_decision(last_flag_pipe, tmp)
 			|| !ft_strncmp(";", tmp->flag, 2))
 		{
 			printf("minishell: syntax error!\n");
-			main_data.exit_status = 258;
+			g_main_data.exit_status = 258;
 			return (0);
 		}
 		flag_condition(&tmp_flag, &last_flag_pipe, tmp);

@@ -19,10 +19,10 @@ void	init_commands(void)
 {
 	t_list	*tmp;
 
-	tmp = main_data.commands;
+	tmp = g_main_data.commands;
 	while (tmp)
 	{
-		if (tmp->id == main_data.flag1)
+		if (tmp->id == g_main_data.flag1)
 			break ;
 		tmp = tmp->next;
 	}
@@ -35,10 +35,10 @@ static t_list	*search(void)
 {
 	t_list	*tmp;
 
-	tmp = main_data.commands;
+	tmp = g_main_data.commands;
 	while (tmp)
 	{
-		if (tmp->id == main_data.flag1)
+		if (tmp->id == g_main_data.flag1)
 			break ;
 		tmp = tmp->next;
 	}
@@ -75,10 +75,10 @@ void	fill_flag(char *flag)
 {
 	t_list	*tmp;
 
-	tmp = main_data.commands;
+	tmp = g_main_data.commands;
 	while (tmp)
 	{
-		if (tmp->id == main_data.flag1)
+		if (tmp->id == g_main_data.flag1)
 			break ;
 		tmp = tmp->next;
 	}

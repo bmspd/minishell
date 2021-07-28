@@ -39,9 +39,9 @@ void	unset(t_cmd *cmd)
 	{
 		if (valid_unset(cmd->arg[i]))
 			break ;
-		tmp = find_var_envp(main_data.list_envp, cmd->arg[i]);
+		tmp = find_var_envp(g_main_data.list_envp, cmd->arg[i]);
 		if (tmp)
-			rem_envp_VAR(&main_data.list_envp, tmp->name);
+			rem_envp_VAR(&g_main_data.list_envp, tmp->name);
 		i++;
 	}
 }

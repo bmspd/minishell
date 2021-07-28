@@ -40,11 +40,11 @@ void	external_history(void)
 			free(line);
 			continue ;
 		}
-		ft_lstadd_back(&main_data.history,
+		ft_lstadd_back(&g_main_data.history,
 			ft_lstnew_history(line, (int)ft_strlen(line)));
-		numerate_history(main_data.history);
+		numerate_history(g_main_data.history);
 	}
-	tempo = main_data.history;
+	tempo = g_main_data.history;
 	while (tempo)
 	{
 		tempo = tempo->next;
@@ -56,7 +56,7 @@ void	fill_external_history(int fd)
 {
 	t_list	*tmp;
 
-	tmp = main_data.history;
+	tmp = g_main_data.history;
 	while (tmp)
 	{
 		if (ft_strncmp((char *)tmp->content, "\4", 2))

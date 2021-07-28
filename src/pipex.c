@@ -10,7 +10,7 @@ char	*get_path(t_cmd *cmd, int flag)
 		exit(0);
 	if (!cmd->name && flag == 1)
 		return (NULL);
-	PATH = find_var_envp(main_data.list_envp, "PATH");
+	PATH = find_var_envp(g_main_data.list_envp, "PATH");
 	if (PATH)
 		path = find_path_cmd(PATH->value, cmd->name);
 	return (path);

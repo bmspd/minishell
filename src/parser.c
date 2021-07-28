@@ -6,12 +6,12 @@ static int	pipes_squote_slash(char **str, int *i, int *j)
 		|| (*str)[*i] == '|' || (*str)[*i] == '<' || (*str)[*i] == '>')
 	{
 		space(*str, i, j);
-		main_data.null_flag = 0;
+		g_main_data.null_flag = 0;
 		return (1);
 	}
 	else if ((*str)[*i] == '\'')
 	{
-		main_data.null_flag = 1;
+		g_main_data.null_flag = 1;
 		*str = solo_quote(*str, i);
 		*i = *i - 2;
 		return (2);
@@ -28,7 +28,7 @@ static int	dquote_dollar(char **str, int *i)
 {
 	if ((*str)[*i] == '\"')
 	{
-		main_data.null_flag = 1;
+		g_main_data.null_flag = 1;
 		*str = double_quote(*str, i);
 		*i = *i - 2;
 		return (4);

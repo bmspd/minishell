@@ -36,7 +36,6 @@ int	get_fd(t_block *block, t_cmd *cmd, int i)
 {
 	while (i < block->order)
 	{
-
 		if (block->rdfile && i == block->rdfile->order)
 			block->rdfile = step_rd(block->rdfile, cmd);
 		else if (block->heredoc && i == block->heredoc->order)
@@ -45,10 +44,9 @@ int	get_fd(t_block *block, t_cmd *cmd, int i)
 			block->addfile = step_add(block->addfile, cmd);
 		else if (block->trfile && i == block->trfile->order)
 			block->trfile = step_tr(block->trfile, cmd);
-		if(cmd->in == -1 || cmd->out == -1)
+		if (cmd->in == -1 || cmd->out == -1)
 			return (1);
 		i++;
 	}
-	
 	return (0);
 }

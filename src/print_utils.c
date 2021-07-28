@@ -7,14 +7,14 @@ int	ft_putint(int c)
 
 void	init_title(void)
 {
-	main_data.title = ft_strdup("\x1b[31m🔥🔥🔥 minishell \x1b[36m➜ \x1b[0m");
-	main_data.title_length = (int)ft_strlen(main_data.title);
-	main_data.title_cursor_positions = 16;
+	g_main_data.title = ft_strdup("\x1b[31m🔥🔥🔥 minishell \x1b[36m➜ \x1b[0m");
+	g_main_data.title_length = (int)ft_strlen(g_main_data.title);
+	g_main_data.title_cursor_positions = 16;
 }
 
 void	print_title(void)
 {
-	write(STDOUT_FILENO, main_data.title, main_data.title_length);
+	write(STDOUT_FILENO, g_main_data.title, g_main_data.title_length);
 }
 
 void	print_big_greeting(void)

@@ -6,7 +6,7 @@ static t_envp *make_copy_envp(void)
 	t_envp	*head;
 	t_envp	*p;
 
-	tmp = main_data.list_envp;
+	tmp = g_main_data.list_envp;
 	if (tmp == NULL)
 		return (NULL);
 	head = malloc_x(sizeof(t_envp));
@@ -129,12 +129,12 @@ void	export(t_cmd *cmd, int fd)
 		name_var = ft_substr(cmd->arg[i], 0, check - cmd->arg[i]);
 		if (valid_export(name_var, cmd->arg[i]))
 			return ;
-		tmp = find_var_envp(main_data.list_envp, name_var);
+		tmp = find_var_envp(g_main_data.list_envp, name_var);
 		free(name_var);
 		if (!tmp)
 		{
 			tmp = new_envp(cmd->arg[i], NULL);
-			lastadd_envp(main_data.list_envp, tmp);
+			lastadd_envp(g_main_data.list_envp, tmp);
 		}
 		else
 		{
@@ -152,11 +152,11 @@ void	export(t_cmd *cmd, int fd)
 	{
 		if (valid_export(cmd->arg[i], cmd->arg[i]))
 			return ;
-		tmp = find_var_envp(main_data.list_envp, cmd->arg[i]);
+		tmp = find_var_envp(g_main_data.list_envp, cmd->arg[i]);
 		if (!tmp)
 		{
 			tmp = new_envp(cmd->arg[i], NULL);
-			lastadd_envp(main_data.list_envp, tmp);
+			lastadd_envp(g_main_data.list_envp, tmp);
 		}
 	}
 	i++;

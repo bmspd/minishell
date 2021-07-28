@@ -32,22 +32,22 @@
 # include <sys/types.h>
 # include <fcntl.h>
 # include <sys/stat.h>
-#define	 COMAND		0
-#define	 ARGV		1
-#define	 HEREDOC	2
-#define	 RDFILE		3
-#define	 WRFILEADD	4
-#define	 WRFILETR	5
-#define	 PIPE		6
-#define STDIN	0
-#define STDOUT	1
-#define ENV		1
-#define CD		2
-#define PWD		3
-#define MYECHO	4
-#define UNSET	5
-#define EXPORT	6
-#define EXIT	7
+#define COMAND		0
+#define ARGV		1
+#define HEREDOC		2
+#define RDFILE		3
+#define WRFILEADD	4
+#define WRFILETR	5
+#define PIPE		6
+#define STDIN		0
+#define STDOUT		1
+#define ENV			1
+#define CD			2
+#define PWD			3
+#define MYECHO		4
+#define UNSET		5
+#define EXPORT		6
+#define EXIT		7
 
 typedef struct s_file_read
 {
@@ -77,7 +77,6 @@ typedef struct s_file_write_tr
 	int		order;
 	struct s_file_write_tr *next;
 }				t_trfile;
-
 
 typedef struct	s_cmd
 {
@@ -133,7 +132,7 @@ typedef struct s_struct{
 	int new_cmd_flag;
 }t_struct;
 
-extern t_struct main_data;
+extern t_struct g_main_data;
 
 //printing staff
 void	print_title(void);

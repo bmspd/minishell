@@ -7,7 +7,7 @@ int	count_elements(void)
 	t_list	*tmp;
 
 	counter = 0;
-	tmp = main_data.commands;
+	tmp = g_main_data.commands;
 	while (tmp)
 	{
 		i = 0;
@@ -35,7 +35,7 @@ char	**list_to_help_char(void)
 	if (!help_elements)
 		exit(1);
 	len = 0;
-	tmp = main_data.commands;
+	tmp = g_main_data.commands;
 	while (tmp)
 	{
 		i = 0;
@@ -61,7 +61,7 @@ char	**list_to_char(void)
 	if (!elements)
 		exit(1);
 	len = 0;
-	tmp = main_data.commands;
+	tmp = g_main_data.commands;
 	while (tmp)
 	{
 		i = 0;

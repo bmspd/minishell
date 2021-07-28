@@ -5,7 +5,7 @@ void	reg_last_exec(t_cmd *cmd, int flag)
 	t_envp	*last_exec;
 	char	*path;
 
-	last_exec = find_var_envp(main_data.list_envp, "_");
+	last_exec = find_var_envp(g_main_data.list_envp, "_");
 	if (last_exec)
 	{
 		path = get_path(cmd, flag);

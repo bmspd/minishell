@@ -37,11 +37,11 @@ int	exec_builtin(t_cmd *cmd)
 	if (index)
 	{
 		if (index == ENV)
-			env(main_data.list_envp, cmd->out);
+			env(g_main_data.list_envp, cmd->out);
 		if (index == PWD)
 			print_pwd(cmd->out);
 		if (index == CD)
-			go_to_direction(cmd, main_data.list_envp);
+			go_to_direction(cmd, g_main_data.list_envp);
 		if (index == UNSET)
 			unset(cmd);
 		if (index == MYECHO)

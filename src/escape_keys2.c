@@ -6,11 +6,11 @@ int	escape_ctrl(char *str)
 	{
 		tputs(tgetstr("cl", 0), 1, ft_putint);
 		print_title();
-		free(main_data.buf_hist);
-		main_data.buf_hist = ft_strdup("");
-		main_data.cursor_place = 0;
-		main_data.history_id = -1;
-		main_data.key_amount = 0;
+		free(g_main_data.buf_hist);
+		g_main_data.buf_hist = ft_strdup("");
+		g_main_data.cursor_place = 0;
+		g_main_data.history_id = -1;
+		g_main_data.key_amount = 0;
 		return (1);
 	}
 	return (0);
@@ -35,13 +35,13 @@ static char	*if_folder_changed(char *list_elem)
 	pwd_new = get_pwd();
 	if ((ft_strncmp(pwd_new, pwd, ft_strlen(pwd_new))
 			|| ft_strncmp(pwd, pwd_new, ft_strlen(pwd)))
-		|| main_data.new_cmd_flag)
+		|| g_main_data.new_cmd_flag)
 	{
 		safe_free(pwd);
 		pwd = get_pwd();
 		safe_free(list_elem);
 		list_elem = NULL;
-		main_data.new_cmd_flag = 0;
+		g_main_data.new_cmd_flag = 0;
 	}
 	free(pwd_new);
 	return (list_elem);
@@ -63,7 +63,7 @@ int	escape_tab(char *str)
 			return (1);
 		i = take_word_part();
 		if_zero_current_tab();
-		if (main_data.part && !ft_strncmp(main_data.part, "", 1))
+		if (g_main_data.part && !ft_strncmp(g_main_data.part, "", 1))
 			no_buff_case(list_files, len);
 		else
 			is_buff_case(list_files, len, &list_elem, i);
