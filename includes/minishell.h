@@ -314,4 +314,6 @@ void	not_found(t_cmd *cmd);
 int		get_index_builtin(char	*name);
 void	read_block(char **elements, char **help_elements);
 void	unset(t_cmd *cmd);
+void	iter_shlvl(t_envp **list_envp);
+void	env(t_envp *list, int fd);
 #endif

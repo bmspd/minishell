@@ -1,36 +1,22 @@
 #include "../includes/minishell.h"
 
-void	env(t_envp *list, int fd)
-{
-	while (list)
-	{
-		if (ft_strchr(list->name, '='))
-		{
-			write(fd, list->name, ft_strlen(list->name));
-			write(fd, list->value, ft_strlen(list->value));
-			write(fd, "\n", 1);
-		}
-		list = list->next;
-	}
-}
-
 void	free_VAR(t_envp *ptr)
 {
 	if (ptr->name)
 		free(ptr->name);
-		ptr->name = NULL;
+	ptr->name = NULL;
 	if (ptr->value)
 		free(ptr->value);
-		ptr->value = NULL;
+	ptr->value = NULL;
 	if (ptr)
 		free(ptr);
-		ptr = NULL;
+	ptr = NULL;
 }
 
 void	rem_envp_VAR(t_envp **list_envp, char *VAR)
 {
-	t_envp *tmp;
-	t_envp *tmp2;
+	t_envp	*tmp;
+	t_envp	*tmp2;
 
 	tmp = NULL;
 	tmp2 = *list_envp;
@@ -46,7 +32,7 @@ void	rem_envp_VAR(t_envp **list_envp, char *VAR)
 		if (!tmp2->next)
 			return ;
 		if (!ft_strncmp(VAR, tmp2->next->name, ft_strlen(tmp2->next->name)))
-			break;
+			break ;
 		tmp2 = tmp2->next;
 	}
 	tmp = tmp2->next;
@@ -57,8 +43,8 @@ void	rem_envp_VAR(t_envp **list_envp, char *VAR)
 t_envp	*new_envp(char	*env, t_envp	*old)
 {
 	t_envp		*new_env;
-	char	*tmp;
-	size_t	size;
+	char		*tmp;
+	size_t		size;
 
 	new_env = malloc_x(sizeof(t_envp));
 	tmp = ft_strchr(env, '=');
@@ -72,7 +58,7 @@ t_envp	*new_envp(char	*env, t_envp	*old)
 		new_env->value = ft_strdup(tmp + 1);
 	else
 		new_env->value = ft_strdup("");
-	if(old)
+	if (old)
 		old->next = new_env;
 	new_env->next = NULL;
 	return (new_env);
@@ -80,10 +66,10 @@ t_envp	*new_envp(char	*env, t_envp	*old)
 
 t_envp	*init_list_envp(void)
 {
-	t_envp *pwd;
-	t_envp *shlvl;
-	t_envp *last_exec;
-	t_envp *oldpwd;
+	t_envp	*pwd;
+	t_envp	*shlvl;
+	t_envp	*last_exec;
+	t_envp	*oldpwd;
 
 	pwd = new_envp("PWD=", NULL);
 	free(pwd->value);
@@ -98,36 +84,13 @@ t_envp	*init_list_envp(void)
 	return (pwd);
 }
 
-void	iter_shlvl(t_envp **list_envp)
-{
-	t_envp	*shlvl;
-	int		number;
-
-	number = 1;
-	shlvl = find_var_envp(*list_envp, "SHLVL=");
-	if (shlvl)
-	{
-		number = ft_atoi(shlvl->value) + 1;
-		free(shlvl->value);
-		shlvl->value = NULL;
-		shlvl->value = ft_itoa(number);
-	}
-	else
-	{
-		shlvl = new_envp("SHLVL", NULL);
-		free(shlvl->value);
-		shlvl->value = ft_strdup("1");
-		lastadd_envp(*list_envp, shlvl);
-	}
-}
-
 t_envp	*create_list_envp(char **envp)
 {
 	t_envp	*list_envp;
 	t_envp	*tmp;
-	int i;
+	int		i;
 
-	if(!envp[0])
+	if (!envp[0])
 	{
 		list_envp = init_list_envp();
 		return (list_envp);
