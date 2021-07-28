@@ -1,3 +1,38 @@
+ls
+env
+cd minishelll
+env
+cd ..
+env
+export PWD
+env
+cd minishelll
+cd ..
+env
+unset PWD
+env
+pwd
+cd minishelll
+cd ..
+export
+export PWl
+export PWl
+export PW
+export PWl
+export PW
+export PWl
+export PW
+export PWl
+export PW
+export PWl
+export PW
+export PW
+export PWl
+export PW
+export PW
+export
+export PW
+export
 /bin/bash
 /bin/bash
 bash

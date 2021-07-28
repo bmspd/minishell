@@ -7,7 +7,7 @@ t_envp	*find_var_envp(t_envp *list_envp, char *VAR)
 	while (list_envp)
 	{
 		if (!ft_strchr(list_envp->name, '='))
-			size = ft_strlen(list_envp->name);
+			size = ft_strlen(list_envp->name) + 1;
 		else
 			size = ft_strlen(list_envp->name) - 1;
 		if (!ft_strncmp(VAR, list_envp->name, size))
