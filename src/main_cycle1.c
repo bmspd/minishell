@@ -196,7 +196,7 @@ void	one_cmd(t_block *block)
 	if (pid == -1)
 		crash();
 	if (pid)
-		reg_last_exec(block->cmd, block, 1);
+		reg_last_exec(block->cmd, 1);
 	if (!pid)
 		exec_cmd(block->cmd, convert_list_in_arr(main_data.list_envp));
 	wait(&status);
@@ -239,7 +239,7 @@ void	read_block(char **elements, char **help_elements)
 	t_block	*block;
 	char	**envp;
 
-	block = create_pipe_block(elements, help_elements);;
+	block = create_pipe_block(elements, help_elements, 0, 1);
 	if (!block)
 		return ;
 	if (block->next)

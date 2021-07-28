@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	reg_last_exec(t_cmd *cmd, t_block *block, int flag)
+void	reg_last_exec(t_cmd *cmd, int flag)
 {
 	t_envp	*last_exec;
 	char	*path;
@@ -45,4 +45,11 @@ char	*check_relative_path(t_cmd *cmd, int flag)
 	}
 	path = cmd->name;
 	return (path);
+}
+
+void	crash(void)
+{
+	perror("minishell");
+	set_terminal(0);
+	kill(0, SIGKILL);
 }

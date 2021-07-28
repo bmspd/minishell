@@ -2,11 +2,11 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-# define RED     "\x1b[31m"
-# define GREEN   "\x1b[32m"
-# define MAGENTA "\x1b[35m"
-# define CYAN    "\x1b[36m"
-# define CLR_RESET   "\x1b[0m"
+# define RED		"\x1b[31m"
+# define GREEN		"\x1b[32m"
+# define MAGENTA	"\x1b[35m"
+# define CYAN		"\x1b[36m"
+# define CLR_RESET	"\x1b[0m"
 
 # define ESC_DOWN		"\e[B"
 # define ESC_UP			"\e[A"
@@ -81,11 +81,11 @@ typedef struct s_file_write_tr
 
 typedef struct	s_cmd
 {
-	int	in;
-	int	out;
-	char *name;	
-	char **arg;
-	char **env;
+	int		in;
+	int		out;
+	char	*name;	
+	char	**arg;
+	char	**env;
 }				t_cmd;
 
 typedef struct s_block
@@ -143,9 +143,9 @@ void	print_big_greeting(void);
 void	print_small_greeting(void);
 
 //signals staff
-void handler (int status);
-void handler1 (int status);
-void set_terminal(int type);
+void	handler (int status);
+void	handler1 (int status);
+void	set_terminal(int type);
 
 //cursor staff
 void	moveback_cursor(void);
@@ -260,7 +260,7 @@ t_block		*last_block(t_block *lst);
 void		block_add_back(t_block **lst, t_block *new);
 
 //create_pipe_block
-t_block	*create_pipe_block(char **str, char **check);
+t_block	*create_pipe_block(char **str, char **check, int i, int this_cmd);
 char	**ft_realloc(char **ptr, size_t size);
 int		get_index(char *str, char *check);
 int		init_heredoc(t_heredoc **hdoc, char *stop_word, int order);
@@ -278,7 +278,7 @@ void	free_block(t_block *block);
 
 //for_print_and_count
 int		count_block(t_block *block);
-void 	free_VAR(t_envp *);
+void	free_VAR(t_envp *);
 
 
 
@@ -290,7 +290,7 @@ int		get_fd(t_block *block, t_cmd *cmd, int i);
 
 //pipex
 int		pipex(t_block *block, char **envp, int in);
-char *find_path_cmd(char *value, char *name_prog, char *home);
+char *find_path_cmd(char *value, char *name_prog);
 //main cycle staff
 void	symbol_not_enter(char *str);
 void	typing_cycle(void);
@@ -303,7 +303,7 @@ void	exec_cmd(t_cmd *cmd, char **envp);
 int		exec_builtin(t_cmd *cmd);
 void	export(t_cmd *cmd, int fd);
 int		ft_overlap(char *s1, char *s2);
-void	reg_last_exec(t_cmd *cmd, t_block *block, int flag);
+void	reg_last_exec(t_cmd *cmd, int flag);
 void	crash(void);
 int		get_index_builtin(char	*name);
 char	*get_path(t_cmd *cmd, int flag);

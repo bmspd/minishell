@@ -41,10 +41,10 @@ void	cursor_behaviour(char *tmp2)
 {
 	int	z;
 
-	if (main_data.cursor_place != ft_strlen(main_data.buf_hist))
+	if (main_data.cursor_place != (int)ft_strlen(main_data.buf_hist))
 	{
 		z = 0;
-		while (z < ft_strlen(tmp2))
+		while (z < (int)ft_strlen(tmp2))
 		{
 			tputs(cursor_left, 1, ft_putint);
 			z++;

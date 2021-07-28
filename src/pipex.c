@@ -4,7 +4,6 @@ char	*get_path(t_cmd *cmd, int flag)
 {
 	char	*path;
 	t_envp	*PATH;
-	t_envp	*HOME;
 
 	path = NULL;
 	if (!cmd->name && flag == 2)
@@ -12,9 +11,8 @@ char	*get_path(t_cmd *cmd, int flag)
 	if (!cmd->name && flag == 1)
 		return (NULL);
 	PATH = find_var_envp(main_data.list_envp, "PATH");
-	HOME = find_var_envp(main_data.list_envp, "HOME");
-	if (PATH && HOME)
-		path = find_path_cmd(PATH->value, cmd->name, HOME->value);
+	if (PATH)
+		path = find_path_cmd(PATH->value, cmd->name);
 	return (path);
 }
 
@@ -53,11 +51,14 @@ int	init_fdpipe(t_block *block, int *fd, int in)
 	return (1);
 }
 
-void	crash(void)
+void	child_process(int *fd, t_block *block, char **envp)
 {
-	perror("minishell");
-	set_terminal(0);
-	kill(0, SIGKILL);
+	close(fd[0]);
+	if (get_fd(block, block->cmd, 0))
+		exit(1);
+	if (exec_builtin(block->cmd))
+		exit(0);
+	exec_cmd(block->cmd, envp);
 }
 
 int	pipex(t_block *block, char **envp, int in)
@@ -74,18 +75,11 @@ int	pipex(t_block *block, char **envp, int in)
 	if (block->pid)
 	{
 		if (!get_index_builtin(block->cmd->name))
-			reg_last_exec(block->cmd, block, 1);
+			reg_last_exec(block->cmd, 1);
 		close(fd[1]);
 		flag = pipex(block->next, envp, fd[0]);
 	}
 	else if (!block->pid)
-	{
-		close(fd[0]);
-		if (get_fd(block, block->cmd, 0))
-			exit(1);
-		if (exec_builtin(block->cmd))
-			exit(0);
-		exec_cmd(block->cmd, envp);
-	}
+		child_process(fd, block, envp);
 	return (flag);
 }

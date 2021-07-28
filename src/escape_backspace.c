@@ -25,7 +25,7 @@ int	escape_backspace(char *str)
 	{
 		if (!ft_strlen(main_data.buf_hist)
 			|| main_data.cursor_place == 0
-			|| main_data.key_amount < ft_strlen(main_data.buf_hist))
+			|| main_data.key_amount < (int)ft_strlen(main_data.buf_hist))
 			write(1, "\a", 1);
 		else
 		{
