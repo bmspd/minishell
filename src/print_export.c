@@ -1,6 +1,23 @@
 #include "../includes/minishell.h"
+static void	copying_process(t_envp *tmp, t_envp *p)
+{
+	while (tmp)
+	{
+		if (!ft_strncmp("_=", tmp->name, 3))
+		{
+			tmp = tmp->next;
+			continue ;
+		}
+		p->next = malloc_x(sizeof(t_envp));
+		p = p->next;
+		p->name = ft_strdup(tmp->name);
+		p->value = ft_strdup(tmp->value);
+		tmp = tmp->next;
+	}
+	p->next = NULL;
+}
 
-static t_envp *make_copy_envp(void)
+static t_envp	*make_copy_envp(void)
 {
 	t_envp	*tmp;
 	t_envp	*head;
@@ -10,37 +27,32 @@ static t_envp *make_copy_envp(void)
 	if (tmp == NULL)
 		return (NULL);
 	head = malloc_x(sizeof(t_envp));
-	if (!head)
-		exit(42);
 	head->name = ft_strdup(tmp->name);
 	head->value = ft_strdup(tmp->value);
 	p = head;
 	tmp = tmp->next;
-	while (tmp)
-	{
-		if (!ft_strncmp("_=", tmp->name, 3))
-		{
-			tmp = tmp->next;
-			continue;
-		}
-		p->next = malloc_x(sizeof(t_envp));
-		if (!p->next)
-			exit(42);
-		p = p->next;
-		p->name = ft_strdup(tmp->name);
-		p->value = ft_strdup(tmp->value);
-		tmp = tmp->next;
-	}
-	p->next = NULL;
+	copying_process(tmp, p);
 	return (head);
 }
 
-static t_envp *sort_envp(t_envp *head)
+static void	changing_places(t_envp *tmp, t_envp *tmp1)
 {
-	t_envp *tmp;
-	t_envp *tmp1;
-	char *tmp_name;
-	char *tmp_value;
+	char	*tmp_name;
+	char	*tmp_value;
+
+	tmp_name = tmp->name;
+	tmp_value = tmp->value;
+	tmp->name = tmp1->name;
+	tmp->value = tmp1->value;
+	tmp1->value = tmp_value;
+	tmp1->name = tmp_name;
+}
+
+static t_envp	*sort_envp(t_envp *head)
+{
+	t_envp	*tmp;
+	t_envp	*tmp1;
+
 	if (!head)
 		return (NULL);
 	tmp = head;
@@ -50,14 +62,7 @@ static t_envp *sort_envp(t_envp *head)
 		while (tmp1)
 		{
 			if (ft_strncmp(tmp->name, tmp1->name, ft_strlen(tmp->name) + 1) > 0)
-			{
-				tmp_name = tmp->name;
-				tmp_value = tmp->value;
-				tmp->name = tmp1->name;
-				tmp->value = tmp1->value;
-				tmp1->value = tmp_value;
-				tmp1->name = tmp_name;
-			}
+				changing_places(tmp, tmp1);
 			tmp1 = tmp1->next;
 		}
 		tmp = tmp->next;
@@ -68,8 +73,8 @@ static t_envp *sort_envp(t_envp *head)
 
 void	print_export(int fd)
 {
-	t_envp *copy;
-	t_envp *tmp;
+	t_envp	*copy;
+	t_envp	*tmp;
 
 	copy = make_copy_envp();
 	copy = sort_envp(copy);
@@ -78,8 +83,7 @@ void	print_export(int fd)
 	{
 		write(fd, "declare -x ", ft_strlen("declare - x"));
 		write(fd, tmp->name, ft_strlen(tmp->name));
-
-		if(ft_strchr(tmp->name, '='))
+		if (ft_strchr(tmp->name, '='))
 		{
 			write(fd, "\"", 1);
 			write(fd, tmp->value, ft_strlen(tmp->value));
