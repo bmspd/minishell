@@ -250,23 +250,18 @@ t_addfile	*new_addfile(char *name_file, int order);
 //last_elem
 void		heredoc_add_back(t_heredoc **lst, t_heredoc *new);
 t_heredoc	*last_heredoc(t_heredoc *lst);
-
 t_trfile	*last_trfile(t_trfile *lst);
 void		trfile_add_back(t_trfile **lst, t_trfile *new);
-
 t_rdfile	*last_rdfile(t_rdfile *lst);
 void		rdfile_add_back(t_rdfile **lst, t_rdfile *new);
-
 t_addfile	*last_addfile(t_addfile *lst);
 void		addfile_add_back(t_addfile **lst, t_addfile *new);
-
 t_block		*last_block(t_block *lst);
 void		block_add_back(t_block **lst, t_block *new);
 
 //create_pipe_block
 t_block	*create_pipe_block(char **str, char **check);
 char	**ft_realloc(char **ptr, size_t size);
-
 int		get_index(char *str, char *check);
 int		init_heredoc(t_heredoc **hdoc, char *stop_word, int order);
 void	init_rdfile(t_rdfile **rdfile, char *name_file, int order);
@@ -297,13 +292,13 @@ int		get_fd(t_block *block, t_cmd *cmd, int i);
 int		pipex(t_block *block, char **envp, int in);
 char *find_path_cmd(char *value, char *name_prog, char *home);
 //main cycle staff
-void    symbol_not_enter(char *str);
-void    typing_cycle(void);
+void	symbol_not_enter(char *str);
+void	typing_cycle(void);
 void	init_variables(void);
 void	command_launcher(void);
 void	main_engine(void);
 
-char **convert_list_in_arr(t_envp *list_envp);
+char	**convert_list_in_arr(t_envp *list_envp);
 void	exec_cmd(t_cmd *cmd, char **envp);
 int		exec_builtin(t_cmd *cmd);
 void	export(t_cmd *cmd, int fd);
@@ -311,4 +306,9 @@ int		ft_overlap(char *s1, char *s2);
 void	reg_last_exec(t_cmd *cmd, t_block *block, int flag);
 void	crash(void);
 int		get_index_builtin(char	*name);
+char	*get_path(t_cmd *cmd, int flag);
+char	*check_relative_path(t_cmd *cmd, int flag);
+//print_error_massage
+void	error_massage_exec(char *name_file);
+void	not_found(t_cmd *cmd);
 #endif
