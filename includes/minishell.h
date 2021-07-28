@@ -320,4 +320,5 @@ void	env(t_envp *list, int fd);
 t_envp	*create_oldpwd(t_envp *oldpwd, t_envp *list_envp);
 t_envp	*rename_pwd(t_envp *pwd);
 void	print_export(int fd);
+void	check_envp(t_envp **list_envp);
 #endif

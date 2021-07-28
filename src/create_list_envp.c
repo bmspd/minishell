@@ -64,48 +64,27 @@ t_envp	*new_envp(char	*env, t_envp	*old)
 	return (new_env);
 }
 
-t_envp	*init_list_envp(void)
-{
-	t_envp	*pwd;
-	t_envp	*shlvl;
-	t_envp	*last_exec;
-	t_envp	*oldpwd;
-
-	pwd = new_envp("PWD=", NULL);
-	free(pwd->value);
-	pwd->value = get_pwd();
-	shlvl = new_envp("SHLVL=", pwd);
-	free(shlvl->value);
-	shlvl->value = ft_strdup("1");
-	last_exec = new_envp("_=", shlvl);
-	free(last_exec->value);
-	last_exec->value = ft_strdup("minishell");
-	oldpwd = new_envp("OLDPWD", last_exec);
-	return (pwd);
-}
-
 t_envp	*create_list_envp(char **envp)
 {
 	t_envp	*list_envp;
 	t_envp	*tmp;
 	int		i;
 
-	if (!envp[0])
-	{
-		list_envp = init_list_envp();
-		return (list_envp);
-	}
 	list_envp = NULL;
 	i = 0;
-	list_envp = new_envp(envp[i], NULL);
-	tmp = list_envp;
-	i++;
+	if (envp[i])
+	{
+		list_envp = new_envp(envp[i], NULL);
+		tmp = list_envp;
+		i++;
+	}
 	while (envp[i])
 	{
 		tmp->next = new_envp(envp[i], tmp);
 		tmp = tmp->next;
 		i++;
-	}	
+	}
+	check_envp(&list_envp);
 	iter_shlvl(&list_envp);
 	return (list_envp);
 }

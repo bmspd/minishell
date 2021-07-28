@@ -11,7 +11,7 @@ SRCS			= 	main.c print_utils.c signals.c cursor_utils.c escape_commands.c histor
 					main_cycle1.c main_cycle2.c export.c print_error.c\
 					reg_last_exec.c read_block.c builtin.c unset.c\
 					find_path_cmd.c convert_list_in_arr.c env.c pwd.c\
-					utils_cd.c print_export.c
+					utils_cd.c print_export.c check_envp.c
 DIR_S			= src
 SOURCE			=$(addprefix $(DIR_S)/,$(SRCS))
 OBJS			= $(SOURCE:.c=.o)

@@ -37,6 +37,17 @@ char	*convert_in_str(char *s1, char *s2)
 	return (out);
 }
 
+int	minus_count(int count, t_envp *tmp)
+{
+	while (tmp)
+	{
+		if (!ft_strchr(tmp->name, '='))
+			count--;
+		tmp = tmp->next;
+	}
+	return (count);
+}
+
 char	**convert_list_in_arr(t_envp *list_envp)
 {
 	int		count;
@@ -44,12 +55,16 @@ char	**convert_list_in_arr(t_envp *list_envp)
 	int		i;
 
 	count = count_list(list_envp);
+	count = minus_count(count, list_envp);
 	envp = malloc_x(sizeof(char *) * (count + 1));
 	i = 0;
 	while (i < count)
 	{
-		envp[i] = convert_in_str(list_envp->name, list_envp->value);
-		i++;
+		if (ft_strchr(list_envp->name, '='))
+		{
+			envp[i] = convert_in_str(list_envp->name, list_envp->value);
+			i++;
+		}
 		list_envp = list_envp->next;
 	}
 	envp[i] = NULL;

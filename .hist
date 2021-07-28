@@ -1,3 +1,26 @@
+env
+./minishell
+export NEW
+./minishell
+minishell
+export
+env
+env
+export
+env
+env
+env
+/bin/bash
+bash
+./minishell
+env
+export
+export NEW
+./minishell
+export
+env
+export NEW
+env
 ls
 env
 cd minishelll
