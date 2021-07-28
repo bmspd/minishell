@@ -38,8 +38,11 @@ void	free_cmd(t_cmd *cmd)
 {
 	if (!cmd)
 		return ;
+	if (cmd->in > 2)
+		close(cmd->in);
+	if (cmd->out > 2)
+		close(cmd->out);
 	if (!cmd->arg)
-		return ;
-	free(cmd->arg);
+		free(cmd->arg);
 	free(cmd);
 }
