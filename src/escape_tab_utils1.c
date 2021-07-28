@@ -82,7 +82,8 @@ void	no_buff_case(char **list_files, int len)
 	tputs(tgetstr("dl", 0), 1, ft_putint);
 	print_title();
 	tmp = g_main_data.buf_hist;
-	g_main_data.buf_hist = ft_strjoin(g_main_data.old_buf_hist, g_main_data.part);
+	g_main_data.buf_hist
+		= ft_strjoin(g_main_data.old_buf_hist, g_main_data.part);
 	ft_putstr(g_main_data.buf_hist);
 	g_main_data.cursor_place = ft_strlen(g_main_data.buf_hist);
 	g_main_data.key_amount = g_main_data.cursor_place;

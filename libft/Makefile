@@ -13,24 +13,36 @@ SRCS			=	ft_bzero.c ft_memccpy.c ft_memchr.c ft_memcpy.c \
 OBJS			= $(SRCS:.c=.o)
 HEADER			= libft.h
 %.o:		%.c $(HEADER)
-		$(CC) $(CFLAGS) -c -o $@ $<
+		@printf "\033[0;36mGenerating LIBFT objects... %-33.33s\r" $@
+		@$(CC) $(CFLAGS) -c -o $@ $<
 CC				= gcc
 RM				= rm -f
 CFLAGS			= -Wall -Wextra -Werror -I $(HEADER)
 
 NAME			= libft.a
 
-
 all:			$(NAME) 
 
 $(NAME):		$(OBJS)
-				ar rcs $(NAME) $(OBJS)
+				@echo "\n"
+				@echo "Making libft.a"
+				@sleep 0.5
+				@printf "୧༼ಠ益ಠ༽୨\t"
+				@sleep 0.5
+				@printf "୧༼ಠ益ಠ༽୨\t"
+				@sleep 0.5
+				@printf "୧༼ಠ益ಠ༽୨\n"
+				@sleep 0.5
+				@ar rcs $(NAME) $(OBJS)
 
 clean:
-				$(RM) $(OBJS)
-
+				@echo "\033[0;31mDeleting LIBFT objects...\033[0m"
+				@sleep 0.5
+				@$(RM) $(OBJS)
 fclean:			clean
-				$(RM) $(NAME)
+				@echo "\033[0;31mDeleting LIBFT library...\033[0m"
+				@sleep 0.5
+				@$(RM) $(NAME)
 
 re:				fclean $(NAME)
 
