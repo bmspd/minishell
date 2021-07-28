@@ -24,7 +24,7 @@ void	heredoc_add_back(t_heredoc **lst, t_heredoc *new)
 
 t_heredoc	*new_heredoc(char *stop_word, int order)
 {
-	t_heredoc *heredoc;
+	t_heredoc	*heredoc;
 
 	heredoc = malloc_x(sizeof(t_heredoc));
 	if (!heredoc)

@@ -2,8 +2,8 @@
 
 char	*tolower_str(char *str)
 {
-	size_t size;
-	size_t i;
+	size_t	size;
+	size_t	i;
 
 	i = 0;
 	size = ft_strlen(str);
@@ -35,7 +35,7 @@ void	error_massege_fd(int fd, char *name_file)
 
 int	open_rdfile(char *name_file)
 {
-	int fd;
+	int	fd;
 
 	fd = open(name_file, O_RDONLY);
 	error_massege_fd(fd, name_file);
@@ -44,7 +44,7 @@ int	open_rdfile(char *name_file)
 
 int	open_addfile(char *name_file)
 {
-	int fd;
+	int	fd;
 
 	fd = open(name_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	error_massege_fd(fd, name_file);
@@ -53,9 +53,9 @@ int	open_addfile(char *name_file)
 
 int	open_trfile(char *name_file)
 {
-	int fd;
+	int	fd;
 
-	fd = open(name_file, O_CREAT | O_WRONLY  | O_TRUNC, 0644);
+	fd = open(name_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	error_massege_fd(fd, name_file);
 	return (fd);
 }

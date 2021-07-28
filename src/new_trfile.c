@@ -22,9 +22,9 @@ void	trfile_add_back(t_trfile **lst, t_trfile *new)
 	last->next = new;
 }
 
-t_trfile *new_trfile(char *name_file, int order)
+t_trfile	*new_trfile(char *name_file, int order)
 {
-	t_trfile *trfile;
+	t_trfile	*trfile;
 
 	trfile = malloc_x(sizeof(t_trfile));
 	if (!trfile)

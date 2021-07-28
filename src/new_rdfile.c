@@ -20,9 +20,10 @@ void	rdfile_add_back(t_rdfile **lst, t_rdfile *new)
 	last = last_rdfile(*lst);
 	last->next = new;
 }
-t_rdfile *new_rdfile(char *name_file, int order)
+
+t_rdfile	*new_rdfile(char *name_file, int order)
 {
-	t_rdfile *rdfile;
+	t_rdfile	*rdfile;
 
 	rdfile = malloc_x(sizeof(t_rdfile));
 	if (!rdfile)

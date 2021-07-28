@@ -2,9 +2,9 @@
 
 static t_envp *make_copy_envp(void)
 {
-	t_envp *tmp;
-	t_envp *head;
-	t_envp *p;
+	t_envp	*tmp;
+	t_envp	*head;
+	t_envp	*p;
 
 	tmp = main_data.list_envp;
 	if (tmp == NULL)
