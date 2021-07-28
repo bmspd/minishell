@@ -1,4 +1,12 @@
 env
+env
+env
+unset
+env
+env
+env
+env
+env
 ./minishell
 export NEW
 ./minishell

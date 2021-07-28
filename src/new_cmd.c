@@ -42,7 +42,6 @@ void	free_cmd(t_cmd *cmd)
 		close(cmd->in);
 	if (cmd->out > 2)
 		close(cmd->out);
-	if (!cmd->arg)
-		free(cmd->arg);
+	free(cmd->arg);
 	free(cmd);
 }
