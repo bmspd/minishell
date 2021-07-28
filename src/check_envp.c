@@ -4,7 +4,6 @@ void	add_pwd(t_envp **list_envp)
 {
 	t_envp	*pwd;
 
-
 	pwd = new_envp("PWD=", NULL);
 	free(pwd->value);
 	pwd->value = get_pwd();
@@ -50,7 +49,7 @@ void	check_envp(t_envp **list_envp)
 	t_envp	*oldpwd;
 
 	pwd = find_var_envp(*list_envp, "PWD");
-	if(!pwd)
+	if (!pwd)
 		add_pwd(list_envp);
 	shlvl = find_var_envp(*list_envp, "SHLVL");
 	if (!shlvl)
