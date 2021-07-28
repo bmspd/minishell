@@ -14,7 +14,6 @@ void	env(t_envp *list, int fd)
 	}
 }
 
-
 void	iter_shlvl(t_envp **list_envp)
 {
 	t_envp	*shlvl;

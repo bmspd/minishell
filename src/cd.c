@@ -1,97 +1,5 @@
 #include "../includes/minishell.h"
 
-char	*get_pwd(void)
-{
-	char	*pwd;
-	char	*chek;
-	int		nb;
-
-	nb = 100;
-	pwd = ft_calloc(sizeof(char), nb);
-	if (!pwd)
-		exit(42);
-	chek = getcwd(pwd, nb);
-	nb += 255;
-	while (!chek)
-	{
-
-		free(pwd);
-		pwd = ft_calloc(sizeof(char), nb);
-		if (!pwd)
-			exit(42);
-		chek = getcwd(pwd, nb);
-		nb += 255;
-	}
-	return (pwd);
-}
-
-t_envp	*find_var_envp(t_envp *list_envp, char *VAR)
-{
-	size_t	size;
-
-
-	while (list_envp)
-	{
-		if (!ft_strchr(list_envp->name, '='))
-			size = ft_strlen(list_envp->name);
-		else
-			size = ft_strlen(list_envp->name) - 1;
-		if(!ft_strncmp(VAR, list_envp->name, size))
-			return (list_envp);
-		list_envp = list_envp->next;
-	}
-	return (NULL);
-}
-
-void	print_error(char *cmd, char *arg)
-{
-		char	*error;
-
-		error = strerror(errno);
-		write(2, cmd, ft_strlen(cmd));
-		write(2, ": ", 2);
-		write(2, error, ft_strlen(error));
-		write(2, ": ", 2);
-		write(2, arg, ft_strlen(arg));
-		write(2, "\n", 1);
-}
-
-void	lastadd_envp(t_envp *list_envp, t_envp *last)
-{
-	while (list_envp->next)
-	{
-		list_envp = list_envp->next;
-	}
-	list_envp->next = last;
-}
-
-t_envp	*create_oldpwd(t_envp *oldpwd, t_envp *list_envp)
-{
-	if(!oldpwd)
-	{
-		oldpwd = new_envp("OLDPWD=", NULL);
-		lastadd_envp(list_envp, oldpwd);
-	}
-	if (!ft_strchr(oldpwd->name, '='))
-	{
-		free(oldpwd->name);
-		oldpwd->name = ft_strdup("OLDPWD=");
-	}
-	if(oldpwd->value)
-		free(oldpwd->value);
-	return (oldpwd);
-}
-
-t_envp	*rename_pwd(t_envp *pwd)
-{
-	if (pwd && !ft_strchr(pwd->name, '='))
-	{
-		free(pwd->name);
-		pwd->name = ft_strdup("PWD=");
-	}
-	return (pwd);
-}
-
 void	free_and_write_pwd(t_envp *pwd, char *newpwd)
 {
 	free(pwd->value);
@@ -108,14 +16,14 @@ void	rewrite_pwd_oldpwd(t_envp *pwd, t_envp *oldpwd)
 	{
 		if (flag)
 			free_and_write_pwd(pwd, newpwd);
-		old = pwd->value; 
+		old = pwd->value;
 		oldpwd->value = old;
 		flag = 0;
 	}
 	else
 	{
 		if (!flag)
-		newpwd = NULL;
+			newpwd = NULL;
 		old = newpwd;
 		oldpwd->value = old;
 		if (newpwd == NULL)
@@ -131,7 +39,6 @@ void	reg_transit(t_envp *list_envp)
 	t_envp		*pwd;
 	t_envp		*oldpwd;
 
-
 	pwd = find_var_envp(list_envp, "PWD");
 	oldpwd = find_var_envp(list_envp, "OLDPWD");
 	oldpwd = create_oldpwd(oldpwd, list_envp);
@@ -145,7 +52,7 @@ void	go_to_home(t_envp *list_envp)
 	t_envp	*home;
 
 	home = find_var_envp(list_envp, "HOME");
-	if(!home)
+	if (!home)
 	{
 		write(2, "minishell: cd: HOME not set\n", 29);
 		return ;
@@ -163,12 +70,12 @@ void	go_to_home(t_envp *list_envp)
 		reg_transit(list_envp);
 	}
 	else
-		return;
+		return ;
 }
 
 void	go_to_direction(t_cmd	*cmd, t_envp *list_envp)
 {
-	char *path_dir;
+	char	*path_dir;
 
 	path_dir = cmd->arg[1];
 	if (count_arr(cmd->arg) > 2)
@@ -181,32 +88,10 @@ void	go_to_direction(t_cmd	*cmd, t_envp *list_envp)
 		go_to_home(list_envp);
 		return ;
 	}
-	if(chdir(path_dir) == -1)
+	if (chdir(path_dir) == -1)
 	{
 		print_error("cd", path_dir);
 		return ;
 	}
 	reg_transit(list_envp);
-}
-
-void	print_pwd(int fd)
-{
-	char *tmp;
-
-	tmp = get_pwd();
-	write(fd, tmp, ft_strlen(tmp));
-	write(fd, "\n", 1);
-	free(tmp);
-}
-
-size_t	count_arr(char **arr)
-{
-	size_t	i;
-
-	i = 0;
-	if (!arr)
-		return (0);
-	while (arr[i])
-		i++;
-	return (i);
 }

@@ -310,10 +310,13 @@ char	*check_relative_path(t_cmd *cmd, int flag);
 //print_error_massage
 void	error_massage_exec(char *name_file);
 void	not_found(t_cmd *cmd);
+void	print_error(char *cmd, char *arg);
 
 int		get_index_builtin(char	*name);
 void	read_block(char **elements, char **help_elements);
 void	unset(t_cmd *cmd);
 void	iter_shlvl(t_envp **list_envp);
 void	env(t_envp *list, int fd);
+t_envp	*create_oldpwd(t_envp *oldpwd, t_envp *list_envp);
+t_envp	*rename_pwd(t_envp *pwd);
 #endif

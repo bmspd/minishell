@@ -21,3 +21,16 @@ void	not_found(t_cmd *cmd)
 	write(2, cmd->name, ft_strlen(cmd->name));
 	write(2, ": command not found\n", 21);
 }
+
+void	print_error(char *cmd, char *arg)
+{
+	char	*error;
+
+	error = strerror(errno);
+	write(2, cmd, ft_strlen(cmd));
+	write(2, ": ", 2);
+	write(2, error, ft_strlen(error));
+	write(2, ": ", 2);
+	write(2, arg, ft_strlen(arg));
+	write(2, "\n", 1);
+}
