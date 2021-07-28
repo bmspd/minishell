@@ -54,7 +54,7 @@ int	escape_left(char *str)
 			+ main_data.title_length <= main_data.ws.ws_col - 1)
 		{
 			if (main_data.cursor_place == 0
-				|| main_data.key_amount < ft_strlen(main_data.buf_hist))
+				|| main_data.key_amount < (int)ft_strlen(main_data.buf_hist))
 			{
 				write(1, "\a", 1);
 			}
@@ -81,8 +81,8 @@ int	escape_right(char *str)
 		if (ft_strlen(main_data.buf_hist)
 			+ main_data.title_length <= main_data.ws.ws_col - 1)
 		{
-			if (main_data.cursor_place == ft_strlen(main_data.buf_hist)
-				|| main_data.key_amount < ft_strlen(main_data.buf_hist))
+			if (main_data.cursor_place == (int)ft_strlen(main_data.buf_hist)
+				|| main_data.key_amount < (int)ft_strlen(main_data.buf_hist))
 				write(1, "\a", 1);
 			else if (main_data.cursor_place + main_data.title_length
 				== main_data.ws.ws_col - 1)

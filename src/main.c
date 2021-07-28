@@ -114,10 +114,9 @@ char	*out_path(char **paths, char *tmp_name)
 	return (NULL);
 }
 
-char	*find_path_cmd(char *value, char *name_prog, char *home)
+char	*find_path_cmd(char *value, char *name_prog)
 {
 	char	**paths;
-	int		i;
 	char	*tmp_name;
 
 	tmp_name = ft_strdup(name_prog);
@@ -180,6 +179,8 @@ char **convert_list_in_arr(t_envp *list_envp)
 
 int main(int argc, char **argv, char **env)
 {
+	(void)argv;
+	(void)argc;
 	init_title();
 	init_variables();
 

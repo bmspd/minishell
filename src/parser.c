@@ -24,7 +24,7 @@ static int	pipes_squote_slash(char **str, int *i, int *j)
 	return (0);
 }
 
-static int	dquote_dollar(char **str, int *i, int *j)
+static int	dquote_dollar(char **str, int *i)
 {
 	if ((*str)[*i] == '\"')
 	{
@@ -57,7 +57,7 @@ void	parser(char *str)
 	{
 		if (pipes_squote_slash(&str, &i, &j))
 			;
-		else if (dquote_dollar(&str, &i, &j))
+		else if (dquote_dollar(&str, &i))
 			;
 		else
 			i++;

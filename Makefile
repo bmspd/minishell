@@ -16,7 +16,7 @@ OBJS			= $(SOURCE:.c=.o)
 HEADER			= ./includes/minishell.h
 CC				= gcc
 RM				= rm -f
-CFLAGS			= -I $(HEADER) #-Wall -Werror -Wextra
+CFLAGS			= -I $(HEADER) -Wall -Werror -Wextra
 
 NAME			= minishell
 
