@@ -25,23 +25,46 @@ NAME			= minishell
 all:			$(NAME)
 
 %.o:		%.c $(HEADER)
-		$(CC) $(CFLAGS) -o $@ -c $<
+				@printf "\033[0;35mGenerating MINISHELL objects... %-33.33s\r" $@
+				@$(CC) $(CFLAGS) -o $@ -c $<
 
 $(NAME):		$(OBJS)
-				make -C ./libft/
-				$(CC) -o $(NAME )$@ $^ -ltermcap -Llibft -lft
-
+				@make -C ./libft/
+				@echo "\033[0;32mMaking MINISHELL..."
+				@printf "༼ ༎ຶ ෴ ༎ຶ༽\t"
+				@sleep 0.5
+				@printf "༼ ༎ຶ ෴ ༎ຶ༽\t"
+				@sleep 0.5
+				@printf "༼ ༎ຶ ෴ ༎ຶ༽\n"
+				@sleep 0.5
+				@$(CC) -o $(NAME )$@ $^ -ltermcap -Llibft -lft
+				@echo "\033[0mAlmost done !"
+				@printf "(｡◕‿‿◕｡)\t"
+				@sleep 0.5
+				@printf "(｡◕‿‿◕｡)\t"
+				@sleep 0.5
+				@printf "(｡◕‿‿◕｡)\nDone!\n"
 clean:
-				$(RM) $(OBJS)
-				make -C ./libft/ clean
+				@echo "\033[0;31mDeleting MINISHELL objects..."
+				@sleep 0.5
+				@$(RM) $(OBJS)
+				@echo "\033[0;31mCleaning LIBFT..."
+				@sleep 0.5
+				@make -C ./libft/ clean
+				@echo "\033[0mDone!"
 
 fclean:			clean
-				$(RM) $(NAME)
-				make -C ./libft/ fclean
-
+				@echo "\033[0;31mDeleting MINISHELL executable..."
+				@sleep 0.5
+				@$(RM) $(NAME)
+				@sleep 0.5
+				@echo "\033[0;31mCleaning LIBFT..."
+				@sleep 0.5
+				@make -C ./libft/ fclean
+				@echo "\033[0mDone!"
 re:				fclean all
 
 debug:
 	gcc -g ${SOURCE} ./libft/*.c -ltermcap -o ${NAME}
 
-.PHONY:			all clean fclean re
+.PHONY:			all clean fclean re debug
