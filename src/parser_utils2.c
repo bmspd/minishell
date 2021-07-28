@@ -103,6 +103,5 @@ char	*slash(char *str, int *i)
 	str = ft_strjoin(tmp, tmp2);
 	free(tmp);
 	free(tmp2);
-	//(*i)++;
 	return (str);
 }

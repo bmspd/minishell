@@ -8,9 +8,9 @@ typedef struct s_list
 {
 	void			*content;
 	char			**commands;
-	char 			*flag;
-	int 			id;
-	int 			key_amount;
+	char			*flag;
+	int				id;
+	int				key_amount;
 	struct s_list	*next;
 }	t_list;
 

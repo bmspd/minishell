@@ -72,19 +72,17 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (0);
 	n = words_count(s, c);
-	split = malloc((n + 1) * sizeof(char *));
-	if (!split)
-		return (0);
+	split = malloc_x((n + 1) * sizeof(char *));
 	while (i < n)
 	{
 		j = 0;
 		s = pass_delim(s, c);
-		split[i] = malloc ((word_len(s, c) + 1) * sizeof(char));
+		split[i] = malloc_x((word_len(s, c) + 1) * sizeof(char));
 		if (!split[i])
 			return (allocate_error(split, i));
 		while (*s != c && *s != '\0')
 			split[i][j++] = *s++;
-		split[i++][j++] = '\0';
+		split[i++][j] = '\0';
 	}
 	split[i] = 0;
 	return (split);

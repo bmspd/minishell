@@ -27,14 +27,15 @@ static int	empty_folder(int len, char **list_files)
 	return (0);
 }
 
-static char *if_folder_changed(char *list_elem)
+static char	*if_folder_changed(char *list_elem)
 {
-	static char *pwd;
-	char *pwd_new;
+	static char	*pwd;
+	char		*pwd_new;
 
 	pwd_new = get_pwd();
 	if ((ft_strncmp(pwd_new, pwd, ft_strlen(pwd_new))
-		|| ft_strncmp(pwd, pwd_new, ft_strlen(pwd))) || main_data.new_cmd_flag)
+			|| ft_strncmp(pwd, pwd_new, ft_strlen(pwd)))
+		|| main_data.new_cmd_flag)
 	{
 		safe_free(pwd);
 		pwd = get_pwd();
@@ -45,6 +46,7 @@ static char *if_folder_changed(char *list_elem)
 	free(pwd_new);
 	return (list_elem);
 }
+
 int	escape_tab(char *str)
 {
 	char		**list_files;

@@ -2,6 +2,8 @@
 
 void	main_engine(void)
 {
+	int	fd;
+
 	main_data.counter = 0;
 	main_data.flag1 = 0;
 	main_data.current_tab = 0;
@@ -14,8 +16,10 @@ void	main_engine(void)
 	if (extra_parser() && ft_strncmp(main_data.buf_hist, "\4", 2))
 		command_launcher();
 	cleaning_foo();
-	int fd = open_history(O_TRUNC);
-	ft_lstadd_front(&main_data.history, ft_lstnew_history(main_data.buf_hist, (int)ft_strlen(main_data.buf_hist)));
+	fd = open_history(O_TRUNC);
+	ft_lstadd_front(&main_data.history,
+		ft_lstnew_history(main_data.buf_hist,
+			(int)ft_strlen(main_data.buf_hist)));
 	numerate_history(main_data.history);
 	fill_external_history(fd);
 }

@@ -46,8 +46,9 @@ int	ifkey(char c)
 
 static char	*empty_dollar(char *str, char *tmp, int i, int j)
 {
-	char *tmp1;
-	char *tmp2;
+	char	*tmp1;
+	char	*tmp2;
+
 	free(tmp);
 	if (str[i] == '?')
 	{
@@ -63,14 +64,13 @@ static char	*empty_dollar(char *str, char *tmp, int i, int j)
 		free(tmp1);
 		return (tmp);
 	}
-
 	return (str);
 }
 
 char	*dollar(char *str, int *i)
 {
-	int		j;
-	char	*tmp;
+	int			j;
+	char		*tmp;
 	t_envp		*search;
 
 	j = *i;
@@ -82,9 +82,7 @@ char	*dollar(char *str, int *i)
 	}
 	tmp = ft_substr(str, j + 1, *i - j - 1);
 	if (!ft_strncmp("", tmp, 1))
-	{
-		return(empty_dollar(str, tmp, *i, j));
-	}
+		return (empty_dollar(str, tmp, *i, j));
 	search = find_var_envp(main_data.list_envp, tmp);
 	if (search)
 	{

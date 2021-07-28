@@ -55,7 +55,8 @@ int	extra_parser(void)
 	{
 		if (tmp->id == ft_lstsize(main_data.commands) - 1 && tmp_flag)
 			return (1);
-		if (parser_decision(last_flag_pipe, tmp) || !ft_strncmp(";", tmp->flag, 2))
+		if (parser_decision(last_flag_pipe, tmp)
+			|| !ft_strncmp(";", tmp->flag, 2))
 		{
 			printf("minishell: syntax error!\n");
 			main_data.exit_status = 258;

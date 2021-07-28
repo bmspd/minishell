@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-int key_control(char *str)
+int	key_control(char *str)
 {
 	if (escape_up(str))
 		return (1);
@@ -20,4 +20,3 @@ int key_control(char *str)
 		return (8);
 	return (0);
 }
-

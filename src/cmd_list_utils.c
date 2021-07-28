@@ -31,18 +31,30 @@ void	init_commands(void)
 	tmp->flag = NULL;
 }
 
-void	fill_commands(char *cmd, int cntr)
+static t_list	*search(void)
 {
-	int i = 0;
-	t_list *tmp = main_data.commands;
+	t_list	*tmp;
+
+	tmp = main_data.commands;
 	while (tmp)
 	{
 		if (tmp->id == main_data.flag1)
 			break ;
 		tmp = tmp->next;
 	}
-	char **new = malloc_x(sizeof(char *) * (cntr + 1));
-	while(tmp->commands[i])
+	return (tmp);
+}
+
+void	fill_commands(char *cmd, int cntr)
+{
+	int		i;
+	t_list	*tmp;
+	char	**new;
+
+	i = 0;
+	tmp = search();
+	new = malloc_x(sizeof(char *) * (cntr + 1));
+	while (tmp->commands[i])
 	{
 		new[i] = ft_strdup(tmp->commands[i]);
 		free(tmp->commands[i]);
@@ -50,11 +62,7 @@ void	fill_commands(char *cmd, int cntr)
 	}
 	free(tmp->commands[i]);
 	if (cmd)
-	{
-
 		new[i] = ft_strdup(cmd);
-		//free(cmd);
-	}
 	else
 		new[i] = NULL;
 	i++;
@@ -65,7 +73,9 @@ void	fill_commands(char *cmd, int cntr)
 
 void	fill_flag(char *flag)
 {
-	t_list	*tmp = main_data.commands;
+	t_list	*tmp;
+
+	tmp = main_data.commands;
 	while (tmp)
 	{
 		if (tmp->id == main_data.flag1)
@@ -73,5 +83,4 @@ void	fill_flag(char *flag)
 		tmp = tmp->next;
 	}
 	tmp->flag = ft_strdup(flag);
-
 }

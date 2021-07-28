@@ -12,7 +12,6 @@ t_list	*ft_lstnew(void *content)
 		new->commands = NULL;
 		new->id = 0;
 		new->flag = 0;
-
 	}
 	return (new);
 }
