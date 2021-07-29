@@ -34,16 +34,25 @@ t_addfile	*step_add(t_addfile *addfile, t_cmd *cmd)
 
 int	get_fd(t_block *block, t_cmd *cmd, int i)
 {
+	t_rdfile	*rdfile;
+	t_trfile	*trfile;
+	t_heredoc	*heredoc;
+	t_addfile	*addfile;
+	
+	rdfile = block->rdfile;
+	trfile = block->trfile;
+	heredoc = block->heredoc;
+	addfile = block->addfile;
 	while (i < block->order)
 	{
-		if (block->rdfile && i == block->rdfile->order)
-			block->rdfile = step_rd(block->rdfile, cmd);
-		else if (block->heredoc && i == block->heredoc->order)
-			block->heredoc = step_hr(block->heredoc, cmd);
-		else if (block->addfile && i == block->addfile->order)
-			block->addfile = step_add(block->addfile, cmd);
-		else if (block->trfile && i == block->trfile->order)
-			block->trfile = step_tr(block->trfile, cmd);
+		if (rdfile && i == rdfile->order)
+			rdfile = step_rd(rdfile, cmd);
+		else if (heredoc && i == heredoc->order)
+			heredoc = step_hr(heredoc, cmd);
+		else if (addfile && i == addfile->order)
+			addfile = step_add(addfile, cmd);
+		else if (trfile && i == trfile->order)
+			trfile = step_tr(trfile, cmd);
 		if (cmd->in == -1 || cmd->out == -1)
 			return (1);
 		i++;

@@ -29,6 +29,7 @@ void	error_massege_fd(int fd, char *name_file)
 		write(2, ": ", 2);
 		write(2, name_file, ft_strlen(name_file));
 		write(2, "\n", 1);
+		free(str_error);
 		g_main_data.exit_status = 1;
 	}
 }

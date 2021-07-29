@@ -96,6 +96,8 @@ typedef struct s_block
 	t_addfile		*addfile;
 	pid_t			pid;
 	int				order;
+	int				fd_pipe_in;
+	int				fd_pipe_out;
 	struct s_block	*next;
 }				t_block;
 

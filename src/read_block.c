@@ -32,6 +32,18 @@ void	kill_childprocess(t_block *block)
 	}
 }
 
+void	close_all_pipe(t_block *block)
+{
+	while (block)
+	{
+		if (block->fd_pipe_out > 2)
+			close(block->fd_pipe_out);
+		if (block->fd_pipe_in > 2)
+			close(block->fd_pipe_in);
+		block = block->next;
+	}
+}
+
 void	wait_child(t_block *block)
 {
 	int	status;
@@ -39,7 +51,7 @@ void	wait_child(t_block *block)
 
 	while (block)
 	{
-		i = (-1 == waitpid(block->pid, &status, 0));
+		i = (-1 == wait(&status));
 		if (!i)
 		{
 			g_main_data.exit_status = WEXITSTATUS(status);
@@ -48,6 +60,7 @@ void	wait_child(t_block *block)
 				kill_childprocess(block);
 				break ;
 			}
+			close_all_pipe(block);
 			block = block->next;
 		}
 	}

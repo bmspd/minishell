@@ -21,12 +21,29 @@ int	get_index_builtin(char	*name)
 	return (0);
 }
 
-void	my_exit(void)
+int	get_output_value(t_cmd *cmd)
 {
+	if (!cmd->arg[1])
+		return (0);
+	if (count_arr(cmd->arg) > 2)
+		return (256);
+	return (ft_atoi(cmd->arg[1]) & 255);
+}
+
+void	my_exit(t_cmd *cmd)
+{
+	int	out;
+
+	out = get_output_value(cmd);
 	set_terminal(0);
 	write(1, "💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n",
 		 ft_strlen("💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n"));
-	exit(0);
+	if (out > 255)
+	{
+		write(2, "minishell: exit: too many arguments\n", 36);
+		return ;
+	}
+	exit(out);
 }
 
 int	exec_builtin(t_cmd *cmd)
@@ -49,7 +66,7 @@ int	exec_builtin(t_cmd *cmd)
 		if (index == EXPORT)
 			export(cmd, cmd->out);
 		if (index == EXIT)
-			my_exit();
+			my_exit(cmd);
 		return (1);
 	}
 	return (0);

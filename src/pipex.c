@@ -41,11 +41,13 @@ int	init_fdpipe(t_block *block, int *fd, int in)
 			close(in);
 		return (0);
 	}
+	block->fd_pipe_in = in;
 	block->cmd->in = in;
 	if (block->next)
 	{
 		if (pipe(fd) == -1)
 			return (-1);
+		block->fd_pipe_out = fd[1];
 		block->cmd->out = fd[1];
 	}
 	return (1);
