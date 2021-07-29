@@ -48,7 +48,8 @@ void	wait_child(t_block *block)
 {
 	int	status;
 	int	i;
-
+	
+	close_all_pipe(block);
 	while (block)
 	{
 		i = (-1 == wait(&status));
@@ -60,7 +61,6 @@ void	wait_child(t_block *block)
 				kill_childprocess(block);
 				break ;
 			}
-			close_all_pipe(block);
 			block = block->next;
 		}
 	}
