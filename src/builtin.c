@@ -25,6 +25,13 @@ int	get_output_value(t_cmd *cmd)
 {
 	if (!cmd->arg[1])
 		return (0);
+	if (!ft_overlap(cmd->arg[1], "-+0123456789"))
+	{
+		write(2, "minishell: exit: ", 17);
+		write(2, cmd->arg[1], ft_strlen(cmd->arg[1]));
+		write(2, ": numeric argument required\n", 29);
+		return (255);
+	}
 	if (count_arr(cmd->arg) > 2)
 		return (256);
 	return (ft_atoi(cmd->arg[1]) & 255);
@@ -34,10 +41,10 @@ void	my_exit(t_cmd *cmd)
 {
 	int	out;
 
-	out = get_output_value(cmd);
 	set_terminal(0);
 	write(1, "💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n",
 		 ft_strlen("💔💔💔 \x1b[36msee ya later \x1b[31m↻\x1b[0m\n"));
+	out = get_output_value(cmd);
 	if (out > 255)
 	{
 		write(2, "minishell: exit: too many arguments\n", 36);
